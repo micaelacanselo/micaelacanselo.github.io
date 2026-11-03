@@ -1,0 +1,93 @@
+/* Sistema de diseño: fuentes y variables */
+
+@font-face {
+  font-family: "Outfit";
+  src: url("../assets/fonts/outfit-var.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DM Mono";
+  src: url("../assets/fonts/dm-mono-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Color: paleta de higos. Tinta suave y marrón medio son derivados */
+  --negro: #000;
+  --cafe: #442318; /* brown: texto, Trabajos y pie */
+  --cafe-2: #5a3324;
+  --marron: #9c7a66; /* derivado: íconos de la portada */
+  --beige: #efe5d3; /* lactic: fondo principal */
+  --arena: #d1beaf; /* sand */
+  --limon: #d1beaf; /* acento claro: resaltador e intro */
+  --tostado: #7d3722; /* terracotta */
+  --tinta: #442318;
+  --tinta-suave: #6b4634;
+  --crema: #efe5d3;
+  --suave: #efe5d3;
+  --terracota: #7d3722;
+  --terracota-oscuro: #5e2818;
+  --terracota-hover: var(--terracota-oscuro);
+  --terracota-claro: #d1beaf;
+  --naranja-hover: #efe5d3;
+  --resaltado: #442318;
+  --rayas: none;
+
+  /* Colores de marca de los proyectos, solo para sus láminas */
+  --magnolia-noche: #140e36;
+  --magnolia-lila: #efdbf4;
+  --magnolia-lavanda: #e2e9ff;
+  --magnolia-greige: #c9bfb5;
+  --magnolia-blanco: #f9f9f9;
+  --gae-indigo: #1e2259;
+  --umbral-tinta: #14191b;
+  --tono-tinta: #141216;
+  --burgbox-cafe: #2c1e14;
+  --raiz-musgo: #3e4a2f;
+  --spa-vino: #40202c;
+  --instituto-azul: #24387c;
+  --google-azul: #1a0dab;
+  --google-texto: #202124;
+  --google-gris: #4d5156;
+
+  /* Tipografía */
+  --fuente: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fuente-mono: "DM Mono", ui-monospace, Consolas, monospace;
+
+  --texto-s: 0.9375rem;
+  --texto-m: 1.0625rem;
+  --texto-l: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  --titulo-s: clamp(1.5rem, 1.2rem + 1.4vw, 2.5rem);
+  --titulo-m: clamp(3.5rem, 2rem + 6.5vw, 8.75rem);
+  --titulo-l: clamp(3.25rem, 1.6rem + 7.4vw, 9.375rem);
+
+  --tracking-titulo: -0.05em;
+
+  /* Espacio */
+  --esp-1: 0.25rem;
+  --esp-2: 0.5rem;
+  --esp-3: 1rem;
+  --esp-4: 1.5rem;
+  --esp-5: 2.5rem;
+  --esp-6: 4rem;
+  --esp-seccion: clamp(5rem, 3rem + 8vw, 10rem);
+  --margen: clamp(1rem, 0.5rem + 2.5vw, 4rem);
+  --ancho-max: 100rem;
+  --alto-encabezado: 4.5rem;
+
+  /* Forma */
+  --radio: 22px;
+  --radio-pildora: 999px;
+
+  /* Movimiento */
+  --curva: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --curva-fuerte: cubic-bezier(0.23, 1, 0.32, 1);
+  --dur-corta: 200ms;
+  --dur-media: 500ms;
+  --dur-larga: 800ms;
+}

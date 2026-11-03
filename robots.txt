@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://micaelacanselo.github.io/sitemap.xml

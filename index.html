@@ -1,0 +1,1580 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Seguridad: solo corre código del propio sitio. Si se edita el script de la intro, actualizar su hash -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-e9MkrCuO1ks8ODfTwpwne6hSkMeMLY2QBUJEvzUc/EM='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self'; font-src 'self'; connect-src 'self' https://api.web3forms.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <title>Micaela Canselo · Comunicación, Marketing Digital y Diseño Web</title>
+  <meta name="description" content="Soy Micaela Canselo, Técnica en Comunicación y Marketing Digital en Buenos Aires. Ayudo a marcas a comunicar con claridad, llegar a su público y verse bien en la web.">
+  <meta name="author" content="Micaela Canselo">
+  <meta name="theme-color" content="#efe5d3">
+  <link rel="canonical" href="https://micaelacanselo.github.io/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://micaelacanselo.github.io/">
+  <meta property="og:locale" content="es_AR">
+  <meta property="og:site_name" content="Micaela Canselo">
+  <meta property="og:title" content="Micaela Canselo · Comunicación, Marketing Digital y Diseño Web">
+  <meta property="og:description" content="Comunicación de marca, marketing digital y diseño web. Portfolio de Micaela Canselo.">
+  <meta property="og:image" content="https://micaelacanselo.github.io/assets/img/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Transformo ideas en experiencias digitales con identidad. Micaela Canselo: comunicación, marketing digital, diseño y desarrollo web">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+  <link rel="preload" href="assets/fonts/outfit-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Micaela Canselo",
+    "jobTitle": "Técnica Superior en Comunicación y Marketing Digital",
+    "description": "Técnica en Comunicación y Marketing Digital, en formación constante en diseño y desarrollo web. En 2027 empieza el Ciclo de Licenciatura en Comunicación en UADE.",
+    "address": { "@type": "PostalAddress", "addressLocality": "Buenos Aires", "addressCountry": "AR" },
+    "alumniOf": { "@type": "EducationalOrganization", "name": "Instituto Sudamericano para la Enseñanza de la Comunicación (ISEC)" },
+    "url": "https://micaelacanselo.github.io/",
+    "image": "https://micaelacanselo.github.io/assets/img/micaela-retrato-640.webp",
+    "sameAs": ["https://www.linkedin.com/in/micaela-solange-canselo/", "https://github.com/micaelacanselo"],
+    "knowsAbout": ["Comunicación de marca", "Marketing digital", "Copywriting", "Community management", "SEO", "Diseño web", "WordPress", "UX/UI"]
+  }
+  </script>
+
+  <link rel="preload" href="assets/fonts/dm-mono-400.woff2" as="font" type="font/woff2" crossorigin>
+  <script>
+    // La portada arranca en negro solo si se carga desde arriba de todo: al recargar más abajo
+    // se respeta el lugar donde estaba. Si hero.js no llega a correr, el contenido aparece igual
+    let arriba = true;
+    try {
+      const tipo = performance.getEntriesByType("navigation")[0]?.type;
+      if (tipo === "reload" || tipo === "back_forward") arriba = !Number(sessionStorage.getItem("scroll-salida"));
+      addEventListener("pagehide", () => sessionStorage.setItem("scroll-salida", String(scrollY)));
+    } catch {}
+    if (arriba && !location.hash && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.documentElement.classList.add("intro");
+      // Red de seguridad por si hero.js no corre; normalmente la intro la termina hero.js
+      setTimeout(() => document.documentElement.classList.remove("intro"), 12000);
+    }
+  </script>
+  <script src="js/main.js" type="module"></script>
+  <script src="js/hero.js" type="module"></script>
+  <script src="js/mica.js" type="module"></script>
+</head>
+<body>
+  <a class="saltar-contenido" href="#contenido">Saltar al contenido</a>
+
+  <header class="encabezado">
+    <div class="contenedor encabezado__interior">
+      <a class="encabezado__logo" href="#inicio" aria-label="Micaela Canselo, inicio">
+        <img class="encabezado__foto" src="assets/img/micaela-avatar.webp" alt="" width="96" height="96">
+        <span class="encabezado__marca"><span class="encabezado__nombre">Micaela Canselo</span><small>Comunicación digital</small></span>
+      </a>
+      <nav aria-label="Principal">
+        <ul class="nav__lista">
+          <li class="nav__item--secundario"><a class="nav__enlace" href="#trabajos" data-ver-todos aria-haspopup="dialog">Trabajos</a></li>
+          <li class="nav__item--secundario"><a class="nav__enlace" href="#sobre-mi">Sobre mí</a></li>
+          <li class="nav__item--secundario"><a class="nav__enlace" href="#que-hago">Qué hago</a></li>
+          <li class="nav__item--secundario"><a class="nav__enlace" href="#contacto">Contacto</a></li>
+          <li><a class="boton" href="assets/cv/cv-micaela-canselo.pdf" download>Descargar CV <svg class="icono" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 2v8m0 0 3-3M8 10 5 7M2.5 13.5h11"/></svg></a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="hero tema-claro hoja" id="inicio" aria-labelledby="hero-titulo" data-hero data-trabajos>
+      <!-- Una sola escena: la frase abre y, al bajar, la rueda pasa los proyectos uno por uno -->
+      <div class="hero__fijo">
+        <div class="hero__3d" aria-hidden="true">
+          <div class="hero__aurora"><span></span><span></span></div>
+          <div class="hero__luz" data-luz></div>
+        </div>
+        <canvas class="hero__fondo" data-hero-fondo aria-hidden="true"></canvas>
+        <div class="contenedor apertura" data-apertura>
+          <div class="mica-lugar" data-mica-lugar aria-hidden="true"></div>
+          <h1 id="hero-titulo"><span class="palabra"><span style="--i: 0">Transformo</span></span> <span class="palabra"><span style="--i: 1">ideas</span></span> <span class="palabra"><span style="--i: 2">en</span></span> <br class="hero__corte"><em class="hero__resaltado"><span class="palabra"><span style="--i: 3">experiencias</span></span> <span class="palabra"><span style="--i: 4">digitales</span></span> <span class="palabra"><span style="--i: 5">con</span></span> <span class="palabra"><span style="--i: 6">identidad.</span></span></em></h1>
+          <p class="hero__sub">Comunicación digital · Marketing · Diseño y desarrollo web</p>
+          <span class="hero__linea" aria-hidden="true"></span>
+          <div class="hero__acciones">
+            <button class="boton boton--principal" type="button" data-ver-todos aria-haspopup="dialog">Ver proyectos <span aria-hidden="true">→</span></button>
+            <a class="boton" href="#contacto">Hablemos</a>
+          </div>
+        </div>
+        <h2 class="visualmente-oculto">Trabajos</h2>
+        <ul class="rueda" data-rueda></ul>
+        <div class="ficha" data-ficha>
+          <small data-ficha-categoria></small>
+          <h3 data-ficha-titulo></h3>
+          <p data-ficha-frase></p>
+          <small class="ficha__tipo" data-ficha-tipo></small>
+          <div class="ficha__botones"><a class="boton boton--principal" href="#trabajos" data-ficha-abrir>Ver proyecto</a><button class="boton" type="button" data-ver-todos aria-haspopup="dialog">Ver todos</button></div>
+        </div>
+        <div class="rueda__controles" data-rueda-controles>
+          <button class="boton" type="button" data-anterior aria-label="Proyecto anterior">←</button>
+          <button class="boton" type="button" data-siguiente aria-label="Proyecto siguiente">→</button>
+        </div>
+      </div>
+      <span class="trabajos__ancla" id="trabajos"></span>
+      <!-- Datos de los proyectos: de acá salen la rueda y el índice -->
+      <ul data-carpetas hidden>
+        <li class="carpeta" data-temas="UX">
+          <a class="carpeta__enlace" href="#trabajo-gae" data-cursor="ver">
+            <span class="carpeta__dorso"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/centro-operativo-gae.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__frente">
+              <span class="carpeta__categoria">UX · Plataforma web · ITBA</span>
+              <span class="carpeta__titulo">Centro Operativo GAE</span>
+              <span class="carpeta__frase">De planillas de Excel a una sola herramienta para 3 sedes.</span>
+              <span class="carpeta__tipo carpeta__tipo--real">Proyecto real · en uso</span>
+            </span>
+          </a>
+        </li>
+        <li class="carpeta" data-temas="Diseño web|WordPress|Identidad">
+          <a class="carpeta__enlace" href="#trabajo-tono" data-cursor="ver">
+            <span class="carpeta__dorso"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/tono.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__frente">
+              <span class="carpeta__categoria">E-commerce · Identidad · WordPress</span>
+              <span class="carpeta__titulo">Tono</span>
+              <span class="carpeta__frase">Tienda de maquillaje donde todo empieza por el color.</span>
+              <span class="carpeta__tipo">Proyecto conceptual</span>
+            </span>
+          </a>
+        </li>
+        <li class="carpeta" data-temas="Marketing|Diseño web|WordPress|Identidad">
+          <a class="carpeta__enlace" href="#trabajo-magnolia" data-cursor="ver">
+            <span class="carpeta__dorso"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__frente">
+              <span class="carpeta__categoria">Plan de marketing · Web · App</span>
+              <span class="carpeta__titulo">Magnolia Eventos</span>
+              <span class="carpeta__frase">Plan de marketing completo: del diagnóstico a la web y la app.</span>
+              <span class="carpeta__tipo">Proyecto académico</span>
+            </span>
+          </a>
+        </li>
+        <li class="carpeta" data-temas="Diseño web|WordPress">
+          <a class="carpeta__enlace" href="#trabajo-burgbox" data-cursor="ver">
+            <span class="carpeta__dorso"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/burgbox.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__frente">
+              <span class="carpeta__categoria">Diseño web · WordPress</span>
+              <span class="carpeta__titulo">BurgBox</span>
+              <span class="carpeta__frase">Sitio para una hamburguesería de barrio.</span>
+              <span class="carpeta__tipo">Proyecto conceptual</span>
+            </span>
+          </a>
+        </li>
+        <li class="carpeta" data-temas="Diseño web|WordPress|Landing">
+          <a class="carpeta__enlace" href="#trabajo-raiz" data-cursor="ver">
+            <span class="carpeta__dorso"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/raiz-fotografia.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__frente">
+              <span class="carpeta__categoria">Landing · Diseño web · WordPress</span>
+              <span class="carpeta__titulo">Raíz Fotografía</span>
+              <span class="carpeta__frase">Sitio para una agencia de fotografía de naturaleza.</span>
+              <span class="carpeta__tipo">Proyecto conceptual</span>
+            </span>
+          </a>
+        </li>
+        <li class="carpeta" data-temas="Diseño web|WordPress|Identidad">
+          <a class="carpeta__enlace" href="#trabajo-spa" data-cursor="ver">
+            <span class="carpeta__dorso"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/relax-spa.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__frente">
+              <span class="carpeta__categoria">Diseño web · Identidad · WordPress</span>
+              <span class="carpeta__titulo">Relax Spa</span>
+              <span class="carpeta__frase">Marca y sitio para un spa, contados desde la hora que te reserva.</span>
+              <span class="carpeta__tipo">Proyecto conceptual</span>
+            </span>
+          </a>
+        </li>
+        <li class="carpeta" data-temas="Diseño web|WordPress">
+          <a class="carpeta__enlace" href="#trabajo-instituto" data-cursor="ver">
+            <span class="carpeta__dorso"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/instituto-del-parque.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__frente">
+              <span class="carpeta__categoria">Diseño web · Comunicación</span>
+              <span class="carpeta__titulo">Instituto del Parque</span>
+              <span class="carpeta__frase">Sitio institucional para un colegio.</span>
+              <span class="carpeta__tipo">Proyecto conceptual</span>
+            </span>
+          </a>
+        </li>
+        <li class="carpeta" data-temas="Diseño web|WordPress">
+          <a class="carpeta__enlace" href="#trabajo-plantilla" data-cursor="ver">
+            <span class="carpeta__dorso"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/plantilla-personalizada.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__frente">
+              <span class="carpeta__categoria">Diseño web · Código · WordPress</span>
+              <span class="carpeta__titulo">Plantilla personalizada</span>
+              <span class="carpeta__frase">Un tema de WordPress reescrito con Claude Code para que cada marca lo adapte desde el panel.</span>
+              <span class="carpeta__tipo">Proyecto conceptual</span>
+            </span>
+          </a>
+        </li>
+      </ul>
+      <!-- Índice de trabajos: las filas se arman desde las carpetas en js/main.js -->
+      <dialog class="indice tema-claro" data-indice aria-labelledby="indice-titulo">
+        <div class="indice__interior">
+          <header class="indice__cabecera">
+            <h3 id="indice-titulo">todos los trabajos<span class="punto" aria-hidden="true"></span></h3>
+            <button class="boton" type="button" data-cerrar-indice>Cerrar</button>
+          </header>
+          <ul class="filtros" aria-label="Filtrar trabajos" data-filtros></ul>
+          <ul class="indice__grilla" data-indice-lista></ul>
+        </div>
+      </dialog>
+
+      <!-- Caso Magnolia: se abre en la misma página, con enlace propio -->
+      <dialog class="caso caso--magnolia tema-claro" id="trabajo-magnolia" data-caso aria-labelledby="caso-magnolia-titulo">
+        <div class="caso__barra">
+          <span class="caso__nombre">Magnolia Eventos</span>
+          <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
+        </div>
+
+        <header class="caso__portada">
+          <p class="caso__categoria">Plan de marketing · Web · App</p>
+          <h3 class="caso__titulo" id="caso-magnolia-titulo">magnolia eventos<span class="punto" aria-hidden="true"></span></h3>
+          <p class="caso__bajada">Una productora que vivía del boca en boca y tuvo que aprender a hacerse encontrar.</p>
+          <ul class="caso__datos">
+            <li>Proyecto académico</li>
+            <li>Equipo de 4</li>
+            <li>Mi parte: sitio en WordPress, app en dupla, identidad y plan de marketing en conjunto</li>
+          </ul>
+        </header>
+
+        <figure class="lamina lamina--contexto caso__ancho">
+          <img src="assets/proyectos/magnolia-eventos/caso/fondo-contexto.webp" alt="" width="1600" height="1067" loading="lazy">
+          <div class="maqueta">
+            <div class="maqueta__laptop">
+              <img src="assets/proyectos/magnolia-eventos/caso/sitio-inicio.webp" loading="lazy" alt="Inicio del sitio de Magnolia Eventos, en azul noche, con un buscador por tipo de evento y fecha" width="1440" height="900">
+            </div>
+            <div class="maqueta__celular">
+              <img src="assets/proyectos/magnolia-eventos/app/03-inicio.webp" loading="lazy" alt="Inicio de la app, con seis accesos de perfil a post-evento" width="772" height="1680">
+            </div>
+          </div>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Si nadie te la recomendaba, no existía<span class="punto" aria-hidden="true"></span></h4>
+          <p>Magnolia organiza eventos sociales y corporativos en Palermo. Es una marca ficticia, la que nos tocó para el proyecto final. No tenía web, su Facebook estaba abandonado y todo dependía de que alguien la recomendara.</p>
+          <p>Nos propusimos llevarla a lo digital con un presupuesto planteado de USD 5.000. La meta: 5.000 visitas al mes y 50 pedidos de presupuesto en tres meses.</p>
+        </section>
+
+        <section class="capitulo">
+          <h4>Primero tenía que verse como lo que prometía<span class="punto" aria-hidden="true"></span></h4>
+          <p>Vendía experiencias únicas, pero su logo recargado no transmitía eso. Lo cambiamos por uno más sobrio y por una paleta nocturna, con el clima de un salón cuando se apagan las luces.</p>
+        </section>
+
+        <div class="caso__ancho marca">
+          <figure class="lamina lamina--lila marca__panel">
+            <img src="assets/proyectos/magnolia-eventos/marca/logos/logo-anterior.webp" alt="Logo anterior: Magnolia manuscrito dentro de un círculo lila con una rama" width="600" height="600" loading="lazy">
+            <figcaption>Antes</figcaption>
+          </figure>
+          <figure class="lamina lamina--noche marca__panel">
+            <img src="assets/proyectos/magnolia-eventos/marca/logos/logo-lavanda.webp" alt="Logo nuevo: magnolia en serif, con un ornamento entrelazado en lugar de la o" width="1000" height="500" loading="lazy">
+            <figcaption>Después</figcaption>
+          </figure>
+          <figure class="lamina lamina--blanca marca__aplicaciones">
+            <img src="assets/proyectos/magnolia-eventos/caso/marca-aplicaciones.webp" alt="La marca nueva aplicada: isotipo, cartelería, versiones de color y perfil en el celular" width="1240" height="560" loading="lazy">
+          </figure>
+        </div>
+
+        <section class="capitulo">
+          <h4>Después, un lugar donde encontrarla<span class="punto" aria-hidden="true"></span></h4>
+          <p>Armé el sitio en WordPress pensando en alguien con un evento en mente. Por eso lo primero que ve es un buscador por tipo de evento y fecha, que lo lleva directo a la consulta.</p>
+          <p>Lo demás está para que confíe antes de escribir: galerías de eventos sociales y corporativos, el equipo con cara, testimonios y preguntas frecuentes.</p>
+        </section>
+
+        <div class="caso__ancho pila">
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/magnolia-eventos/caso/sitio-eventos.webp" alt="Página de eventos: Eventos que inspiran, emocionan y dejan huella" width="1440" height="900" loading="lazy">
+          </figure>
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/magnolia-eventos/caso/sitio-sociales.webp" alt="Sección de eventos sociales, con fotos de celebraciones" width="1440" height="850" loading="lazy">
+          </figure>
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/magnolia-eventos/caso/sitio-corporativos.webp" alt="Sección de eventos corporativos, con fotos de salones y conferencias" width="1440" height="850" loading="lazy">
+          </figure>
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/magnolia-eventos/caso/sitio-equipo.webp" alt="Página del equipo: cuatro integrantes en una foto en blanco y negro" width="1440" height="900" loading="lazy">
+          </figure>
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/magnolia-eventos/caso/sitio-consulta.webp" alt="Formulario de consulta con nombre, localidad y teléfono" width="1440" height="900" loading="lazy">
+          </figure>
+        </div>
+
+        <section class="capitulo">
+          <h4>Organizar un evento no termina cuando contratás<span class="punto" aria-hidden="true"></span></h4>
+          <p>Ahí empiezan las dudas: qué falta, quién se ocupa, cuánto va. Con una compañera diseñamos una app para responderlas: tareas, proveedores, presupuesto y chat con el equipo. Cuando termina el evento, una encuesta cierra la experiencia. Quedó como prototipo en Figma.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho telefonos">
+          <div class="telefono">
+            <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/magnolia-eventos/videos/app-recorrido.webp" width="368" height="798" aria-label="Recorrido del prototipo de la app">
+              <source src="assets/proyectos/magnolia-eventos/videos/app-recorrido.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="telefono">
+            <img src="assets/proyectos/magnolia-eventos/app/05-organizacion.webp" alt="Organización del evento: cronograma y estado de tareas" width="772" height="1680" loading="lazy">
+          </div>
+          <div class="telefono">
+            <img src="assets/proyectos/magnolia-eventos/app/10-encuesta.webp" alt="Encuesta post-evento con escala de satisfacción y estrellas" width="772" height="1680" loading="lazy">
+          </div>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Y salir a buscar a quien todavía no la conocía<span class="punto" aria-hidden="true"></span></h4>
+          <p>Abrimos cuatro redes desde cero y armamos un calendario de contenidos. En tres meses, con cuentas reales, lo que mejor funcionó fue TikTok.</p>
+        </section>
+
+        <div class="caso__ancho cifras">
+          <p><strong>7.244</strong> visualizaciones en TikTok</p>
+          <p><strong>3.211</strong> impresiones en LinkedIn</p>
+          <p><strong>2.398</strong> visualizaciones en Instagram</p>
+          <p><strong>1.390</strong> visualizaciones en Facebook</p>
+        </div>
+
+        <figure class="lamina lamina--fondo caso__ancho telefonos">
+          <div class="telefono">
+            <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/magnolia-eventos/videos/red-tiktok.webp" width="370" height="800" aria-label="Videos de Magnolia en TikTok">
+              <source src="assets/proyectos/magnolia-eventos/videos/red-tiktok.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="telefono">
+            <video muted loop playsinline preload="none" data-auto data-sonido data-poster="assets/proyectos/magnolia-eventos/videos/red-instagram.webp" width="370" height="800" aria-label="Reel de Magnolia en Instagram, con Micaela y sus compañeras de la carrera">
+              <source src="assets/proyectos/magnolia-eventos/videos/red-instagram.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="telefono">
+            <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/magnolia-eventos/videos/red-linkedin.webp" width="370" height="800" aria-label="Videos de Magnolia en LinkedIn">
+              <source src="assets/proyectos/magnolia-eventos/videos/red-linkedin.mp4" type="video/mp4">
+            </video>
+          </div>
+        </figure>
+
+        <section class="capitulo">
+          <h4>A quien ya estaba cerca, le escribimos<span class="punto" aria-hidden="true"></span></h4>
+          <p>Hicimos dos campañas de tres mails: una bienvenida, los servicios, testimonios y una invitación a consultar. Las listas eran chicas, de 68 y 82 personas, pero cerca de la mitad abría: 54,4 % en la primera campaña y 47,8 % en la segunda.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho telefonos">
+          <div class="telefono">
+            <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/magnolia-eventos/videos/campana1-mail1-bienvenida.webp" width="444" height="906" aria-label="Mail de bienvenida abierto en el celular">
+              <source src="assets/proyectos/magnolia-eventos/videos/campana1-mail1-bienvenida.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="telefono">
+            <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/magnolia-eventos/videos/campana1-mail3-testimonios.webp" width="444" height="906" aria-label="Mail de testimonios abierto en el celular">
+              <source src="assets/proyectos/magnolia-eventos/videos/campana1-mail3-testimonios.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="telefono">
+            <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/magnolia-eventos/videos/campana2-mail1-invitacion.webp" width="444" height="906" aria-label="Mail de invitación abierto en el celular">
+              <source src="assets/proyectos/magnolia-eventos/videos/campana2-mail1-invitacion.mp4" type="video/mp4">
+            </video>
+          </div>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Alcance del proyecto<span class="punto" aria-hidden="true"></span></h4>
+          <p>La pauta en Meta y Google Ads y la estrategia con influencers se desarrollaron a nivel de planificación, con presupuesto simulado. Por eso este caso presenta solo los resultados orgánicos medidos, y no evalúa el cumplimiento de los objetivos de visitas y formularios.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <div class="anuncio">
+            <p class="anuncio__etiqueta">Patrocinado</p>
+            <div class="anuncio__sitio">
+              <img src="assets/proyectos/magnolia-eventos/marca/logos/isotipo-negro.webp" alt="" width="64" height="64" loading="lazy">
+              <p>magnoliaeventos.com.ar<br><span>https://magnoliaeventos.com.ar</span></p>
+            </div>
+            <p class="anuncio__titulo">Productora de eventos | Magnolia Eventos | Buenos Aires</p>
+            <p>Magnolia eventos diseña, planifica y cuida cada detalle para que cada evento social y corporativo sea inolvidable, creando experiencias únicas.</p>
+          </div>
+          <figcaption>Maqueta del anuncio planificado para Google Ads</figcaption>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Aprendizajes<span class="punto" aria-hidden="true"></span></h4>
+          <p>Este proyecto afinó mi criterio estético y me dio experiencia en coordinar, dentro de un equipo, un trabajo con varios frentes en simultáneo: identidad, web, app, redes y email marketing.</p>
+        </section>
+
+        <footer class="caso__mas">
+          <h4>más trabajos<span class="punto" aria-hidden="true"></span></h4>
+          <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
+          <div class="caso__ancho caso__otros">
+            <button class="tarjeta" type="button" data-ir-a="Centro Operativo GAE">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/centro-operativo-gae.webp" alt="" width="1200" height="900" loading="lazy">
+              <span class="tarjeta__titulo">Centro Operativo GAE</span>
+              <span class="tarjeta__categoria">UX · Plataforma web · ITBA</span>
+            </button>
+            <button class="tarjeta" type="button" data-ir-a="Tono">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/tono.webp" alt="" width="1200" height="900" loading="lazy">
+              <span class="tarjeta__titulo">Tono</span>
+              <span class="tarjeta__categoria">E-commerce · Identidad · WordPress</span>
+            </button>
+          </div>
+        </footer>
+      </dialog>
+      <!-- Caso GAE -->
+      <dialog class="caso caso--gae tema-claro" id="trabajo-gae" data-caso aria-labelledby="caso-gae-titulo">
+        <div class="caso__barra">
+          <span class="caso__nombre">Centro Operativo GAE</span>
+          <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
+        </div>
+
+        <header class="caso__portada">
+          <p class="caso__categoria">UX · Plataforma web · ITBA</p>
+          <h3 class="caso__titulo" id="caso-gae-titulo">centro operativo gae<span class="punto" aria-hidden="true"></span></h3>
+          <p class="caso__bajada">De planillas de Excel sueltas a una sola herramienta para las tres sedes.</p>
+          <ul class="caso__datos">
+            <li class="caso__dato--real">Proyecto real, en uso</li>
+            <li>Iniciativa propia</li>
+            <li>Mi parte: relevamiento, diseño UX/UI y desarrollo con asistencia de IA (Claude)</li>
+          </ul>
+        </header>
+
+        <figure class="lamina lamina--contexto caso__ancho">
+          <img src="assets/proyectos/centro-operativo-gae/caso/fondo-contexto.webp" alt="" width="1600" height="1067" loading="lazy">
+          <div class="maqueta">
+            <div class="maqueta__laptop">
+              <img src="assets/proyectos/centro-operativo-gae/desktop.webp" alt="Inicio del Centro Operativo: reloj y notas pendientes de cada sede, con los datos personales difuminados" width="1440" height="900" loading="lazy">
+            </div>
+            <div class="maqueta__celular">
+              <img src="assets/proyectos/centro-operativo-gae/mobile.webp" alt="La plataforma en el celular" width="750" height="1624" loading="lazy">
+            </div>
+          </div>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Todo estaba, pero repartido<span class="punto" aria-hidden="true"></span></h4>
+          <p>El equipo GAE del ITBA gestiona eventos, visitas, armado de aulas y stock en tres sedes. Hasta hace unos meses, esa información vivía en varias planillas de Excel separadas.</p>
+        </section>
+
+        <section class="capitulo">
+          <h4>Una herramienta para usar sin capacitación<span class="punto" aria-hidden="true"></span></h4>
+          <p>Fue una iniciativa propia. Relevé cómo trabajaba el equipo y diseñé una plataforma pensada para abrirse todos los días y entenderse sin explicación. La desarrollé con asistencia de IA, con datos en tiempo real entre las tres sedes.</p>
+        </section>
+
+        <section class="capitulo">
+          <h4>El día empieza en una sola pantalla<span class="punto" aria-hidden="true"></span></h4>
+          <p>El inicio resume la jornada de cada sede: notas pendientes, eventos, visitas y tecnología. Los accesos rápidos abren cada tarea sin salir de esa pantalla, y un buscador global encuentra una sección o un dato en un paso.</p>
+          <p>En las capturas vas a ver la palabra "Mamparas": es la parte de la preparación de aulas, donde se usan paneles móviles para armar y dividir los espacios.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <img src="assets/proyectos/centro-operativo-gae/desktop-sedes.webp" alt="Operativo del día: tarjetas de las sedes SREC, SDF y SDT con eventos, visitas, armado de aulas y tecnología" width="1440" height="900" loading="lazy">
+        </figure>
+
+        <section class="capitulo">
+          <h4>Cada planilla encontró su lugar<span class="punto" aria-hidden="true"></span></h4>
+          <p>Eventos, armado de aulas, visitas, paquetes, llamados, préstamos, stock, rotaciones, contactos y documentos pasaron a módulos propios. El stock, por ejemplo, se ordena por sede y categoría, y avisa cuando algo está por acabarse.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <img src="assets/proyectos/centro-operativo-gae/desktop-stock.webp" alt="Stock por sede: catálogo con fotos, categorías y cantidades editables" width="1440" height="900" loading="lazy">
+        </figure>
+
+        <section class="capitulo">
+          <h4>Y lo que antes había que calcular, ahora se ve<span class="punto" aria-hidden="true"></span></h4>
+          <p>Los reportes muestran la actividad por período y por sede, con gráficos y exportación a CSV.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <img src="assets/proyectos/centro-operativo-gae/caso/reportes-sin-cifras.webp" alt="Reportes con filtros por período y sede y gráficos, con las cifras internas difuminadas" width="1440" height="900" loading="lazy">
+        </figure>
+
+        <section class="capitulo">
+          <h4>Hoy es parte del día a día<span class="punto" aria-hidden="true"></span></h4>
+          <p>La usa a diario un equipo de unas 10 personas desde hace unos meses. Se adaptó muy bien, y el trabajo de todos los días resulta más cómodo. Es una herramienta interna: por eso no comparto el acceso, y los datos personales y las cifras internas de estas capturas están difuminados.</p>
+        </section>
+
+        <div class="caso__ancho cifras cifras--dos">
+          <p><strong>10</strong> personas la usan a diario, aproximadamente</p>
+          <p><strong>3</strong> sedes en una sola herramienta</p>
+        </div>
+
+        <section class="capitulo">
+          <h4>Aprendizajes<span class="punto" aria-hidden="true"></span></h4>
+          <p>Este proyecto me enseñó a detectar un problema real y buscar cómo resolverlo. Hoy el equipo encuentra todo en una sola plataforma, sin revisar Excel por Excel ni entrar al Drive a cada rato, con datos en tiempo real que se actualizan mes a mes.</p>
+          <p>También comprobé que una herramienta interna puede tener identidad: el color y la iconografía le dan personalidad y hacen más ameno el día a día. Es un trabajo vivo, que sigo puliendo de forma constante.</p>
+        </section>
+
+        <footer class="caso__mas">
+          <h4>más trabajos<span class="punto" aria-hidden="true"></span></h4>
+          <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
+          <div class="caso__ancho caso__otros">
+            <button class="tarjeta" type="button" data-ir-a="Magnolia Eventos">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy">
+              <span class="tarjeta__titulo">Magnolia Eventos</span>
+              <span class="tarjeta__categoria">Plan de marketing · Web · App</span>
+            </button>
+            <button class="tarjeta" type="button" data-ir-a="Plantilla personalizada">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/plantilla-personalizada.webp" alt="" width="1200" height="900" loading="lazy">
+              <span class="tarjeta__titulo">Plantilla personalizada</span>
+              <span class="tarjeta__categoria">Diseño web · Código · WordPress</span>
+            </button>
+          </div>
+        </footer>
+      </dialog>
+      <!-- Caso Plantilla personalizada: antes y después. El capítulo de aprendizajes lo escribe Micaela -->
+      <dialog class="caso caso--plantilla tema-claro" id="trabajo-plantilla" data-caso aria-labelledby="caso-plantilla-titulo">
+        <div class="caso__barra">
+          <span class="caso__nombre">Plantilla personalizada</span>
+          <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
+        </div>
+
+        <header class="caso__portada">
+          <p class="caso__categoria">Diseño web · Código · WordPress</p>
+          <h3 class="caso__titulo" id="caso-plantilla-titulo">plantilla personalizada<span class="punto" aria-hidden="true"></span></h3>
+          <p class="caso__bajada">Un tema de WordPress que solo dejaba editar la portada, reescrito con Claude Code para que cada marca lo adapte desde el panel.</p>
+          <ul class="caso__datos">
+            <li>Proyecto conceptual</li>
+            <li>Punto de partida: plantilla personalizada realizada en el curso de WordPress de Udemy</li>
+            <li>Reescrito con Claude Code. Mi parte: definir qué se podía cambiar, la marca de ejemplo y el contenido, y revisar el resultado</li>
+          </ul>
+        </header>
+
+        <figure class="lamina lamina--contexto caso__ancho">
+          <img src="assets/proyectos/plantilla-personalizada/caso/fondo-contexto.webp" alt="" width="1600" height="1000" loading="lazy">
+          <div class="maqueta">
+            <div class="maqueta__laptop">
+              <img src="assets/proyectos/plantilla-personalizada/desktop.webp" alt="Portada de Umbral, la marca de ejemplo: una casa entre árboles y el título Diseñamos el paso de afuera hacia adentro" width="1440" height="900" loading="lazy">
+            </div>
+            <div class="maqueta__celular">
+              <img src="assets/proyectos/plantilla-personalizada/mobile.webp" alt="La misma portada en el celular" width="780" height="1688" loading="lazy">
+            </div>
+          </div>
+        </figure>
+
+        <section class="capitulo">
+          <h4>El panel llegaba hasta la portada<span class="punto" aria-hidden="true"></span></h4>
+          <p>En el tema original, el que armé en el curso de WordPress en Udemy, el panel permitía editar los textos y la imagen de la portada. Los colores, las tipografías y el resto de las secciones quedaban fijos.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <div class="maqueta">
+            <div class="maqueta__laptop">
+              <img src="assets/proyectos/plantilla-personalizada/antes/desktop.webp" alt="El tema original: barra coral, foto de una modelo con alas y el título Plantilla wordpress personalizada" width="1440" height="900" loading="lazy">
+            </div>
+            <div class="maqueta__celular">
+              <img src="assets/proyectos/plantilla-personalizada/antes/mobile.webp" alt="El tema original en el celular" width="780" height="1688" loading="lazy">
+            </div>
+          </div>
+          <figcaption>El tema original, con los textos de ejemplo</figcaption>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Cambiar el resto exigía saber programar<span class="punto" aria-hidden="true"></span></h4>
+          <p>Un color o una tipografía se modificaban dentro de archivos como estos. Una marca sin alguien que programe no podía adaptarlo por su cuenta.</p>
+        </section>
+
+        <div class="caso__ancho pila">
+          <figure class="lamina lamina--fondo">
+            <picture>
+              <source media="(max-width: 40rem)" srcset="assets/proyectos/plantilla-personalizada/caso/original-personalizador-celular.webp" width="1125" height="500">
+              <img src="assets/proyectos/plantilla-personalizada/codigo/original-personalizador.webp" alt="Código original del personalizador, con las opciones de título, texto y botón de la portada" width="1500" height="940" loading="lazy">
+            </picture>
+            <figcaption>Las opciones que tenía el panel original</figcaption>
+          </figure>
+          <figure class="lamina lamina--fondo">
+            <picture>
+              <source media="(max-width: 40rem)" srcset="assets/proyectos/plantilla-personalizada/caso/original-estilos-celular.webp" width="1125" height="500">
+              <img src="assets/proyectos/plantilla-personalizada/codigo/original-estilos.webp" alt="Hoja de estilos del tema original, con los colores y las tipografías escritos en el código" width="1500" height="940" loading="lazy">
+            </picture>
+            <figcaption>Los colores y las tipografías, escritos en el código</figcaption>
+          </figure>
+        </div>
+
+        <section class="capitulo">
+          <h4>Todo tenía que poder cambiarse sin tocar código<span class="punto" aria-hidden="true"></span></h4>
+          <p>Con ese objetivo reescribí la plantilla usando Claude Code. Yo definí qué tenía que poder cambiarse, la marca de ejemplo y el contenido, y revisé el resultado. El código de esta versión lo escribió Claude Code.</p>
+        </section>
+
+        <section class="capitulo">
+          <h4>Una marca inventada para ponerla a prueba<span class="punto" aria-hidden="true"></span></h4>
+          <p>Umbral es un estudio de arquitectura ficticio. Su idea es "Diseñamos el paso de afuera hacia adentro", y por eso la foto de portada se abre desde el centro, como una puerta. Las fotos son de banco (Unsplash), y los proyectos, las ubicaciones y los datos de contacto son inventados.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/plantilla-personalizada/caso/umbral-recorrido.webp" width="1280" height="800" aria-label="Recorrido por el sitio de Umbral en la compu, desde la portada hasta el pie">
+            <source src="assets/proyectos/plantilla-personalizada/caso/umbral-recorrido.mp4" type="video/mp4">
+          </video>
+        </figure>
+
+        <figure class="lamina lamina--fondo caso__ancho telefonos">
+          <div class="telefono">
+            <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/plantilla-personalizada/caso/umbral-celular.webp" width="586" height="1266" aria-label="Recorrido por el sitio de Umbral en el celular">
+              <source src="assets/proyectos/plantilla-personalizada/caso/umbral-celular.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="telefono">
+            <img src="assets/proyectos/plantilla-personalizada/paginas/menu-celular.webp" alt="Menú de Umbral abierto en el celular" width="780" height="1688" loading="lazy">
+          </div>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Ahora casi todo se decide desde el panel<span class="punto" aria-hidden="true"></span></h4>
+          <p>Colores, cuatro pares de tipografías, bordes, logo, imágenes, textos y pie. Las cinco secciones se pueden ocultar y reordenar, y cada proyecto se carga con su foto, ubicación, año y tipo.</p>
+        </section>
+
+        <div class="caso__ancho cifras cifras--dos">
+          <p><strong>5</strong> opciones en el tema original, todas de la portada</p>
+          <p><strong>53</strong> opciones propias en la versión rehecha</p>
+        </div>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/plantilla-personalizada/personalizador.webp" width="1280" height="800" aria-label="Panel de WordPress: al cambiar color, tipografía y bordes, la vista previa de Umbral se actualiza">
+            <source src="assets/proyectos/plantilla-personalizada/caso/panel-opciones.mp4" type="video/mp4">
+          </video>
+          <figcaption>Apariencia &gt; Personalizar: cada cambio se ve en la vista previa antes de publicarlo</figcaption>
+        </figure>
+
+        <section class="capitulo">
+          <h4>La misma plantilla, otra marca<span class="punto" aria-hidden="true"></span></h4>
+          <p>Para comprobar que el cambio era real, se armó otra versión usando solo las opciones del tema: otros colores, otras tipografías, bordes redondeados, otra foto de portada y otro orden de secciones. El código es el mismo.</p>
+        </section>
+
+        <div class="caso__ancho pila">
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/plantilla-personalizada/caso/variante-portada.webp" alt="Variante oscura de la plantilla: otra foto de portada, títulos con serif y botón amarillo" width="1440" height="900" loading="lazy">
+          </figure>
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/plantilla-personalizada/caso/variante-proyectos.webp" alt="Sección de proyectos de la variante, con fondo oscuro y fotos de bordes redondeados" width="1440" height="900" loading="lazy">
+          </figure>
+        </div>
+
+        <section class="capitulo">
+          <h4>El código nuevo lo escribió Claude Code<span class="punto" aria-hidden="true"></span></h4>
+          <p>Lo muestro para que se vea la diferencia con el original. Yo decidí qué tenía que hacer y revisé que lo hiciera; la programación es de Claude Code. Como explica el comentario de su segunda línea, todas las opciones quedan en un solo lugar y de ahí sale el panel.</p>
+        </section>
+
+        <div class="caso__ancho pila">
+          <figure class="lamina lamina--fondo">
+            <picture>
+              <source media="(max-width: 40rem)" srcset="assets/proyectos/plantilla-personalizada/caso/reescrito-opciones-celular.webp" width="1125" height="500">
+              <img src="assets/proyectos/plantilla-personalizada/codigo/reescrito-opciones.webp" alt="Código del tema reescrito: el archivo que reúne las opciones, en Visual Studio Code" width="1500" height="940" loading="lazy">
+            </picture>
+            <figcaption>Las opciones, reunidas en un archivo</figcaption>
+          </figure>
+          <figure class="lamina lamina--fondo">
+            <picture>
+              <source media="(max-width: 40rem)" srcset="assets/proyectos/plantilla-personalizada/caso/reescrito-personalizador-celular.webp" width="1125" height="500">
+              <img src="assets/proyectos/plantilla-personalizada/codigo/reescrito-personalizador.webp" alt="Código del tema reescrito: el archivo que arma el panel a partir de esas opciones" width="1500" height="940" loading="lazy">
+            </picture>
+            <figcaption>El archivo que arma el panel a partir de esas opciones</figcaption>
+          </figure>
+        </div>
+
+        <section class="capitulo">
+          <h4>Alcance del proyecto<span class="punto" aria-hidden="true"></span></h4>
+          <p>Es un proyecto conceptual: no tiene clientes ni resultados medidos, y por eso no muestro métricas. Las cifras de arriba cuentan opciones del panel. El sitio corre en un WordPress local, así que no tiene enlace público.</p>
+        </section>
+
+        <!-- Borrador: Micaela tiene que confirmar que estos aprendizajes son suyos -->
+        <section class="capitulo">
+          <h4>Aprendizajes<span class="punto" aria-hidden="true"></span></h4>
+          <p>Aprendí que un sitio no termina cuando funciona: también importa quién puede cambiarlo después y qué tan fácil le resulta. Por eso empecé a pensar en las opciones como parte del diseño.</p>
+          <p>También vi cómo cambia mi trabajo con Claude Code: decido qué hay que construir y reviso si el resultado cumple. Me permitió llegar más lejos de lo que sé programar, y me mostró cuánto me queda por aprender de código.</p>
+        </section>
+
+        <footer class="caso__mas">
+          <h4>más trabajos<span class="punto" aria-hidden="true"></span></h4>
+          <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
+          <div class="caso__ancho caso__otros">
+            <button class="tarjeta" type="button" data-ir-a="Centro Operativo GAE">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/centro-operativo-gae.webp" alt="" width="1200" height="900" loading="lazy">
+              <span class="tarjeta__titulo">Centro Operativo GAE</span>
+              <span class="tarjeta__categoria">UX · Plataforma web · ITBA</span>
+            </button>
+            <button class="tarjeta" type="button" data-ir-a="Magnolia Eventos">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy">
+              <span class="tarjeta__titulo">Magnolia Eventos</span>
+              <span class="tarjeta__categoria">Plan de marketing · Web · App</span>
+            </button>
+          </div>
+        </footer>
+      </dialog>
+      <!-- Caso Tono -->
+      <dialog class="caso caso--tono tema-claro" id="trabajo-tono" data-caso aria-labelledby="caso-tono-titulo">
+        <div class="caso__barra">
+          <span class="caso__nombre">Tono</span>
+          <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
+        </div>
+
+        <header class="caso__portada">
+          <p class="caso__categoria">E-commerce · Identidad · WordPress</p>
+          <h3 class="caso__titulo" id="caso-tono-titulo">tono<span class="punto" aria-hidden="true"></span></h3>
+          <p class="caso__bajada">Una tienda de maquillaje armada alrededor de una duda: cómo me va a quedar este color.</p>
+          <ul class="caso__datos">
+            <li>Proyecto conceptual</li>
+            <li>La realicé en WordPress y después mejoré el estilo con ayuda de Claude Code</li>
+            <li>Mi parte: dirección de la marca, elección de fotos, plan de marketing y revisión del resultado</li>
+          </ul>
+        </header>
+
+        <figure class="lamina lamina--contexto caso__ancho">
+          <img src="assets/proyectos/tono/caso/fondo-contexto.webp" alt="" width="1100" height="1540" loading="lazy">
+          <div class="maqueta">
+            <div class="maqueta__laptop">
+              <img src="assets/proyectos/tono/desktop.webp" alt="Portada de Tono: campo bermellón con el título Encontrá tu tono y una mujer pintándose los labios de rojo" width="1440" height="900" loading="lazy">
+            </div>
+            <div class="maqueta__celular">
+              <img src="assets/proyectos/tono/mobile.webp" alt="La misma portada en el celular" width="780" height="1688" loading="lazy">
+            </div>
+          </div>
+        </figure>
+
+        <section class="capitulo">
+          <h4>En una pantalla, el color no se prueba<span class="punto" aria-hidden="true"></span></h4>
+          <p>Comprar maquillaje online tiene un problema concreto: no podés ver cómo te queda el tono. Realicé la tienda en WordPress y después, con ayuda de Claude Code, le mejoré el estilo para convertirla en una marca que primero ayuda a elegir y después vende.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/tono/caso/tono-recorrido.webp" width="1280" height="800" aria-label="Recorrido por la portada de Tono en la compu, desde el título hasta el pie">
+            <source src="assets/proyectos/tono/caso/tono-recorrido.mp4" type="video/mp4">
+          </video>
+        </figure>
+
+        <section class="capitulo">
+          <h4>La marca se ordena por color<span class="punto" aria-hidden="true"></span></h4>
+          <p>Cada categoría tiene su campo: bermellón para labiales, arena para rostro y lila para sombras. En la portada, elegir una cambia el color, la foto, la frase y el botón.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/tono/caso/portada-colores.webp" width="1280" height="800" aria-label="La portada cambia de bermellón a arena y a lila al elegir cada categoría">
+            <source src="assets/proyectos/tono/caso/portada-colores.mp4" type="video/mp4">
+          </video>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Antes de comprar, una pista para elegir<span class="punto" aria-hidden="true"></span></h4>
+          <p>La guía de subtonos parte de algo que se puede hacer en casa: mirarse las venas de la muñeca con luz natural. Según lo que veas, sugiere por qué colores empezar. Es una orientación, y lo dice: si un color te gusta, usalo.</p>
+          <p>En el producto, el desplegable de colores pasó a ser muestras que se tocan, y la foto cambia con cada una.</p>
+        </section>
+
+        <div class="caso__ancho pila">
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/tono/caso/guia.webp" alt="Guía de subtonos: ¿Frío, cálido o neutro?, con tres retratos y qué colores probar en cada caso" width="1440" height="930" loading="lazy">
+          </figure>
+          <figure class="lamina lamina--fondo">
+            <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/tono/caso/producto-muestras.webp" width="1280" height="800" aria-label="Página del Labial Clásico: la foto cambia al tocar las muestras fucsia, rojo, rosado y violeta">
+              <source src="assets/proyectos/tono/caso/producto-muestras.mp4" type="video/mp4">
+            </video>
+          </figure>
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/tono/caso/look.webp" alt="Sección Fucsia hasta en los ojos: un retrato y los tres productos para armar ese look" width="1440" height="860" loading="lazy">
+          </figure>
+        </div>
+
+        <section class="capitulo">
+          <h4>Una tienda que funciona de punta a punta<span class="punto" aria-hidden="true"></span></h4>
+          <p>La llevé a Argentina: pesos con IVA incluido, provincias, envíos y retiro en Palermo, y transferencia como medio de pago. Se probó una compra completa, del carrito a la confirmación, y después se borró.</p>
+        </section>
+
+        <div class="caso__ancho cifras cifras--dos">
+          <p><strong>14</strong> productos en el catálogo</p>
+          <p><strong>3</strong> categorías, cada una con su color</p>
+        </div>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <img src="assets/proyectos/tono/caso/tienda.webp" alt="Tienda con el título Todo el color, filtros por categoría y productos sobre fondos de color" width="1440" height="1400" loading="lazy">
+        </figure>
+
+        <figure class="lamina lamina--fondo caso__ancho telefonos">
+          <div class="telefono">
+            <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/tono/caso/tono-celular.webp" width="585" height="1266" aria-label="Recorrido por la portada de Tono en el celular">
+              <source src="assets/proyectos/tono/caso/tono-celular.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="telefono">
+            <img src="assets/proyectos/tono/caso/producto-celular.webp" alt="Página del Labial Clásico en el celular, con las muestras de color" width="780" height="1688" loading="lazy">
+          </div>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Cómo saldría a buscar a quien duda<span class="punto" aria-hidden="true"></span></h4>
+          <p>Planteé la comunicación para mujeres de 20 a 35 años en Argentina que compran o quieren comprar maquillaje online. Es una hipótesis, sin investigación detrás. Cada pieza acompaña un momento: el post enseña a reconocer el subtono, el anuncio llega a quien ya está buscando y el mail responde la duda de quien dejó el carrito, sin ofrecer descuento.</p>
+          <p>Mediría los clics de la guía a los productos, los agregados al carrito, las ventas completadas y los carritos recuperados.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho piezas">
+          <img src="assets/proyectos/tono/marketing/mail.webp" alt="Mail de carrito abandonado: ¿Te quedó la duda con el color?, con el Labial Coral y la pista de las venas de la muñeca" width="1280" height="2534" loading="lazy">
+          <img src="assets/proyectos/tono/marketing/post.webp" alt="Post para Instagram: ¿Cálido, neutro o frío?, con tres retratos y qué color probar en cada caso" width="1080" height="1350" loading="lazy">
+          <img src="assets/proyectos/tono/marketing/anuncio.webp" alt="Anuncio: ¿Rojo, nude o coral?, con una mujer que sostiene un labial y el botón Encontrá tu tono" width="1080" height="1080" loading="lazy">
+          <figcaption>Piezas de ejemplo: no salieron al aire</figcaption>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Alcance del proyecto<span class="punto" aria-hidden="true"></span></h4>
+          <p>Tono es una marca ficticia y no vende productos reales. Los envíos, el local y los datos de contacto son inventados, y las fotos son de banco (Unsplash). Como no salió al mercado, no tiene resultados que mostrar. Las cifras de arriba describen el catálogo. El sitio corre en un WordPress local, así que no tiene enlace público.</p>
+        </section>
+
+        <section class="capitulo">
+          <h4>Aprendizajes<span class="punto" aria-hidden="true"></span></h4>
+          <p>Aprendí a pensar una tienda desde la duda de quien compra, y no desde el catálogo. Cuando la pregunta pasó a ser "cómo sé qué color me queda", cambiaron la portada, el producto y hasta el mail de carrito abandonado.</p>
+          <p>También aprendí a ordenar el marketing por momentos de la compra: qué necesita cada persona según lo cerca que está de decidir.</p>
+        </section>
+
+        <footer class="caso__mas">
+          <h4>más trabajos<span class="punto" aria-hidden="true"></span></h4>
+          <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
+          <div class="caso__ancho caso__otros">
+            <button class="tarjeta" type="button" data-ir-a="Magnolia Eventos">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy">
+              <span class="tarjeta__titulo">Magnolia Eventos</span>
+              <span class="tarjeta__categoria">Plan de marketing · Web · App</span>
+            </button>
+            <button class="tarjeta" type="button" data-ir-a="Plantilla personalizada">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/plantilla-personalizada.webp" alt="" width="1200" height="900" loading="lazy">
+              <span class="tarjeta__titulo">Plantilla personalizada</span>
+              <span class="tarjeta__categoria">Diseño web · Código · WordPress</span>
+            </button>
+          </div>
+        </footer>
+      </dialog>
+
+      <!-- Caso BurgBox: se abre en la misma página, con enlace propio -->
+      <dialog class="caso caso--burgbox tema-claro" id="trabajo-burgbox" data-caso aria-labelledby="caso-burgbox-titulo">
+        <div class="caso__barra">
+          <span class="caso__nombre">BurgBox</span>
+          <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
+        </div>
+
+        <header class="caso__portada">
+          <p class="caso__categoria">Diseño web · WordPress</p>
+          <h3 class="caso__titulo" id="caso-burgbox-titulo">burgbox<span class="punto" aria-hidden="true"></span></h3>
+          <p class="caso__bajada">Una hamburguesería de barrio contra las cadenas, con un sitio que arranca por el antojo.</p>
+          <ul class="caso__datos">
+            <li>Proyecto conceptual</li>
+            <li>Hecho en WordPress con el tema Twenty Twenty-Five</li>
+            <li>Mi parte: armado del sitio, páginas y diseño</li>
+          </ul>
+        </header>
+
+        <figure class="lamina lamina--contexto caso__ancho">
+          <img src="assets/proyectos/burgbox/caso/fondo-contexto.webp" alt="" width="1600" height="747" loading="lazy">
+          <div class="maqueta">
+            <div class="maqueta__laptop">
+              <img src="assets/proyectos/burgbox/desktop.webp" alt="Portada de BurgBox: fondo café, el título Tostada y deliciosa, el botón Hacé tu pedido y una hamburguesa grande" width="1440" height="900" loading="lazy">
+            </div>
+            <div class="maqueta__celular">
+              <img src="assets/proyectos/burgbox/mobile.webp" alt="La misma portada en el celular" width="780" height="1688" loading="lazy">
+            </div>
+          </div>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Con hambre, nadie lee<span class="punto" aria-hidden="true"></span></h4>
+          <p>BurgBox es una hamburguesería de barrio inventada: en su historia nace en 2018, con una plancha y tres recetas. Frente a las cadenas tiene menos plata y menos carteles. Lo que tiene de su lado es la cercanía y una hamburguesa que da ganas. Por eso realicé el sitio en WordPress con una idea simple: primero que te dé hambre, después explicar.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/burgbox/caso/recorrido.webp" width="1280" height="800" aria-label="Recorrido por la portada de BurgBox en la compu, desde la hamburguesa hasta el pie">
+            <source src="assets/proyectos/burgbox/caso/recorrido.mp4" type="video/mp4">
+          </video>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Primero, el antojo<span class="punto" aria-hidden="true"></span></h4>
+          <p>La portada tiene una hamburguesa, una frase y un botón: "Hacé tu pedido". Al principio eran dos hamburguesas y una promesa que podía firmar cualquiera: "las mejores de la ciudad". Dejé una sola, cambié la frase por lo que hace la marca (carne molida en el día, pan de su horno, salsas caseras) y le sumé una mordida que avanza sola.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/burgbox/caso/mordida.webp" width="1280" height="800" aria-label="La hamburguesa de la portada pierde tres mordiscos, con migas que caen, y vuelve a aparecer entera">
+            <source src="assets/proyectos/burgbox/caso/mordida.mp4" type="video/mp4">
+          </video>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Del antojo al pedido<span class="punto" aria-hidden="true"></span></h4>
+          <p>Debajo de la portada, cada sección lleva a la siguiente: el menú muestra tres hamburguesas, la suscripción da un motivo para volver y el blog queda para quien quiere seguir leyendo.</p>
+          <p>El sello del 50% no decía de qué era el descuento, así que sumé lo que faltaba: los martes, la segunda hamburguesa sale 50% menos.</p>
+        </section>
+
+        <div class="caso__ancho pila">
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/burgbox/caso/menu.webp" alt="Sección Menú en amarillo: tres hamburguesas, el sello de 50% de descuento y la aclaración de la promo de los martes" width="1440" height="805" loading="lazy">
+          </figure>
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/burgbox/caso/suscripcion.webp" alt="Sección Suscribite y enterate primero, con cinco beneficios, dos botones y una foto de hamburguesa con papas" width="1340" height="501" loading="lazy">
+          </figure>
+        </div>
+
+        <div class="caso__ancho cifras cifras--dos">
+          <p><strong>3</strong> hamburguesas en el menú</p>
+          <p><strong>5</strong> páginas en el sitio</p>
+        </div>
+
+        <section class="capitulo">
+          <h4>Lo de barrio hay que contarlo<span class="punto" aria-hidden="true"></span></h4>
+          <p>Una cadena no tiene una cocina chiquita ni dos amigos que empezaron vendiéndoles a los vecinos los fines de semana. Eso es lo que BurgBox puede decir y ellas no. Por eso el sitio tiene una página de Historia, otra de misión y valores, y un blog que muestra lo que pasa antes de abrir.</p>
+        </section>
+
+        <div class="caso__ancho pila">
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/burgbox/caso/historia.webp" alt="Página Historia: una foto de hamburguesa con papas y el relato de cómo nació BurgBox en 2018" width="960" height="1090" loading="lazy">
+          </figure>
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/burgbox/caso/blog.webp" alt="Blog de la portada con tres entradas: detrás de escena, la nueva Crispy Chicken y cómo armar el combo ideal" width="1440" height="624" loading="lazy">
+          </figure>
+        </div>
+
+        <section class="capitulo">
+          <h4>El antojo también llega al celular<span class="punto" aria-hidden="true"></span></h4>
+          <p>Cuando lo revisé en el celular, la página medía 593 píxeles en una pantalla de 390 y se iba de costado. Lo corregí: ahora entra entera, con el menú y el buscador acomodados arriba y cada sección en una sola columna.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho telefonos">
+          <div class="telefono">
+            <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/burgbox/caso/celular.webp" width="585" height="1266" aria-label="Recorrido por la portada de BurgBox en el celular">
+              <source src="assets/proyectos/burgbox/caso/celular.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="telefono">
+            <img src="assets/proyectos/burgbox/caso/menu-celular.webp" alt="Sección Menú en el celular" width="780" height="1688" loading="lazy">
+          </div>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Qué miraría si abriera de verdad<span class="punto" aria-hidden="true"></span></h4>
+          <p>Mediría los clics en "Hacé tu pedido", las suscripciones, las visitas al menú y las lecturas del blog. Son objetivos que planteé, no resultados: el sitio nunca salió al público.</p>
+        </section>
+
+        <section class="capitulo">
+          <h4>Alcance del proyecto<span class="punto" aria-hidden="true"></span></h4>
+          <p>BurgBox es una marca ficticia y no vende hamburguesas. Su historia, sus promos y sus datos son inventados, y las fotos no son de un local real. Las cifras de arriba describen el sitio. Corre en un WordPress local, así que no tiene enlace público.</p>
+        </section>
+
+        <!-- Borrador: falta que Micaela confirme estos aprendizajes -->
+        <section class="capitulo">
+          <h4>Aprendizajes<span class="punto" aria-hidden="true"></span></h4>
+          <p>Aprendí que una frase puede sonar bien y no decir nada. "Las mejores hamburguesas de la ciudad" la puede firmar cualquiera; "carne molida en el día", no.</p>
+          <p>También aprendí a revisar lo que parece terminado: el sitio se veía bien en la compu y recién en el celular apareció el problema.</p>
+        </section>
+
+        <footer class="caso__mas">
+          <h4>más trabajos<span class="punto" aria-hidden="true"></span></h4>
+          <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
+          <div class="caso__ancho caso__otros">
+            <button class="tarjeta" type="button" data-ir-a="Tono">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/tono.webp" alt="" width="1200" height="900" loading="lazy">
+              <span class="tarjeta__titulo">Tono</span>
+              <span class="tarjeta__categoria">E-commerce · Identidad · WordPress</span>
+            </button>
+            <button class="tarjeta" type="button" data-ir-a="Centro Operativo GAE">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/centro-operativo-gae.webp" alt="" width="1200" height="900" loading="lazy">
+              <span class="tarjeta__titulo">Centro Operativo GAE</span>
+              <span class="tarjeta__categoria">UX · Plataforma web · ITBA</span>
+            </button>
+          </div>
+        </footer>
+      </dialog>
+
+      <!-- Caso Raíz: se abre en la misma página, con enlace propio -->
+      <dialog class="caso caso--raiz tema-claro" id="trabajo-raiz" data-caso aria-labelledby="caso-raiz-titulo">
+        <div class="caso__barra">
+          <span class="caso__nombre">Raíz Fotografía</span>
+          <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
+        </div>
+
+        <header class="caso__portada">
+          <p class="caso__categoria">Landing · Diseño web · WordPress</p>
+          <h3 class="caso__titulo" id="caso-raiz-titulo">raíz fotografía<span class="punto" aria-hidden="true"></span></h3>
+          <p class="caso__bajada">Una agencia de fotografía de naturaleza, en una sola página que se recorre como un sendero.</p>
+          <ul class="caso__datos">
+            <li>Proyecto conceptual</li>
+            <li>La realicé y edité en WordPress</li>
+            <li>Mi parte: armado y edición del sitio, y elección de las fotos</li>
+          </ul>
+        </header>
+
+        <figure class="lamina lamina--contexto caso__ancho">
+          <img src="assets/proyectos/raiz-fotografia/caso/fondo-contexto.webp" alt="" width="1600" height="1067" loading="lazy">
+          <div class="maqueta">
+            <div class="maqueta__laptop">
+              <img src="assets/proyectos/raiz-fotografia/desktop.webp" alt="Portada de Raíz: un bosque de pinos con el título Capturamos fauna y los botones Sobre nosotros y Contacto" width="1440" height="900" loading="lazy">
+            </div>
+            <div class="maqueta__celular">
+              <img src="assets/proyectos/raiz-fotografia/mobile.webp" alt="La misma portada en el celular" width="780" height="1688" loading="lazy">
+            </div>
+          </div>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Una foto de naturaleza no se mira apurada<span class="punto" aria-hidden="true"></span></h4>
+          <p>Raíz es una agencia ficticia de fotografía de naturaleza, con base en Mendoza y salidas por todo el país. La realicé y la edité en WordPress con una idea: que entrar al sitio se pareciera a caminar por un bosque, despacio y con lugar para mirar.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/raiz-fotografia/caso/recorrido.webp" width="1280" height="800" aria-label="Recorrido por el sitio de Raíz en la compu, desde el bosque de la portada hasta el contacto">
+            <source src="assets/proyectos/raiz-fotografia/caso/recorrido.mp4" type="video/mp4">
+          </video>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Cuatro palabras para decir qué hacen<span class="punto" aria-hidden="true"></span></h4>
+          <p>La portada es un bosque de pinos y una frase que va cambiando: capturamos paisajes, fauna, la luz, lo salvaje. Antes de bajar, ya sabés de qué se trata.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/raiz-fotografia/caso/portada.webp" width="1280" height="800" aria-label="El título de la portada cambia entre paisajes, fauna, la luz y lo salvaje sobre el bosque de pinos">
+            <source src="assets/proyectos/raiz-fotografia/caso/portada.mp4" type="video/mp4">
+          </video>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Una marca que le deja lugar a las fotos<span class="punto" aria-hidden="true"></span></h4>
+          <p>El logo es un pino de líneas. Los colores salen del bosque, verde musgo y ocre, y los títulos van en una letra editorial, Cormorant Garamond, que acompaña sin competir. Alrededor, mucho aire.</p>
+        </section>
+
+        <div class="caso__ancho pila">
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/raiz-fotografia/secciones/features.webp" alt="Sección Lo que hacemos: paisajes, fauna silvestre, expediciones e impresiones de arte, con íconos en óvalos" width="1440" height="672" loading="lazy">
+          </figure>
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/raiz-fotografia/secciones/bio.webp" alt="Sección Sobre nosotros, con Nuestra mirada y Fotografía responsable, cada una con su foto" width="1440" height="896" loading="lazy">
+          </figure>
+        </div>
+
+        <section class="capitulo">
+          <h4>Una sola página, como un sendero<span class="punto" aria-hidden="true"></span></h4>
+          <p>No hay páginas por las que perderse. Bajando, te enterás de qué hacen, quiénes son, cómo miran, quién está detrás de cada foto y cómo escribirles. La galería queda en el medio, y ahí el sitio se calla y deja hablar a las fotos.</p>
+        </section>
+
+        <div class="caso__ancho cifras cifras--dos">
+          <p><strong>4</strong> servicios para ofrecer</p>
+          <p><strong>6</strong> fotos en la galería</p>
+        </div>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <img src="assets/proyectos/raiz-fotografia/secciones/galeria.webp" alt="Galería de seis fotos verticales: luna sobre un bosque, una espiga, un mono dorado, un búho, un pájaro al atardecer y una fotógrafa a contraluz" width="1440" height="1594" loading="lazy">
+        </figure>
+
+        <section class="capitulo">
+          <h4>Lo que no entra en la foto<span class="punto" aria-hidden="true"></span></h4>
+          <p>Una buena foto no alcanza para que alguien te contrate. Por eso el sitio cuenta lo que hay detrás: un equipo, una manera de trabajar sin molestar a los animales y un diario de campo con consejos de las salidas, que además da una razón para volver.</p>
+        </section>
+
+        <div class="caso__ancho pila">
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/raiz-fotografia/secciones/equipo.webp" alt="Sección Nuestro equipo, con cuatro integrantes y sus especialidades" width="1440" height="575" loading="lazy">
+          </figure>
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/raiz-fotografia/secciones/novedades.webp" alt="Diario de campo con tres entradas: la luz dorada, fotografiar fauna sin molestar y qué llevar en la mochila" width="1440" height="959" loading="lazy">
+          </figure>
+        </div>
+
+        <section class="capitulo">
+          <h4>Al final del sendero, una pregunta<span class="punto" aria-hidden="true"></span></h4>
+          <p>El recorrido termina en un formulario y en una pregunta simple: "¿Planeás una salida o un proyecto?". Mediría las consultas, los clics en Contacto, el tiempo en la galería y las lecturas del diario. Son objetivos que planteé, no resultados.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <img src="assets/proyectos/raiz-fotografia/secciones/contacto.webp" alt="Sección de contacto: formulario a la izquierda y, a la derecha, la pregunta ¿Planeás una salida o un proyecto? con los datos de la agencia" width="1440" height="826" loading="lazy">
+        </figure>
+
+        <figure class="lamina lamina--fondo caso__ancho telefonos">
+          <div class="telefono">
+            <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/raiz-fotografia/caso/celular.webp" width="585" height="1266" aria-label="Recorrido por el sitio de Raíz en el celular">
+              <source src="assets/proyectos/raiz-fotografia/caso/celular.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="telefono">
+            <img src="assets/proyectos/raiz-fotografia/mobile.webp" alt="Portada de Raíz en el celular" width="780" height="1688" loading="lazy">
+          </div>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Alcance del proyecto<span class="punto" aria-hidden="true"></span></h4>
+          <p>Raíz es una marca ficticia. El equipo, sus nombres y los datos de contacto son inventados, y las fotos son de banco. El video de la sección es de un canal de YouTube ajeno y funciona como ejemplo. Como no salió al mercado, no tiene resultados que mostrar. Las cifras de arriba describen el sitio. Corre en un WordPress local, así que no tiene enlace público.</p>
+        </section>
+
+        <!-- Borrador: falta que Micaela confirme estos aprendizajes -->
+        <section class="capitulo">
+          <h4>Aprendizajes<span class="punto" aria-hidden="true"></span></h4>
+          <p>Aprendí a tomar decisiones de punta a punta: qué color, qué foto y en qué orden contar las cosas.</p>
+          <p>También aprendí que en un sitio de fotos el diseño tiene que correrse: cuanto menos se nota, mejor se ve lo que importa.</p>
+        </section>
+
+        <footer class="caso__mas">
+          <h4>más trabajos<span class="punto" aria-hidden="true"></span></h4>
+          <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
+          <div class="caso__ancho caso__otros">
+            <button class="tarjeta" type="button" data-ir-a="BurgBox">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/burgbox.webp" alt="" width="1200" height="900" loading="lazy">
+              <span class="tarjeta__titulo">BurgBox</span>
+              <span class="tarjeta__categoria">Diseño web · WordPress</span>
+            </button>
+            <button class="tarjeta" type="button" data-ir-a="Magnolia Eventos">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy">
+              <span class="tarjeta__titulo">Magnolia Eventos</span>
+              <span class="tarjeta__categoria">Plan de marketing · Web · App</span>
+            </button>
+          </div>
+        </footer>
+      </dialog>
+
+      <!-- Caso Relax Spa: se abre en la misma página, con enlace propio -->
+      <dialog class="caso caso--spa tema-claro" id="trabajo-spa" data-caso aria-labelledby="caso-spa-titulo">
+        <div class="caso__barra">
+          <span class="caso__nombre">Relax Spa</span>
+          <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
+        </div>
+
+        <header class="caso__portada">
+          <p class="caso__categoria">Diseño web · Identidad · WordPress</p>
+          <h3 class="caso__titulo" id="caso-spa-titulo">relax spa<span class="punto" aria-hidden="true"></span></h3>
+          <p class="caso__bajada">Un spa contado desde lo único que de verdad vende: una hora en la que nadie te apura.</p>
+          <ul class="caso__datos">
+            <li>Proyecto conceptual</li>
+            <li>Hecho en WordPress</li>
+            <li>Mi parte: idea, dirección de la marca, armado del sitio y elección de fotos</li>
+          </ul>
+        </header>
+
+        <figure class="lamina lamina--contexto caso__ancho">
+          <img src="assets/proyectos/relax-spa/caso/fondo-contexto.webp" alt="" width="1600" height="2134" loading="lazy">
+          <div class="maqueta">
+            <div class="maqueta__laptop">
+              <img src="assets/proyectos/relax-spa/desktop.webp" alt="Portada de Relax Spa: un primer plano de un rostro con el título Una hora para tu piel, sin apuro" width="1440" height="900" loading="lazy">
+            </div>
+            <div class="maqueta__celular">
+              <img src="assets/proyectos/relax-spa/mobile.webp" alt="La misma portada en el celular" width="780" height="1688" loading="lazy">
+            </div>
+          </div>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Nadie se relaja apurado<span class="punto" aria-hidden="true"></span></h4>
+          <p>Casi todos los spa ofrecen lo mismo: masajes, faciales, velas. Mi primera versión en WordPress también se parecía a las demás, con textos de relleno y botones que no llevaban a ningún lado. Cuando busqué qué podía hacerla distinta, apareció el tiempo: lo que alguien compra en un spa es una hora sin apuro. Con esa idea rehíce el estilo del sitio.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/relax-spa/caso/recorrido.webp" width="1280" height="800" aria-label="Recorrido por la portada de Relax Spa en la compu, desde el rostro hasta el pie">
+            <source src="assets/proyectos/relax-spa/caso/recorrido.mp4" type="video/mp4">
+          </video>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Una hora, minuto a minuto<span class="punto" aria-hidden="true"></span></h4>
+          <p>A un spa le cuesta explicar lo que pasa adentro, y entrar sin saberlo da cierta vergüenza. Por eso la portada cuenta la sesión en cuatro momentos: en el minuto 0 te escuchan, a los 10 preparan tu piel, a los 20 hacen lo suyo y a los 60 salís sin apuro.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <img src="assets/proyectos/relax-spa/caso/hora.webp" alt="Sección Qué pasa en tu hora: cuatro fotos marcadas con los minutos 0, 10, 20 y 60 de la sesión" width="1440" height="1100" loading="lazy">
+        </figure>
+
+        <section class="capitulo">
+          <h4>Elegir sin saber de tratamientos<span class="punto" aria-hidden="true"></span></h4>
+          <p>Cada tratamiento se explica en una frase, con su precio a la vista. En la página de Servicios se suma la duración y para quién es: "ideal para los días de frío". Si igual no sabés cuál elegir, el sitio te invita a escribir.</p>
+        </section>
+
+        <div class="caso__ancho cifras cifras--dos">
+          <p><strong>4</strong> tratamientos para elegir</p>
+          <p><strong>4</strong> momentos en tu hora</p>
+        </div>
+
+        <div class="caso__ancho pila">
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/relax-spa/caso/elegir.webp" alt="Sección Elegí por dónde empezar: cuatro tratamientos en una lista, con foto, una frase y precio" width="1440" height="910" loading="lazy">
+          </figure>
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/relax-spa/caso/servicios.webp" alt="Página de Servicios: masaje relajante y piedras calientes, cada uno con su foto, duración, precio y botón para reservar" width="1440" height="1742" loading="lazy">
+          </figure>
+        </div>
+
+        <section class="capitulo">
+          <h4>Una marca con la piel en primer plano<span class="punto" aria-hidden="true"></span></h4>
+          <p>Elegí fotos muy cercanas, de piel, manos y texturas, para que se sienta antes de leer. Alrededor, marfil, rosa empolvado y vino, y los títulos en Playfair Display. La marca también dice qué usa: "Lo que toca tu piel" muestra pocos productos y explica para qué sirve cada uno.</p>
+        </section>
+
+        <div class="caso__ancho pila">
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/relax-spa/caso/piel.webp" alt="Sección Lo que toca tu piel: aceite de rosa mosqueta, sérum y rodillo, esponja y jabón de avena, y la frase de una clienta" width="1440" height="1292" loading="lazy">
+          </figure>
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/relax-spa/caso/empresa.webp" alt="Página Empresa: Cómo empezamos, con la foto de una vela, y Lo que nos importa, con tres valores" width="1440" height="1468" loading="lazy">
+          </figure>
+        </div>
+
+        <section class="capitulo">
+          <h4>Reservar tampoco tiene que apurarte<span class="punto" aria-hidden="true"></span></h4>
+          <p>El botón para reservar acompaña todo el recorrido, y el formulario pregunta qué tratamiento te interesa. Mediría los clics en reservar, los turnos iniciados y las consultas. Son objetivos que planteé, no resultados.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho telefonos">
+          <div class="telefono">
+            <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/relax-spa/caso/celular.webp" width="585" height="1266" aria-label="Recorrido por la portada de Relax Spa en el celular">
+              <source src="assets/proyectos/relax-spa/caso/celular.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="telefono">
+            <img src="assets/proyectos/relax-spa/paginas/contact/mobile.webp" alt="Página de Contacto de Relax Spa en el celular" width="780" height="1688" loading="lazy">
+          </div>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Alcance del proyecto<span class="punto" aria-hidden="true"></span></h4>
+          <p>Relax Spa es una marca ficticia. El testimonio, las duraciones, la promo y los datos de contacto son inventados, y las fotos son de uso libre. Como no salió al mercado, no tiene resultados que mostrar. Las cifras de arriba describen el sitio. Corre en un WordPress local, así que no tiene enlace público.</p>
+        </section>
+
+        <!-- Borrador: falta que Micaela confirme estos aprendizajes -->
+        <section class="capitulo">
+          <h4>Aprendizajes<span class="punto" aria-hidden="true"></span></h4>
+          <p>Aprendí que una marca se distingue menos por lo que ofrece que por cómo lo cuenta. Los tratamientos no cambiaron; cambió que ahora se entienden como una hora para vos.</p>
+          <p>También aprendí que explicar de antemano lo que va a pasar es una forma de cuidar a quien todavía no se animó a reservar.</p>
+        </section>
+
+        <footer class="caso__mas">
+          <h4>más trabajos<span class="punto" aria-hidden="true"></span></h4>
+          <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
+          <div class="caso__ancho caso__otros">
+            <button class="tarjeta" type="button" data-ir-a="Raíz Fotografía">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/raiz-fotografia.webp" alt="" width="1200" height="900" loading="lazy">
+              <span class="tarjeta__titulo">Raíz Fotografía</span>
+              <span class="tarjeta__categoria">Landing · Diseño web · WordPress</span>
+            </button>
+            <button class="tarjeta" type="button" data-ir-a="Tono">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/tono.webp" alt="" width="1200" height="900" loading="lazy">
+              <span class="tarjeta__titulo">Tono</span>
+              <span class="tarjeta__categoria">E-commerce · Identidad · WordPress</span>
+            </button>
+          </div>
+        </footer>
+      </dialog>
+
+      <!-- Caso Instituto del Parque: se abre en la misma página, con enlace propio -->
+      <dialog class="caso caso--instituto tema-claro" id="trabajo-instituto" data-caso aria-labelledby="caso-instituto-titulo">
+        <div class="caso__barra">
+          <span class="caso__nombre">Instituto del Parque</span>
+          <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
+        </div>
+
+        <header class="caso__portada">
+          <p class="caso__categoria">Diseño web · Comunicación</p>
+          <h3 class="caso__titulo" id="caso-instituto-titulo">instituto del parque<span class="punto" aria-hidden="true"></span></h3>
+          <p class="caso__bajada">El sitio de un colegio, pensado para la familia que tiene que decidir a quién confiarle a sus hijos.</p>
+          <ul class="caso__datos">
+            <li>Proyecto conceptual</li>
+            <li>La realicé en WordPress con el tema University Hub</li>
+            <li>Mi parte: armado del sitio, páginas y elección de las fotos</li>
+          </ul>
+        </header>
+
+        <figure class="lamina lamina--contexto caso__ancho">
+          <img src="assets/proyectos/instituto-del-parque/caso/fondo-contexto.webp" alt="" width="1600" height="1068" loading="lazy">
+          <div class="maqueta">
+            <div class="maqueta__laptop">
+              <img src="assets/proyectos/instituto-del-parque/desktop.webp" alt="Portada del Instituto del Parque: encabezado azul, menú y una foto grande con su título" width="1440" height="900" loading="lazy">
+            </div>
+            <div class="maqueta__celular">
+              <img src="assets/proyectos/instituto-del-parque/mobile.webp" alt="La misma portada en el celular" width="780" height="1688" loading="lazy">
+            </div>
+          </div>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Un colegio no se elige por un folleto<span class="punto" aria-hidden="true"></span></h4>
+          <p>Cuando una familia busca colegio, en el fondo quiere saber si puede confiar. El Instituto del Parque es un colegio ficticio con esa pregunta por delante. Realicé el sitio en WordPress con el tema University Hub y lo fui ordenando para responderla: dónde van a estar, quién los acompaña y qué pasa adentro.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/instituto-del-parque/caso/recorrido.webp" width="1280" height="800" aria-label="Recorrido por la portada del Instituto del Parque en la compu, desde el encabezado hasta el pie">
+            <source src="assets/proyectos/instituto-del-parque/caso/recorrido.mp4" type="video/mp4">
+          </video>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Tres respuestas antes de bajar<span class="punto" aria-hidden="true"></span></h4>
+          <p>La portada pasa por tres fotos y tres frases: la historia, el lugar y las personas. Al principio decían cosas como "Instalaciones modernas y ambientes seguros", que puede firmar cualquier colegio. Ahora hablan de un edificio con aire, de un parque para el recreo y de docentes que conocen a cada estudiante por su nombre.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/instituto-del-parque/caso/portada.webp" width="1280" height="800" aria-label="La portada pasa de una foto a otra, cada una con su frase">
+            <source src="assets/proyectos/instituto-del-parque/caso/portada.mp4" type="video/mp4">
+          </video>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Un colegio se conoce por lo que pasa adentro<span class="punto" aria-hidden="true"></span></h4>
+          <p>Debajo de la portada están las novedades y los eventos: proyectos del aula, actividades y fechas. Le muestran a una familia cómo es un día ahí, y a quienes ya son parte, qué se viene. La galería suma lo que no se cuenta con palabras.</p>
+        </section>
+
+        <div class="caso__ancho pila">
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/instituto-del-parque/caso/novedades.webp" alt="Sección con dos novedades ilustradas a la izquierda y dos eventos con su fecha a la derecha" width="1440" height="558" loading="lazy">
+          </figure>
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/instituto-del-parque/caso/pagina-galeria-de-imagenes.webp" alt="Página Galería de imágenes: un carrusel con dos nenas dibujando en un cuaderno" width="861" height="690" loading="lazy">
+          </figure>
+        </div>
+
+        <section class="capitulo">
+          <h4>Confiar también es saber de dónde vienen<span class="punto" aria-hidden="true"></span></h4>
+          <p>Institución responde lo práctico: propuesta, niveles y cómo coordinar una visita. Nuestra Historia cuenta lo otro: un grupo de docentes y familias del barrio que en 1985 abrió una escuela con dos salas de jardín.</p>
+        </section>
+
+        <div class="caso__ancho cifras cifras--dos">
+          <p><strong>3</strong> niveles educativos</p>
+          <p><strong>5</strong> páginas en el sitio</p>
+        </div>
+
+        <div class="caso__ancho pila">
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/instituto-del-parque/caso/pagina-institucion.webp" alt="Página Institución: la propuesta del colegio, sus tres niveles y la invitación a coordinar una visita" width="861" height="519" loading="lazy">
+          </figure>
+          <figure class="lamina lamina--fondo">
+            <img src="assets/proyectos/instituto-del-parque/caso/pagina-nuestra-historia.webp" alt="Página Nuestra Historia: cómo nació el colegio en 1985 y cómo creció" width="861" height="340" loading="lazy">
+          </figure>
+        </div>
+
+        <section class="capitulo">
+          <h4>Del celular, a una visita<span class="punto" aria-hidden="true"></span></h4>
+          <p>Es probable que la búsqueda empiece en el teléfono. Por eso el encabezado se achicó para que la foto entre en la primera pantalla, y el recorrido termina en un formulario simple para escribirle al colegio. Mediría las consultas enviadas y las visitas a Institución. Son objetivos que planteé, no resultados.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho telefonos">
+          <div class="telefono">
+            <video muted loop playsinline preload="none" data-auto data-poster="assets/proyectos/instituto-del-parque/caso/celular.webp" width="585" height="1266" aria-label="Recorrido por la portada del Instituto del Parque en el celular">
+              <source src="assets/proyectos/instituto-del-parque/caso/celular.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="telefono">
+            <img src="assets/proyectos/instituto-del-parque/mobile.webp" alt="Portada del Instituto del Parque en el celular, con la foto en la primera pantalla" width="780" height="1688" loading="lazy">
+          </div>
+        </figure>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <img src="assets/proyectos/instituto-del-parque/caso/pagina-contacto.webp" alt="Página de Contacto con el formulario para escribirle al colegio" width="861" height="782" loading="lazy">
+        </figure>
+
+        <section class="capitulo">
+          <h4>Alcance del proyecto<span class="punto" aria-hidden="true"></span></h4>
+          <p>El Instituto del Parque es un colegio ficticio: su historia, sus niveles y sus novedades son inventados, y las fotos son de banco. Como no salió al público, no tiene resultados que mostrar. Las cifras de arriba describen el sitio. Corre en un WordPress local, así que no tiene enlace público.</p>
+        </section>
+
+        <!-- Borrador: falta que Micaela confirme estos aprendizajes -->
+        <section class="capitulo">
+          <h4>Aprendizajes<span class="punto" aria-hidden="true"></span></h4>
+          <p>Aprendí a trabajar con los límites de una plantilla: no puedo cambiarlo todo, pero sí decidir qué se dice primero y a quién le habla.</p>
+          <p>También aprendí que en una institución la comunicación es, ante todo, generar confianza: decir cosas concretas pesa más que prometer mucho.</p>
+        </section>
+
+        <footer class="caso__mas">
+          <h4>más trabajos<span class="punto" aria-hidden="true"></span></h4>
+          <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
+          <div class="caso__ancho caso__otros">
+            <button class="tarjeta" type="button" data-ir-a="Centro Operativo GAE">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/centro-operativo-gae.webp" alt="" width="1200" height="900" loading="lazy">
+              <span class="tarjeta__titulo">Centro Operativo GAE</span>
+              <span class="tarjeta__categoria">UX · Plataforma web · ITBA</span>
+            </button>
+            <button class="tarjeta" type="button" data-ir-a="Relax Spa">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/relax-spa.webp" alt="" width="1200" height="900" loading="lazy">
+              <span class="tarjeta__titulo">Relax Spa</span>
+              <span class="tarjeta__categoria">Diseño web · Identidad · WordPress</span>
+            </button>
+          </div>
+        </footer>
+      </dialog>
+    </section>
+
+    <section class="seccion tema-claro hoja" id="sobre-mi" aria-labelledby="sobre-mi-titulo">
+      <div class="contenedor sobre-mi">
+        <figure class="retrato retrato--arco" data-revelar>
+          <img src="assets/img/micaela-retrato-1000.webp" srcset="assets/img/micaela-retrato-640.webp 640w, assets/img/micaela-retrato-1000.webp 1000w" sizes="(min-width: 60rem) 30rem, 90vw" alt="Retrato de Micaela Canselo sonriendo, con la mano en el mentón y camisa clara" width="1000" height="1250" loading="lazy">
+        </figure>
+        <div class="sobre-mi__texto">
+          <h2 id="sobre-mi-titulo"><span class="titulo-marca" data-titulo-marca>sobre mí</span><span class="punto" aria-hidden="true"></span></h2>
+          <!-- Profesión, experiencia, a quién y resultado -->
+          <p class="sobre-mi__entrada">Soy técnica en Comunicación y Marketing Digital, y diseño y desarrollo sitios web.</p>
+          <p>Me formo en este mundo desde 2022. En la carrera trabajé redes, contenido y estrategia, y descubrí lo que más me apasiona: darle forma a todo eso en la web. Por eso lo sigo puliendo por mi cuenta, todo el tiempo.</p>
+          <p>Ayudo a marcas y equipos que necesitan comunicar con claridad y verse bien en lo digital.</p>
+          <p>En mi trabajo actual, en el GAE (Grupo de Ayuda a Espacios) del ITBA, el equipo manejaba todo en planillas de Excel sueltas. Diseñé y desarrollé, con asistencia de IA, una plataforma que hoy usan unas diez personas todos los días en tres sedes.</p>
+          <dl class="datos">
+            <div>
+              <dt>Formación</dt>
+              <dd>Técnica Superior en Comunicación y Marketing Digital (2025)</dd>
+              <dd>Ciclo de Licenciatura en Comunicación, UADE (desde 2027)</dd>
+              <dd>Formación constante en diseño y desarrollo web</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+      <div class="certificados" data-certificados>
+        <p class="certificados__titulo">Título y certificados</p>
+                <div class="certificados__ventana">
+                  <ul class="certificados__pista">
+                    <li class="certificado">
+                      <a href="assets/img/certificados/titulo-isec.webp" target="_blank" rel="noopener">
+                        <img src="assets/img/certificados/titulo-isec.webp" alt="Tarjeta ilustrativa con el logo de ISEC: Técnica Superior en Comunicación y Marketing Digital, egresada en diciembre de 2025" width="1200" height="900" loading="lazy">
+                        <span>Tecnicatura · ISEC</span>
+                      </a>
+                    </li>
+                    <li class="certificado">
+                      <a href="assets/img/certificados/copywriting.webp" target="_blank" rel="noopener">
+                        <img src="assets/img/certificados/copywriting.webp" alt="Certificado de Copywriting Persuasivo de Trabajando Remoto, 2025" width="1200" height="927" loading="lazy">
+                        <span>Copywriting · Trabajando Remoto</span>
+                      </a>
+                    </li>
+                    <li class="certificado">
+                      <a href="assets/img/certificados/community-manager.webp" target="_blank" rel="noopener">
+                        <img src="assets/img/certificados/community-manager.webp" alt="Certificado de Community Manager de Rúcula Digital Academy, 2022" width="1200" height="848" loading="lazy">
+                        <span>Community Manager · Rúcula</span>
+                      </a>
+                    </li>
+                    <li class="certificado">
+                      <a href="assets/img/certificados/wordpress.webp" target="_blank" rel="noopener">
+                        <img src="assets/img/certificados/wordpress.webp" alt="Certificado del Mega Curso de WordPress de Udemy, 2026" width="1200" height="893" loading="lazy">
+                        <span>WordPress · Udemy</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <button class="boton certificados__pausa" type="button" data-pausar-certificados aria-pressed="false">Pausar</button>
+      </div>
+    </section>
+
+    <section class="tema-claro hoja" id="que-hago" aria-labelledby="que-hago-titulo">
+      <div class="seccion">
+      <div class="contenedor que-hago">
+        <header class="que-hago__cabecera">
+          <h2 id="que-hago-titulo"><span class="titulo-marca" data-titulo-marca>qué hago</span><span class="punto" aria-hidden="true"></span></h2>
+          <p class="seccion__bajada">Resuelvo cómo se entiende una marca: qué dice, a quién le habla y cómo se ve en la web. Cuando todo habla con la misma voz, la marca se recuerda.</p>
+        </header>
+        <ul class="pilares" data-pilares>
+          <li class="pilar">
+            <span class="pilar__nombre"><svg class="pilar__estrella" viewBox="0 0 400 400" aria-hidden="true"><path fill="currentColor" d="M200 20C212 130 270 188 380 200C270 212 212 270 200 380C188 270 130 212 20 200C130 188 188 130 200 20Z"/></svg>Comunicación de marca</span>
+            <span class="pilar__detalle">Qué decir y con qué voz</span>
+          </li>
+          <li class="pilar">
+            <span class="pilar__nombre"><svg class="pilar__estrella" viewBox="0 0 400 400" aria-hidden="true"><path fill="currentColor" d="M200 20C212 130 270 188 380 200C270 212 212 270 200 380C188 270 130 212 20 200C130 188 188 130 200 20Z"/></svg>Marketing digital</span>
+            <span class="pilar__detalle">A quién hablarle y en qué canales</span>
+          </li>
+          <li class="pilar">
+            <span class="pilar__nombre"><svg class="pilar__estrella" viewBox="0 0 400 400" aria-hidden="true"><path fill="currentColor" d="M200 20C212 130 270 188 380 200C270 212 212 270 200 380C188 270 130 212 20 200C130 188 188 130 200 20Z"/></svg>Copywriting</span>
+            <span class="pilar__detalle">Frases que se entienden y hacen actuar</span>
+          </li>
+          <li class="pilar">
+            <span class="pilar__nombre"><svg class="pilar__estrella" viewBox="0 0 400 400" aria-hidden="true"><path fill="currentColor" d="M200 20C212 130 270 188 380 200C270 212 212 270 200 380C188 270 130 212 20 200C130 188 188 130 200 20Z"/></svg>Diseño web</span>
+            <span class="pilar__detalle">Sitios con identidad, fáciles de usar en cualquier pantalla</span>
+          </li>
+        </ul>
+      </div>
+      </div>
+    </section>
+
+    <!-- Herramientas: los logos se asoman desde el borde de abajo y vuelven a bajar -->
+    <section class="herramientas tema-claro hoja" id="herramientas" aria-labelledby="herramientas-titulo" data-herramientas>
+      <div class="herramientas__fijo">
+        <div class="herramientas__texto">
+          <h2 id="herramientas-titulo"><span class="titulo-marca" data-titulo-marca>herramientas</span><span class="punto" aria-hidden="true"></span></h2>
+          <p class="seccion__bajada">Con lo que armo cada proyecto, de la idea a la publicación.</p>
+          <button class="boton herramientas__pausa" type="button" data-pausar-herramientas aria-pressed="false">Pausar</button>
+        </div>
+        <ul class="herramientas__logos">
+          <li class="herramienta" style="--dur: 5.5s; --retraso: 0.0s"><img src="assets/img/herramientas/figma.svg" alt="" width="96" height="96" loading="lazy"><span>Figma</span></li>
+          <li class="herramienta" style="--dur: 7.9s; --retraso: -1.3s"><img src="assets/img/herramientas/canva.svg" alt="" width="96" height="96" loading="lazy"><span>Canva</span></li>
+          <li class="herramienta" style="--dur: 7.1s; --retraso: -2.6s"><img src="assets/img/herramientas/wordpress.svg" alt="" width="96" height="96" loading="lazy"><span>WordPress</span></li>
+          <li class="herramienta" style="--dur: 6.3s; --retraso: -3.9s"><img src="assets/img/herramientas/elementor.svg" alt="" width="96" height="96" loading="lazy"><span>Elementor</span></li>
+          <li class="herramienta" style="--dur: 5.5s; --retraso: -5.2s"><img src="assets/img/herramientas/woocommerce.svg" alt="" width="96" height="96" loading="lazy"><span>WooCommerce</span></li>
+          <li class="herramienta" style="--dur: 7.9s; --retraso: -0.5s"><img src="assets/img/herramientas/html.svg" alt="" width="96" height="96" loading="lazy"><span>HTML</span></li>
+          <li class="herramienta" style="--dur: 7.1s; --retraso: -1.8s"><img src="assets/img/herramientas/css.svg" alt="" width="96" height="96" loading="lazy"><span>CSS</span></li>
+          <li class="herramienta" style="--dur: 6.3s; --retraso: -3.1s"><img src="assets/img/herramientas/claude.svg" alt="" width="96" height="96" loading="lazy"><span>Claude</span></li>
+          <li class="herramienta" style="--dur: 5.5s; --retraso: -4.4s"><img src="assets/img/herramientas/office.svg" alt="" width="96" height="96" loading="lazy"><span>Office</span></li>
+          <li class="herramienta" style="--dur: 7.9s; --retraso: -5.7s"><img src="assets/img/herramientas/doppler.svg" alt="" width="110" height="39" loading="lazy"><span>Doppler</span></li>
+          <li class="herramienta" style="--dur: 7.1s; --retraso: -1.0s"><img src="assets/img/herramientas/looker.svg" alt="" width="96" height="96" loading="lazy"><span>Looker Studio</span></li>
+          <li class="herramienta" style="--dur: 7.9s; --retraso: -4.9s"><img src="assets/img/herramientas/drive.svg" alt="" width="96" height="96" loading="lazy"><span>Google Drive</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="seccion tema-oscuro contacto hoja" id="contacto" aria-labelledby="contacto-titulo">
+      <div class="contenedor contacto__interior">
+        <div class="contacto__texto">
+          <h2 id="contacto-titulo">hablemos<span class="punto" aria-hidden="true"></span></h2>
+          <p class="seccion__bajada">Si tenés una idea que todavía no encontró su forma, me gustaría escucharla. Busco sumarme a un equipo de comunicación o de diseño web, y también tomo proyectos freelance.</p>
+          <div class="hero__acciones">
+            <a class="boton" href="https://wa.me/5491124672964?text=Hola%20Mica%2C%20vi%20tu%20portfolio" data-whatsapp target="_blank" rel="noopener">WhatsApp</a>
+            <a class="boton" href="https://www.linkedin.com/in/micaela-solange-canselo/" data-linkedin target="_blank" rel="noopener">LinkedIn</a>
+            <a class="boton" href="assets/cv/cv-micaela-canselo.pdf" download>Descargar CV</a>
+          </div>
+        </div>
+        <!-- Formulario: lo envía Web3Forms. access_key es pública (no expone el mail); se saca en web3forms.com -->
+        <div class="formulario-panel__tarjeta tema-claro" data-contacto>
+          <h3 class="formulario-panel__titulo" id="formulario-titulo" data-letras>contame qué estás buscando<span class="punto" aria-hidden="true"></span></h3>
+          <form class="formulario" data-formulario data-envio="https://api.web3forms.com/submit">
+            <input type="hidden" name="access_key" value="616a8184-5ddb-490a-8f2c-065658d01b5b">
+            <div class="campo">
+              <label for="contacto-nombre">Nombre</label>
+              <input id="contacto-nombre" name="nombre" type="text" autocomplete="name" placeholder="Cómo te llamás" required>
+            </div>
+            <div class="campo">
+              <label for="contacto-mail">Mail</label>
+              <input id="contacto-mail" name="email" type="email" autocomplete="email" placeholder="Para poder responderte" required>
+            </div>
+            <fieldset class="campo campo--ancho opciones">
+              <legend>Te escribo por</legend>
+              <label class="opcion"><input type="radio" name="motivo" value="Una propuesta de trabajo" checked><span>Una propuesta de trabajo</span></label>
+              <label class="opcion"><input type="radio" name="motivo" value="Un proyecto freelance"><span>Un proyecto freelance</span></label>
+              <label class="opcion"><input type="radio" name="motivo" value="Otra consulta"><span>Otra consulta</span></label>
+            </fieldset>
+            <div class="campo campo--ancho">
+              <label for="contacto-mensaje">Mensaje</label>
+              <textarea id="contacto-mensaje" name="mensaje" rows="5" placeholder="Contame un poco más" required></textarea>
+            </div>
+            <!-- Trampa para robots: una persona no lo ve ni lo completa -->
+            <input class="formulario__trampa" name="botcheck" type="checkbox" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <button class="boton boton--principal formulario__enviar" type="submit">Enviar</button>
+            <p class="formulario__estado" data-formulario-estado role="status"></p>
+          </form>
+        </div>
+      </div>
+
+      
+    </section>
+  </main>
+
+  <footer class="pie tema-oscuro">
+    <div class="contenedor pie__interior">
+      <p>© <span data-anio>2026</span> Micaela Canselo</p>
+      <p>Buenos Aires, Argentina</p>
+    </div>
+  </footer>
+
+  <!-- Cursor propio (solo con mouse) -->
+  <!-- Mica: saluda en la portada y acompaña el recorrido (js/mica.js) -->
+  <div class="mica" data-mica aria-hidden="true">
+      <svg class="mica__figura" viewBox="0 0 200 190" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <g class="mica__pelo">
+          <path pathLength="1" d="M84 30C68 26 56 38 60 52C48 50 40 62 48 72C37 74 33 88 43 94C33 100 34 114 45 116C39 126 46 137 56 134C54 143 62 150 70 146"/>
+          <path pathLength="1" d="M84 30C92 20 112 20 120 30C134 28 146 40 140 54C152 54 158 68 148 76C158 82 156 96 146 98C154 106 150 118 140 118C144 128 136 136 127 132C128 141 120 147 113 142"/>
+          <path pathLength="1" d="M70 58C62 62 62 72 70 72M126 58C134 62 134 72 126 74M60 92C54 96 56 104 63 104M136 96C142 100 140 108 133 108"/>
+          <path pathLength="1" d="M78 40C74 34 82 28 88 34C88 28 98 26 102 34C106 28 116 32 114 40"/>
+        </g>
+        <path pathLength="1" d="M72 62C70 76 72 90 80 100C86 107 92 110 98 110C106 110 114 104 119 96C125 86 126 74 124 60"/>
+        <path pathLength="1" d="M72 62C78 58 80 50 78 42M124 60C118 56 114 48 114 40"/>
+        <path pathLength="1" d="M82 76Q86 72 90 76M106 76Q110 72 114 76M90 92Q98 99 106 92"/>
+        <path pathLength="1" d="M88 108C89 116 88 122 84 126C72 134 52 136 42 150C36 160 34 174 34 188"/>
+        <path pathLength="1" d="M110 107C110 116 112 122 118 126C126 130 134 132 141 138"/>
+        <g class="mica__brazo">
+          <path pathLength="1" d="M124 188C127 172 136 158 148 146C158 134 165 118 168 98"/>
+          <path pathLength="1" d="M141 138C150 128 155 112 157 96"/>
+          <path pathLength="1" d="M157 96C153 88 151 80 152 72C152 68 157 68 158 73L160 82M160 82L161 62C161 57 167 57 167 62L167 80M167 80L171 64C172 59 178 60 177 65L174 82M174 82L181 72C184 68 189 72 186 76L176 94C174 98 171 100 168 98"/>
+        </g>
+      </svg>
+      <p class="mica__globo" data-mica-globo>¡Hola, soy Mica!</p>
+  </div>
+
+  <div class="cursor" aria-hidden="true"><span>Ver</span></div>
+</body>
+</html>

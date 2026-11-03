@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <rect width="400" height="400" rx="88" fill="#442318"/>
+  <path fill="#efe5d3" transform="translate(200 200) scale(.82) translate(-200 -200)" d="M200 20C212 130 270 188 380 200C270 212 212 270 200 380C188 270 130 212 20 200C130 188 188 130 200 20Z"/>
+</svg>
