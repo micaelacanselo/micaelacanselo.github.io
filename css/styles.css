@@ -1857,6 +1857,10 @@ main {
   --fondo-lamina: var(--umbral-tinta) url("../assets/proyectos/plantilla-personalizada/caso/fondo-lamina.webp") center / cover;
 }
 
+.caso--itba {
+  --fondo-lamina: var(--itba-azul);
+}
+
 .lamina--fondo {
   background: var(--fondo-lamina);
 }
@@ -1980,6 +1984,25 @@ main {
   .piezas > :first-child {
     grid-row: auto;
   }
+}
+
+/* Piezas impresas del ITBA: dos a la par, una foto vertical o un flyer chico, sin estirarlos */
+.piezas--par {
+  grid-template-columns: 1fr 1fr;
+}
+
+.piezas--par > :first-child {
+  grid-row: auto;
+}
+
+.piezas--foto {
+  grid-template-columns: minmax(0, 26rem);
+  justify-content: center;
+}
+
+.lamina.piezas--flyer > img {
+  max-width: 38.5rem;
+  margin-inline: auto;
 }
 
 .lamina--blanca > img {

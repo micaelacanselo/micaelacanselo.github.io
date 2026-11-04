@@ -196,15 +196,20 @@ function bloquearFondo() {
 }
 
 function contar(elemento, retraso) {
-  const final = Number(elemento.textContent.replace(/\D/g, ""));
   const texto = elemento.textContent;
+  // Respeta lo que rodea al número ("kg", "º") y sus decimales ("339,1")
+  const [, antes, cifra, despues] = texto.match(/^(\D*)(\d[\d.,]*)(.*)$/) || [];
+  if (!cifra) return;
+  const decimales = (cifra.split(",")[1] || "").length;
+  const final = Number(cifra.replace(/\.(?=\d{3})/g, "").replace(/\.$/, "").replace(",", "."));
+  const formato = { minimumFractionDigits: decimales, maximumFractionDigits: decimales };
   const duracion = 1400;
   const inicio = performance.now() + retraso;
-  elemento.textContent = "0";
+  elemento.textContent = `${antes}0${despues}`;
   const paso = (ahora) => {
     const t = Math.min(Math.max((ahora - inicio) / duracion, 0), 1);
     const avance = 1 - (1 - t) ** 4;
-    elemento.textContent = t < 1 ? Math.round(final * avance).toLocaleString("es-AR") : texto;
+    elemento.textContent = t < 1 ? `${antes}${(final * avance).toLocaleString("es-AR", formato)}${despues}` : texto;
     if (t < 1) requestAnimationFrame(paso);
   };
   requestAnimationFrame(paso);
