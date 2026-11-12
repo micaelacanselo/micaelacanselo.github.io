@@ -235,7 +235,8 @@ if (hero && cv && titulo) {
   }
 
   function vivir(ahora) {
-    if (visible) dibujarFinal(ahora);
+    // Cuando la rueda tapa la portada, main.js deja el lienzo en opacidad 0: no hace falta dibujar
+    if (visible && cv.style.opacity !== "0") dibujarFinal(ahora);
     requestAnimationFrame(vivir);
   }
 

@@ -119,6 +119,9 @@ button {
   background: var(--crema);
   color: var(--cafe);
   border-radius: var(--radio-pildora);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
   transform: translateY(-200%);
   transition: transform var(--dur-corta) var(--curva);
 }
@@ -285,6 +288,24 @@ p {
   color: var(--tinta);
 }
 
+/* El foco arena no se ve sobre lactic: sobre secciones claras va en tinta */
+.encabezado--sobre-claro :focus-visible,
+.saltar-contenido:focus-visible {
+  outline-color: var(--tinta);
+}
+
+/* En celulares chicos el botón dice solo "CV" para no tapar el nombre (el lector sigue oyendo "Descargar CV") */
+@media (max-width: 23.4rem) {
+  .encabezado__cv-verbo {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
 /* Tapa el texto grande de la franja si pasa por detrás */
 .encabezado--sobre-franja {
   background: var(--terracota);
@@ -391,6 +412,7 @@ p {
   display: inline-flex;
   align-items: center;
   gap: 0.45em;
+  min-height: 44px;
 }
 
 .encabezado__estrella {

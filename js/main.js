@@ -126,7 +126,7 @@ if (rueda) {
   li.style.setProperty("--angulo", `${CIERRE * PASO_RUEDA}deg`);
   const resto = carpetas.filter((c) => !destacados.includes(c)).slice(0, 4);
   const mosaico = resto.map((c) => `<img src="${c.el.querySelector(".carpeta__ficha img").getAttribute("src")}" alt="" width="1200" height="900" loading="lazy" decoding="async">`).join("");
-  li.innerHTML = `<a href="#trabajos" aria-haspopup="dialog"><span class="rueda__mosaico">${mosaico}</span><span class="rueda__nombre">${TEXTO_INDICE}</span></a>`;
+  li.innerHTML = `<a href="#trabajos" aria-haspopup="dialog" aria-label="${TEXTO_INDICE}"><span class="rueda__mosaico">${mosaico}</span><span class="rueda__nombre">${TEXTO_INDICE}</span></a>`;
   const enlace = li.firstElementChild;
   enlace.addEventListener("click", (e) => {
     e.preventDefault();
