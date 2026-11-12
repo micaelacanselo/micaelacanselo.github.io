@@ -2396,6 +2396,11 @@ main {
   margin-top: var(--esp-3);
 }
 
+/* Capítulo que continúa el anterior después de una lámina o cifras, sin título propio */
+.capitulo.capitulo--sigue {
+  margin-top: var(--esp-5);
+}
+
 /* Lista dentro de un capítulo: un punto por red o por pieza */
 .caso__lista {
   display: grid;
