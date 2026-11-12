@@ -476,15 +476,22 @@ function llevarACarpeta(i) {
   if (enRueda < 0) return;
   const enlace = rueda.children[enRueda].firstElementChild;
   if (reducido) enlace.scrollIntoView({ block: "center" });
-  else irACarpeta(i);
+  else irACarpeta(enRueda);
   enlace.focus({ preventScroll: true });
 }
 
 // Abre el caso del trabajo si ya existe; si no, lleva a su carpeta
 function irATrabajo(i) {
   const hash = carpetas[i].el.querySelector("a").hash;
+  const seccion = casoDe(hash) ? null : document.querySelector(`section${hash}`);
   if (casoDe(hash)) abrirCaso(hash);
-  else llevarACarpeta(i);
+  else if (seccion) {
+    // Algunos trabajos son una sección de la página (Lo que escribo): se baja hasta ella
+    seccion.scrollIntoView({ behavior: reducido ? "auto" : "smooth" });
+    const titulo = seccion.querySelector("h2");
+    titulo.setAttribute("tabindex", "-1");
+    titulo.focus({ preventScroll: true });
+  } else llevarACarpeta(i);
 }
 
 carpetas.forEach((c, i) => {
