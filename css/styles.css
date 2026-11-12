@@ -2174,6 +2174,10 @@ main {
   --fondo-lamina: var(--intensite-azul);
 }
 
+.caso--campagnola {
+  --fondo-lamina: var(--campagnola-azul);
+}
+
 .lamina--fondo {
   background: var(--fondo-lamina);
 }
