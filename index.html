@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Seguridad: solo corre código del propio sitio. Si se edita el script de la intro, actualizar su hash -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-e9MkrCuO1ks8ODfTwpwne6hSkMeMLY2QBUJEvzUc/EM='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self'; font-src 'self'; connect-src 'self' https://api.web3forms.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-re+xWmeX3OBXWYICwVUM5e3yH/EAxxk9F9pLYgFE/Cw='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self'; font-src 'self'; connect-src 'self' https://api.web3forms.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
   <title>Micaela Canselo · Comunicación, Marketing Digital y Diseño Web</title>
@@ -50,15 +50,19 @@
   <link rel="preload" href="assets/fonts/dm-mono-400.woff2" as="font" type="font/woff2" crossorigin>
   <script>
     // La portada arranca en negro solo si se carga desde arriba de todo: al recargar más abajo
-    // se respeta el lugar donde estaba. Si hero.js no llega a correr, el contenido aparece igual
+    // se respeta el lugar donde estaba. Se ve una sola vez por visita (pestaña).
+    // Si hero.js no llega a correr, el contenido aparece igual
     let arriba = true;
+    let vista = false;
     try {
       const tipo = performance.getEntriesByType("navigation")[0]?.type;
       if (tipo === "reload" || tipo === "back_forward") arriba = !Number(sessionStorage.getItem("scroll-salida"));
       addEventListener("pagehide", () => sessionStorage.setItem("scroll-salida", String(scrollY)));
+      vista = sessionStorage.getItem("intro-vista") === "1";
     } catch {}
-    if (arriba && !location.hash && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (arriba && !vista && !location.hash && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
       document.documentElement.classList.add("intro");
+      try { sessionStorage.setItem("intro-vista", "1"); } catch {}
       // Red de seguridad por si hero.js no corre; normalmente la intro la termina hero.js
       setTimeout(() => document.documentElement.classList.remove("intro"), 12000);
     }
@@ -90,7 +94,7 @@
 
   <main id="contenido">
     <section class="hero tema-claro hoja" id="inicio" aria-labelledby="hero-titulo" data-hero data-trabajos>
-      <!-- Una sola escena: la frase abre y, al bajar, la rueda pasa los proyectos uno por uno -->
+      <!-- Una sola escena: la frase abre y, al bajar, la rueda pasa los destacados y cierra con el índice -->
       <div class="hero__fijo">
         <div class="hero__3d" aria-hidden="true">
           <div class="hero__aurora"><span></span><span></span></div>
@@ -107,7 +111,7 @@
             <a class="boton" href="#contacto">Hablemos</a>
           </div>
         </div>
-        <h2 class="visualmente-oculto">Trabajos</h2>
+        <h2 class="rueda__titulo" data-rueda-titulo><span class="titulo-marca">proyectos destacados</span><span class="punto" aria-hidden="true"></span></h2>
         <ul class="rueda" data-rueda></ul>
         <div class="ficha" data-ficha>
           <small data-ficha-categoria></small>
@@ -122,21 +126,21 @@
         </div>
       </div>
       <span class="trabajos__ancla" id="trabajos"></span>
-      <!-- Datos de los proyectos: de acá salen la rueda y el índice -->
+      <!-- Datos de los proyectos: el índice muestra todos; la rueda, solo los marcados con data-destacado -->
       <ul data-carpetas hidden>
-        <li class="carpeta" data-temas="UX">
-          <a class="carpeta__enlace" href="#trabajo-gae" data-cursor="ver">
+        <li class="carpeta" data-destacado data-temas="Marketing|Diseño web|WordPress|Identidad">
+          <a class="carpeta__enlace" href="#trabajo-magnolia" data-cursor="ver">
             <span class="carpeta__dorso"></span>
-            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/centro-operativo-gae.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy"></span>
             <span class="carpeta__frente">
-              <span class="carpeta__categoria">UX · Plataforma web · ITBA</span>
-              <span class="carpeta__titulo">Centro Operativo GAE</span>
-              <span class="carpeta__frase">De planillas de Excel a una sola herramienta para 3 sedes.</span>
-              <span class="carpeta__tipo carpeta__tipo--real">Proyecto real · en uso</span>
+              <span class="carpeta__categoria">Plan de marketing · Web · App</span>
+              <span class="carpeta__titulo">Magnolia Eventos</span>
+              <span class="carpeta__frase">Plan de marketing completo: del diagnóstico a la web y la app.</span>
+              <span class="carpeta__tipo">Proyecto académico</span>
             </span>
           </a>
         </li>
-        <li class="carpeta" data-temas="Comunicación|Diseño gráfico">
+        <li class="carpeta" data-destacado data-temas="Comunicación|Diseño gráfico">
           <a class="carpeta__enlace" href="#trabajo-itba" data-cursor="ver">
             <span class="carpeta__dorso"></span>
             <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/comunicacion-itba.webp" alt="" width="1200" height="900" loading="lazy"></span>
@@ -148,7 +152,19 @@
             </span>
           </a>
         </li>
-        <li class="carpeta" data-temas="Diseño web|WordPress|Identidad">
+        <li class="carpeta" data-destacado data-temas="UX">
+          <a class="carpeta__enlace" href="#trabajo-gae" data-cursor="ver">
+            <span class="carpeta__dorso"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/centro-operativo-gae.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__frente">
+              <span class="carpeta__categoria">UX · Plataforma web · ITBA</span>
+              <span class="carpeta__titulo">Centro Operativo GAE</span>
+              <span class="carpeta__frase">De planillas de Excel a una sola herramienta para 3 sedes.</span>
+              <span class="carpeta__tipo carpeta__tipo--real">Proyecto real · en uso</span>
+            </span>
+          </a>
+        </li>
+        <li class="carpeta" data-destacado data-temas="Diseño web|WordPress|Identidad|E-commerce">
           <a class="carpeta__enlace" href="#trabajo-tono" data-cursor="ver">
             <span class="carpeta__dorso"></span>
             <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/tono.webp" alt="" width="1200" height="900" loading="lazy"></span>
@@ -160,14 +176,38 @@
             </span>
           </a>
         </li>
-        <li class="carpeta" data-temas="Marketing|Diseño web|WordPress|Identidad">
-          <a class="carpeta__enlace" href="#trabajo-magnolia" data-cursor="ver">
+        <li class="carpeta" data-temas="Marketing|Comunicación|Redes">
+          <a class="carpeta__enlace" href="#trabajo-adopciones" data-cursor="ver">
             <span class="carpeta__dorso"></span>
-            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/adopciones-quilmes.webp" alt="" width="1200" height="900" loading="lazy"></span>
             <span class="carpeta__frente">
-              <span class="carpeta__categoria">Plan de marketing · Web · App</span>
-              <span class="carpeta__titulo">Magnolia Eventos</span>
-              <span class="carpeta__frase">Plan de marketing completo: del diagnóstico a la web y la app.</span>
+              <span class="carpeta__categoria">Community management · Contenido · Crisis</span>
+              <span class="carpeta__titulo">Adopciones Quilmes</span>
+              <span class="carpeta__frase">Redes para un refugio que necesita que cada post termine en una adopción.</span>
+              <span class="carpeta__tipo">Proyecto académico</span>
+            </span>
+          </a>
+        </li>
+        <li class="carpeta" data-temas="Marketing|Redes">
+          <a class="carpeta__enlace" href="#trabajo-havanna" data-cursor="ver">
+            <span class="carpeta__dorso"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/havanna.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__frente">
+              <span class="carpeta__categoria">Estrategia de redes · Contenido</span>
+              <span class="carpeta__titulo">Havanna</span>
+              <span class="carpeta__frase">Un objetivo distinto para cada red de una marca que todos conocen.</span>
+              <span class="carpeta__tipo">Proyecto académico</span>
+            </span>
+          </a>
+        </li>
+        <li class="carpeta" data-temas="Marketing|E-commerce|WordPress">
+          <a class="carpeta__enlace" href="#trabajo-intensite" data-cursor="ver">
+            <span class="carpeta__dorso"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/intensite.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__frente">
+              <span class="carpeta__categoria">E-commerce · Plan de marketing · Email</span>
+              <span class="carpeta__titulo">Intensité</span>
+              <span class="carpeta__frase">Una marca de lentes inteligentes, de la idea a la tienda online.</span>
               <span class="carpeta__tipo">Proyecto académico</span>
             </span>
           </a>
@@ -657,6 +697,309 @@
               <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Magnolia Eventos</span>
               <span class="tarjeta__categoria">Plan de marketing · Web · App</span>
+            </button>
+          </div>
+        </footer>
+      </dialog>
+
+      <!-- Caso Adopciones Quilmes: propuesta de redes del curso de Community Manager (piezas: 05-Herramientas/adopciones-caso.mjs) -->
+      <dialog class="caso caso--adopciones tema-claro" id="trabajo-adopciones" data-caso aria-labelledby="caso-adopciones-titulo">
+        <div class="caso__barra">
+          <span class="caso__nombre">Adopciones Quilmes</span>
+          <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
+        </div>
+
+        <header class="caso__portada">
+          <p class="caso__categoria">Community management · Contenido · Crisis</p>
+          <h3 class="caso__titulo" id="caso-adopciones-titulo">adopciones quilmes<span class="punto" aria-hidden="true"></span></h3>
+          <p class="caso__bajada">Un refugio de perros y gatos que vive de que alguien vea un posteo y diga "yo".</p>
+          <ul class="caso__datos">
+            <li>Proyecto académico · Curso de Community Manager</li>
+            <li>Trabajo individual</li>
+            <li>Propuesta para la cuenta del refugio, no se publicó</li>
+          </ul>
+        </header>
+
+        <figure class="lamina lamina--fondo caso__ancho piezas piezas--foto">
+          <img src="assets/proyectos/adopciones-quilmes/post.webp" alt="Post verde: ¡Adoptá a un nuevo amigo!, con la foto de Diosito, un perro marrón con correa amarilla, en un marco de polaroid" width="998" height="998" loading="lazy">
+        </figure>
+
+        <section class="capitulo">
+          <h4>Cada posteo tiene que terminar en una familia<span class="punto" aria-hidden="true"></span></h4>
+          <p>Adopciones Quilmes rescata desde 2008 perros y gatos de la calle, del abandono o del maltrato. Los lleva al veterinario, los alimenta y los cuida en el refugio o en hogares de tránsito hasta que alguien los adopta.</p>
+          <p>Para eso necesita dos cosas: familias que adopten y voluntarios que ayuden con tiempo, insumos o dinero. En el trabajo planteé una meta a corto plazo: 10 adopciones y 10 voluntarios nuevos por mes.</p>
+        </section>
+
+        <section class="capitulo">
+          <h4>A quién le habla<span class="punto" aria-hidden="true"></span></h4>
+          <p>Pensé en personas de 25 a 45 años de zona sur, que tratan a sus mascotas como parte de la familia y que, cuando les sobra algo a fin de mes, lo donan. Gente empática, con amigos, que comparte lo que le importa.</p>
+        </section>
+
+        <section class="capitulo">
+          <h4>Lo que ya hacía bien, y lo que faltaba<span class="punto" aria-hidden="true"></span></h4>
+          <p>La cuenta publica todos los días, tiene un tono cálido y ordena la información en historias destacadas del mismo color. Eso ya funcionaba.</p>
+          <p>Lo que faltaba era hablarle a quien la seguía: casi no había preguntas ni invitaciones a hacer algo, no tenía un sello propio y casi todo eran fotos o carruseles.</p>
+          <p>Mi propuesta: usar el verde de la marca en todos los posteos, cerrar cada copy con una invitación a actuar, sumar un emoji propio y hacer reels que muestren cómo es un día en el refugio, con alguien del equipo hablando a cámara.</p>
+        </section>
+
+        <section class="capitulo">
+          <h4>Que hable el perro<span class="punto" aria-hidden="true"></span></h4>
+          <p>Tomé fotos del propio refugio y las rediseñé con el verde de la marca. Para el post elegí que el que se presente sea él:</p>
+          <blockquote class="caso__cita">¡Hola! Soy Diosito. Mientras paseo, quiero contarte que estoy en busca de una familia y, a cambio, tengo mucho amor para darte. ¿Me aceptás?</blockquote>
+          <p>Lo completé con una secuencia de historias que presenta a Lulú y termina con una encuesta, y un reel con una sola pregunta: "¿Te animás a darles una oportunidad?".</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho piezas piezas--tres">
+          <img src="assets/proyectos/adopciones-quilmes/historia-1.webp" alt="Historia: ¡Buen día! sobre pasto, con una huella blanca en un círculo azul" width="564" height="1009" loading="lazy">
+          <img src="assets/proyectos/adopciones-quilmes/historia-2.webp" alt="Historia: Hoy te presentamos a… Lulú, una perrita color miel acostada" width="563" height="1009" loading="lazy">
+          <img src="assets/proyectos/adopciones-quilmes/historia-3.webp" alt="Historia: Lulú en un círculo y la encuesta ¿Querés conocer su historia?, con las opciones Sí y No" width="566" height="1009" loading="lazy">
+          <figcaption>La secuencia de historias, de la bienvenida a la encuesta</figcaption>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Y si algo sale mal<span class="punto" aria-hidden="true"></span></h4>
+          <p>También planteé una crisis posible: alguien que adoptó quiere devolver al animal porque se enfermó o no se adapta, y empieza a quejarse en los comentarios ("dan animales enfermos sin avisar").</p>
+          <p>Separé dos respuestas. En público, corta y firme: los animales no son objetos que se devuelven, y lo invitamos a seguir la charla por privado. En privado, con más contexto: cada animal pasa por controles antes de la adopción, pero puede enfermarse como cualquiera, y necesita tiempo para sentirse en casa.</p>
+          <p>Y una salida concreta antes de aceptar la devolución: ofrecer que lo lleve al refugio de visita para que el cambio sea más gradual, y difundir los gastos para buscar ayuda.</p>
+        </section>
+
+        <section class="capitulo">
+          <h4>Aprendizajes<span class="punto" aria-hidden="true"></span></h4>
+          <p>En una cuenta así, un posteo sirve si alguien escribe para adoptar o para ayudar. Por eso pensé cada pieza desde lo que tenía que pasar después de leerla.</p>
+          <p>Con la crisis aprendí a no responder igual en todos lados. En los comentarios lo leen todos, así que conviene ser breve; en privado hay lugar para explicar y buscar una solución con esa persona.</p>
+        </section>
+
+        <footer class="caso__mas">
+          <h4>más trabajos<span class="punto" aria-hidden="true"></span></h4>
+          <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
+          <div class="caso__ancho caso__otros">
+            <button class="tarjeta" type="button" data-ir-a="Magnolia Eventos">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy">
+              <span class="tarjeta__titulo">Magnolia Eventos</span>
+              <span class="tarjeta__categoria">Plan de marketing · Web · App</span>
+            </button>
+            <button class="tarjeta" type="button" data-ir-a="Comunicación en el ITBA">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/comunicacion-itba.webp" alt="" width="1200" height="900" loading="lazy">
+              <span class="tarjeta__titulo">Comunicación en el ITBA</span>
+              <span class="tarjeta__categoria">Comunicación interna · Cartelería · ITBA</span>
+            </button>
+          </div>
+        </footer>
+      </dialog>
+
+      <!-- Caso Havanna: estrategia de redes, parcial de Producción de Contenidos (láminas: 05-Herramientas/havanna-caso.mjs) -->
+      <dialog class="caso caso--havanna tema-claro" id="trabajo-havanna" data-caso aria-labelledby="caso-havanna-titulo">
+        <div class="caso__barra">
+          <span class="caso__nombre">Havanna</span>
+          <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
+        </div>
+
+        <header class="caso__portada">
+          <p class="caso__categoria">Estrategia de redes · Contenido</p>
+          <h3 class="caso__titulo" id="caso-havanna-titulo">havanna<span class="punto" aria-hidden="true"></span></h3>
+          <p class="caso__bajada">Un clásico de Mar del Plata que en redes mostraba casi solo alfajores, y una estrategia para que también hablara con gente nueva.</p>
+          <ul class="caso__datos">
+            <li>Proyecto académico, 2024</li>
+            <li>Equipo de 5: trabajamos todas las etapas en conjunto</li>
+            <li>Sin relación con la marca</li>
+          </ul>
+        </header>
+
+        <figure class="lamina lamina--fondo caso__ancho piezas piezas--foto">
+          <img src="assets/proyectos/havanna/foto-pila.webp" alt="Foto de producto: cuatro alfajores Havanna cortados al medio y apilados sobre fondo amarillo, con una cuchara de dulce de leche al costado" width="1200" height="1500" loading="lazy">
+        </figure>
+
+        <section class="capitulo">
+          <h4>Todos la conocen, pero en redes decía siempre lo mismo<span class="punto" aria-hidden="true"></span></h4>
+          <p>Havanna existe desde 1947 y casi no necesita presentación. En redes, ese era justamente el riesgo: con tantas fotos de producto, la cuenta se volvía repetitiva y casi no le hablaba a quien la seguía.</p>
+          <p>Con el grupo armamos un FODA mirando solo sus redes. A favor tenía una marca querida, productos que se ven bien en una foto y clientes fieles que recomiendan. En contra, poca interacción y mucha competencia en el rubro.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <img src="assets/proyectos/havanna/foda.webp" alt="FODA de las redes de Havanna: fortalezas, oportunidades, debilidades y amenazas alrededor del logo" width="1600" height="900" loading="lazy">
+        </figure>
+
+        <section class="capitulo">
+          <h4>Un objetivo distinto para cada red<span class="punto" aria-hidden="true"></span></h4>
+          <p>No queríamos lo mismo en todas partes, así que planteamos un objetivo SMART por red:</p>
+          <ul class="caso__lista">
+            <li><strong>Instagram:</strong> 25 % más seguidores y 15 % más interacciones en diez meses, con contenido propio y colaboraciones.</li>
+            <li><strong>LinkedIn:</strong> 30 % más seguidores y tres publicaciones por semana en seis meses, para mostrar a Havanna como un buen lugar para trabajar.</li>
+            <li><strong>TikTok:</strong> 30 % más seguidores y 150.000 visualizaciones por mes en seis meses, con tres videos por semana.</li>
+          </ul>
+          <p>Son metas planteadas en el trabajo, no resultados.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <img src="assets/proyectos/havanna/smart-instagram.webp" alt="Objetivo SMART para Instagram: específico, medible, alcanzable, relevante y con plazo de diez meses" width="1600" height="900" loading="lazy">
+          <figcaption>El objetivo de Instagram, letra por letra</figcaption>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Tres personas que compran Havanna por razones distintas<span class="punto" aria-hidden="true"></span></h4>
+          <p>Para saber a quién le hablábamos armamos tres perfiles: Martín, que la regala porque le recuerda a su infancia; Camila, community manager, que la elige por cómo se ve en una foto; y Sarah, una turista que se la lleva como recuerdo de Argentina. Con ellos hicimos un mapa de empatía: qué ve, qué escucha y qué espera cuando compra.</p>
+          <p>También miramos qué hacían Starbucks, Café Martínez y Bonafide en sus redes, para ver qué espacio quedaba libre.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <img src="assets/proyectos/havanna/buyer-persona.webp" alt="Buyer persona Camila López, 26 años, community manager: biografía, personalidad, motivaciones y qué opina de Havanna" width="1600" height="900" loading="lazy">
+          <figcaption>Camila, una de las tres buyer personas</figcaption>
+        </figure>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <img src="assets/proyectos/havanna/mapa-empatia.webp" alt="Mapa de empatía: qué piensa y siente, qué oye, qué ve y qué dice y hace quien compra Havanna" width="1600" height="900" loading="lazy">
+        </figure>
+
+        <section class="capitulo">
+          <h4>Tres posteos, tres objetivos<span class="punto" aria-hidden="true"></span></h4>
+          <p>Cerramos con una idea para cada tipo de contenido:</p>
+          <ul class="caso__lista">
+            <li><strong>Responsabilidad social, para LinkedIn:</strong> salir el Día de la Niñez a repartir productos en barrios vulnerables. "Porque compartir un alfajor es también compartir una sonrisa."</li>
+            <li><strong>Marca, para Instagram y TikTok:</strong> un video desde adentro de la fábrica, con alguien contando cómo se hace el alfajor. "¿Cuál es tu favorito? Te leemos en los comentarios."</li>
+            <li><strong>Venta, para Instagram:</strong> el lanzamiento de Havannets inspirados en la chocotorta y el lemon pie. "¿Cuál te tienta más?"</li>
+          </ul>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <img src="assets/proyectos/havanna/contenido-marca.webp" alt="Lámina Contenido de marca: maqueta de un posteo de Havanna en el celular, la idea del video en la fábrica y su copy" width="1600" height="900" loading="lazy">
+          <figcaption>Fotos de la marca; la idea y el copy son del trabajo</figcaption>
+        </figure>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <img src="assets/proyectos/havanna/contenido-venta.webp" alt="Lámina Contenido de venta: maqueta del posteo de los Havannets de chocotorta y lemon pie, con la idea y el copy" width="1600" height="900" loading="lazy">
+          <figcaption>Fotos de la marca; la idea y el copy son del trabajo</figcaption>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Y las fotos, nuestras<span class="punto" aria-hidden="true"></span></h4>
+          <p>También hicimos una sesión de fotos de producto propia, sobre el amarillo de la marca: el alfajor cortado para que se vea el dulce de leche, apilado o sobre su envoltorio, y una cuchara al costado.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho piezas piezas--tres">
+          <img src="assets/proyectos/havanna/foto-pila.webp" alt="Cuatro alfajores cortados y apilados, con una cuchara de dulce de leche" width="1200" height="1500" loading="lazy">
+          <img src="assets/proyectos/havanna/foto-envoltorio.webp" alt="Dos mitades de alfajor sobre el envoltorio dorado de Havanna" width="1200" height="1500" loading="lazy">
+          <img src="assets/proyectos/havanna/foto-cobertura.webp" alt="Dos mitades de alfajor sobre un alfajor entero con su cobertura de chocolate" width="1200" height="1500" loading="lazy">
+          <figcaption>Fotos propias del grupo, octubre de 2024</figcaption>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Aprendizajes<span class="punto" aria-hidden="true"></span></h4>
+          <p>A Havanna la reconoce todo el mundo; lo que costaba era que la gente comentara. Por eso cada copy termina con una pregunta.</p>
+          <p>También aprendí a pensar cada red por separado: LinkedIn y TikTok tienen públicos distintos, y una misma pieza no sirve igual en las dos.</p>
+        </section>
+
+        <footer class="caso__mas">
+          <h4>más trabajos<span class="punto" aria-hidden="true"></span></h4>
+          <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
+          <div class="caso__ancho caso__otros">
+            <button class="tarjeta" type="button" data-ir-a="Adopciones Quilmes">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/adopciones-quilmes.webp" alt="" width="1200" height="900" loading="lazy">
+              <span class="tarjeta__titulo">Adopciones Quilmes</span>
+              <span class="tarjeta__categoria">Community management · Contenido · Crisis</span>
+            </button>
+            <button class="tarjeta" type="button" data-ir-a="Magnolia Eventos">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy">
+              <span class="tarjeta__titulo">Magnolia Eventos</span>
+              <span class="tarjeta__categoria">Plan de marketing · Web · App</span>
+            </button>
+          </div>
+        </footer>
+      </dialog>
+
+      <!-- Caso Intensité: trabajo final de e-commerce (láminas: 05-Herramientas/intensite-caso.mjs) -->
+      <dialog class="caso caso--intensite tema-claro" id="trabajo-intensite" data-caso aria-labelledby="caso-intensite-titulo">
+        <div class="caso__barra">
+          <span class="caso__nombre">Intensité</span>
+          <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
+        </div>
+
+        <header class="caso__portada">
+          <p class="caso__categoria">E-commerce · Plan de marketing · Email</p>
+          <h3 class="caso__titulo" id="caso-intensite-titulo">intensité<span class="punto" aria-hidden="true"></span></h3>
+          <p class="caso__bajada">Lentes de sol que se oscurecen solos con la luz. Había que inventar la marca y pensar cómo venderla online desde cero.</p>
+          <ul class="caso__datos">
+            <li>Proyecto académico</li>
+            <li>Equipo de 5: trabajamos todas las etapas en conjunto</li>
+            <li>Marca inventada</li>
+          </ul>
+        </header>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <img src="assets/proyectos/intensite/mail-lanzamiento.webp" alt="Mail de Intensité en el celular y en la compu: ¡La evolución en los lentes de sol ha llegado!, con lentes de sol plateados y la misión de la marca" width="1600" height="900" loading="lazy">
+          <figcaption>El nombre del destinatario de prueba está difuminado</figcaption>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Un producto que había que explicar<span class="punto" aria-hidden="true"></span></h4>
+          <p>Intensité vende lentes de sol inteligentes: ajustan la opacidad según la luz y pueden cambiar de graduación. También estuches y kits de limpieza. Pensamos el público en personas de 25 a 40 años que hacen actividades al aire libre, siguen la tecnología y la moda, y no quieren elegir entre estilo y función.</p>
+          <p>Un producto así hay que explicarlo antes de venderlo: si no se entiende cómo funciona, no se compra.</p>
+        </section>
+
+        <section class="capitulo">
+          <h4>Un objetivo para cada paso de la compra<span class="punto" aria-hidden="true"></span></h4>
+          <p>Ordenamos el plan según el recorrido de quien compra, con una estrategia y tácticas para cada etapa:</p>
+          <ul class="caso__lista">
+            <li><strong>Awareness:</strong> posicionar la marca como premium y tecnológica, con influencers y anuncios interactivos.</li>
+            <li><strong>Captación:</strong> que la gente investigue y deje sus datos, con demostraciones virtuales y landings pensadas para convertir.</li>
+            <li><strong>Adquisición:</strong> vencer las dudas de precio y funcionamiento, con muestras, promociones y remarketing.</li>
+            <li><strong>Retención:</strong> acompañar después de la compra, con atención personalizada y encuestas por mail.</li>
+            <li><strong>Lealtad:</strong> que vuelvan y recomienden, con un programa de puntos y mails con productos complementarios.</li>
+          </ul>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <img src="assets/proyectos/intensite/objetivos.webp" alt="Pirámide de objetivos de Intensité: awareness, captación, conversión, recompra y lealtad, con lo que busca cada etapa" width="1600" height="900" loading="lazy">
+        </figure>
+
+        <section class="capitulo">
+          <h4>La tienda, pieza por pieza<span class="punto" aria-hidden="true"></span></h4>
+          <p>La tienda la armamos en WordPress con WooCommerce: es flexible y ayuda con el SEO. Alrededor elegimos el resto: Andreani, Correo Argentino y retiro en tiendas para los envíos; transferencia y tarjeta para pagar; Cliengo para responder consultas por chat y WhatsApp; y Contabilium para facturar en pesos y en dólares.</p>
+          <p>La organizamos en lentes, accesorios y limpiadores, con un recorrido corto: inicio, producto principal (Solaris Pro), checkout y confirmación.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <img src="assets/proyectos/intensite/plataforma.webp" alt="Lámina de la tienda: WooCommerce como plataforma, Andreani, Correo Argentino y pick-up para envíos, transferencia y tarjeta para pagar, Cliengo y Contabilium" width="1600" height="900" loading="lazy">
+        </figure>
+
+        <section class="capitulo">
+          <h4>Un mail para cada momento<span class="punto" aria-hidden="true"></span></h4>
+          <p>También diseñamos una secuencia de mails y los enviamos de prueba para ver cómo se leían en celular y en compu: la bienvenida con un cupón del 15 %, uno que presenta la marca y su tecnología, y el lanzamiento de los lentes Black Sun.</p>
+        </section>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <img src="assets/proyectos/intensite/mail-bienvenida.webp" alt="Mail de bienvenida en el celular y en la compu: Intensité, cupón del 15 % de descuento BIENVENIDA15 y botón para hacer la primera compra" width="1600" height="900" loading="lazy">
+          <figcaption>La bienvenida, con el cupón para la primera compra</figcaption>
+        </figure>
+
+        <figure class="lamina lamina--fondo caso__ancho">
+          <img src="assets/proyectos/intensite/mail-black-sun.webp" alt="Mail de lanzamiento en el celular y en la compu: Lentes Black Sun, tecnología que se adapta a ti, con una foto en blanco y negro y el botón Comprar ahora" width="1600" height="900" loading="lazy">
+          <figcaption>El lanzamiento de los Black Sun</figcaption>
+        </figure>
+
+        <section class="capitulo">
+          <h4>Dónde y cómo medirlo<span class="punto" aria-hidden="true"></span></h4>
+          <p>Los medios siguieron el mismo recorrido: redes (TikTok, YouTube, Instagram), anuncios, SEO y SEM para inspirar y hacer considerar; remarketing y newsletter para decidir y volver.</p>
+          <p>Para medir planteamos tasa de conversión, costo de adquisición por cliente, ROAS y ROI, y un forecast con un crecimiento del 10 % mensual. Son indicadores planteados: la marca no existe y no hubo ventas.</p>
+        </section>
+
+        <section class="capitulo">
+          <h4>Aprendizajes<span class="punto" aria-hidden="true"></span></h4>
+          <p>Armar la tienda fue solo una parte. El envío, la forma de pago y lo que tarda una respuesta por chat también deciden si alguien compra, y tuvimos que elegir cada uno.</p>
+        </section>
+
+        <footer class="caso__mas">
+          <h4>más trabajos<span class="punto" aria-hidden="true"></span></h4>
+          <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
+          <div class="caso__ancho caso__otros">
+            <button class="tarjeta" type="button" data-ir-a="Tono">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/tono.webp" alt="" width="1200" height="900" loading="lazy">
+              <span class="tarjeta__titulo">Tono</span>
+              <span class="tarjeta__categoria">E-commerce · Identidad · WordPress</span>
+            </button>
+            <button class="tarjeta" type="button" data-ir-a="Havanna">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/havanna.webp" alt="" width="1200" height="900" loading="lazy">
+              <span class="tarjeta__titulo">Havanna</span>
+              <span class="tarjeta__categoria">Estrategia de redes · Contenido</span>
             </button>
           </div>
         </footer>
@@ -1615,27 +1958,79 @@
       </div>
     </section>
 
-    <!-- Herramientas: los logos se asoman desde el borde de abajo y vuelven a bajar -->
+    <!-- Lo que escribo: cada texto en su formato (mail, nota, perfil, crónica); al tocarlo se lee entero -->
+    <section class="seccion tema-claro hoja escritos" id="escritos" aria-labelledby="escritos-titulo">
+      <div class="contenedor">
+        <header class="escritos__cabecera">
+          <h2 id="escritos-titulo"><span class="titulo-marca" data-titulo-marca>lo que escribo</span><span class="punto" aria-hidden="true"></span></h2>
+          <p class="seccion__bajada">Antes de escribir para marcas, escribí sobre personas, lugares y noticias. Tocá cualquiera para leerlo entero.</p>
+        </header>
+        <ul class="escritos__mesa">
+          <li class="escrito escrito--mail">
+            <button class="escrito__pieza" type="button" data-lectura="olmo" aria-haspopup="dialog" aria-label="Leer los newsletters para Bicicletas Olmo">
+              <span class="mail">
+                <span class="mail__asunto">Preparate para vivir la emoción sobre pedales en Palermo</span>
+                <span class="mail__de">Olmo · para Julia</span>
+                <img class="mail__imagen" src="assets/img/escritos/olmo-expo.webp" alt="" width="1000" height="556" loading="lazy">
+                <span class="mail__cuerpo"><strong>¡Hola, Julia!</strong> ¿Estás buscando una forma de alejar a tus hijos de las pantallas y disfrutar juntos de la vida al aire libre?</span>
+                <span class="mail__boton">Registrarme</span>
+              </span>
+            </button>
+            <p class="escrito__pie"><strong>Newsletter</strong> · Bicicletas Olmo · en dupla</p>
+          </li>
+          <li class="escrito escrito--nota">
+            <button class="escrito__pieza" type="button" data-lectura="esquivel" aria-haspopup="dialog" aria-label="Leer la nota sobre Laura Esquivel y el odio en las redes">
+              <span class="nota">
+                <span class="nota__seccion">Redes sociales</span>
+                <span class="nota__titulo">El grito de Laura Esquivel contra el odio en las redes sociales</span>
+                <img class="nota__foto" src="assets/img/escritos/nota-foto.webp" alt="" width="1000" height="1035" loading="lazy">
+                <span class="nota__bajada">Recibió miles de comentarios de odio por un video y respondió con otro. Hablamos con una psicóloga y un abogado.</span>
+              </span>
+            </button>
+            <p class="escrito__pie"><strong>Nota</strong> · dos entrevistas y foto propia · en dupla</p>
+          </li>
+          <li class="escrito escrito--perfil">
+            <button class="escrito__pieza" type="button" data-lectura="cancha" aria-haspopup="dialog" aria-label="Leer el perfil Ella quiere ir a la cancha">
+              <span class="cita-grande">
+                <span class="cita-grande__texto">«Yo quiero ir a la cancha, yo quiero ir a la cancha, yo quiero ir a la cancha.»</span>
+                <span class="cita-grande__quien">Adriana Bravo, la primera mujer en la Comisión Directiva de Boca</span>
+              </span>
+            </button>
+            <p class="escrito__pie"><strong>Perfil</strong> con entrevista · en equipo</p>
+          </li>
+          <li class="escrito escrito--cronica">
+            <button class="escrito__pieza" type="button" data-lectura="armonia" aria-haspopup="dialog" aria-label="Leer la crónica Armonía">
+              <span class="cronica">
+                <span class="cronica__titulo">Armonía</span>
+                <span class="cronica__texto">Llego a la puerta del CCK y, en el playón antes de la entrada, me encuentro con los preparativos de lo que parece ser un show de tango.</span>
+              </span>
+            </button>
+            <p class="escrito__pie"><strong>Crónica</strong> · individual</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Herramientas: los logos aparecen una vez y quedan quietos -->
     <section class="herramientas tema-claro hoja" id="herramientas" aria-labelledby="herramientas-titulo" data-herramientas>
       <div class="herramientas__fijo">
         <div class="herramientas__texto">
           <h2 id="herramientas-titulo"><span class="titulo-marca" data-titulo-marca>herramientas</span><span class="punto" aria-hidden="true"></span></h2>
           <p class="seccion__bajada">Con lo que armo cada proyecto, de la idea a la publicación.</p>
-          <button class="boton herramientas__pausa" type="button" data-pausar-herramientas aria-pressed="false">Pausar</button>
         </div>
         <ul class="herramientas__logos">
-          <li class="herramienta" style="--dur: 5.5s; --retraso: 0.0s"><img src="assets/img/herramientas/figma.svg" alt="" width="96" height="96" loading="lazy"><span>Figma</span></li>
-          <li class="herramienta" style="--dur: 7.9s; --retraso: -1.3s"><img src="assets/img/herramientas/canva.svg" alt="" width="96" height="96" loading="lazy"><span>Canva</span></li>
-          <li class="herramienta" style="--dur: 7.1s; --retraso: -2.6s"><img src="assets/img/herramientas/wordpress.svg" alt="" width="96" height="96" loading="lazy"><span>WordPress</span></li>
-          <li class="herramienta" style="--dur: 6.3s; --retraso: -3.9s"><img src="assets/img/herramientas/elementor.svg" alt="" width="96" height="96" loading="lazy"><span>Elementor</span></li>
-          <li class="herramienta" style="--dur: 5.5s; --retraso: -5.2s"><img src="assets/img/herramientas/woocommerce.svg" alt="" width="96" height="96" loading="lazy"><span>WooCommerce</span></li>
-          <li class="herramienta" style="--dur: 7.9s; --retraso: -0.5s"><img src="assets/img/herramientas/html.svg" alt="" width="96" height="96" loading="lazy"><span>HTML</span></li>
-          <li class="herramienta" style="--dur: 7.1s; --retraso: -1.8s"><img src="assets/img/herramientas/css.svg" alt="" width="96" height="96" loading="lazy"><span>CSS</span></li>
-          <li class="herramienta" style="--dur: 6.3s; --retraso: -3.1s"><img src="assets/img/herramientas/claude.svg" alt="" width="96" height="96" loading="lazy"><span>Claude</span></li>
-          <li class="herramienta" style="--dur: 5.5s; --retraso: -4.4s"><img src="assets/img/herramientas/office.svg" alt="" width="96" height="96" loading="lazy"><span>Office</span></li>
-          <li class="herramienta" style="--dur: 7.9s; --retraso: -5.7s"><img src="assets/img/herramientas/doppler.svg" alt="" width="110" height="39" loading="lazy"><span>Doppler</span></li>
-          <li class="herramienta" style="--dur: 7.1s; --retraso: -1.0s"><img src="assets/img/herramientas/looker.svg" alt="" width="96" height="96" loading="lazy"><span>Looker Studio</span></li>
-          <li class="herramienta" style="--dur: 7.9s; --retraso: -4.9s"><img src="assets/img/herramientas/drive.svg" alt="" width="96" height="96" loading="lazy"><span>Google Drive</span></li>
+          <li class="herramienta"><img src="assets/img/herramientas/figma.svg" alt="" width="96" height="96" loading="lazy"><span>Figma</span></li>
+          <li class="herramienta"><img src="assets/img/herramientas/canva.svg" alt="" width="96" height="96" loading="lazy"><span>Canva</span></li>
+          <li class="herramienta"><img src="assets/img/herramientas/wordpress.svg" alt="" width="96" height="96" loading="lazy"><span>WordPress</span></li>
+          <li class="herramienta"><img src="assets/img/herramientas/elementor.svg" alt="" width="96" height="96" loading="lazy"><span>Elementor</span></li>
+          <li class="herramienta"><img src="assets/img/herramientas/woocommerce.svg" alt="" width="96" height="96" loading="lazy"><span>WooCommerce</span></li>
+          <li class="herramienta"><img src="assets/img/herramientas/html.svg" alt="" width="96" height="96" loading="lazy"><span>HTML</span></li>
+          <li class="herramienta"><img src="assets/img/herramientas/css.svg" alt="" width="96" height="96" loading="lazy"><span>CSS</span></li>
+          <li class="herramienta"><img src="assets/img/herramientas/claude.svg" alt="" width="96" height="96" loading="lazy"><span>Claude</span></li>
+          <li class="herramienta"><img src="assets/img/herramientas/office.svg" alt="" width="96" height="96" loading="lazy"><span>Office</span></li>
+          <li class="herramienta"><img src="assets/img/herramientas/doppler.svg" alt="" width="110" height="39" loading="lazy"><span>Doppler</span></li>
+          <li class="herramienta"><img src="assets/img/herramientas/looker.svg" alt="" width="96" height="96" loading="lazy"><span>Looker Studio</span></li>
+          <li class="herramienta"><img src="assets/img/herramientas/drive.svg" alt="" width="96" height="96" loading="lazy"><span>Google Drive</span></li>
         </ul>
       </div>
     </section>
@@ -1684,6 +2079,113 @@
 
       
     </section>
+  <!-- Lecturas de "lo que escribo": se abren desde cada pieza (js/main.js) -->
+  <dialog class="caso lectura tema-claro" id="lectura-olmo" data-lectura-dialogo aria-labelledby="lectura-olmo-titulo">
+    <div class="caso__barra">
+      <span class="caso__nombre">Lo que escribo</span>
+      <button class="boton" type="button" data-cerrar-lectura>Cerrar</button>
+    </div>
+    <header class="caso__portada lectura__portada">
+      <h3 class="lectura__titulo" id="lectura-olmo-titulo">Newsletters para Bicicletas Olmo</h3>
+      <p class="caso__categoria">Redacción multiplataforma · Escritos en dupla · Para madres y padres de 20 a 50 años que quieren alejar a sus hijos de las pantallas</p>
+    </header>
+    <article class="capitulo lectura__texto">
+      <h4>Asunto: Preparate para vivir la emoción sobre pedales en Palermo</h4>
+      <img class="lectura__imagen" src="assets/img/escritos/olmo-expo.webp" alt="Banner de Olmo: un grupo de chicos con casco, cada uno en su bicicleta, en un camino de tierra" width="1000" height="556" loading="lazy">
+          <p>¡Hola, Julia!</p>
+          <p>¿Estás buscando una forma de alejar a tus hijos e hijas de las pantallas y disfrutar juntos de la vida al aire libre? ¡No busques más! Te invitamos a participar en un evento que te va a ayudar a hacer precisamente eso.</p>
+          <p>El 17 de septiembre, de 9 a 19 h, los lagos de Palermo se convierten en el epicentro de la diversión familiar con la Expo Bicicletas Palermo: un día lleno de actividades para madres y padres como vos, que quieren un estilo de vida activo y saludable para sus hijos.</p>
+          <p><strong>Para los adultos:</strong> charlas con expertos en salud y deporte sobre la importancia de la actividad física, y charlas sobre entrenamiento para carreras y mecánica básica de bicicletas.</p>
+          <p><strong>Para los chicos:</strong> carreras amistosas para ver quién es el más veloz y talleres para aprender a andar sin rueditas. ¿Tus hijos siguen con rueditas? Eso acá se terminó.</p>
+          <p>Además, se van a poder probar los últimos modelos de bicicletas infantiles de Olmo, y todos los que participen se llevan una tarjeta de descuento para su próxima compra.</p>
+          <p>¡Registrate ahora para asegurar tu lugar! La diversión está por empezar. Nos vemos en Palermo.</p>
+          <p>El equipo de Olmo</p>
+      <h4>Asunto: ¡Reconectamos con la magia de la infancia!</h4>
+          <p>¿Te acordás de los momentos de tu niñez al aire libre y con amigos, donde no había más que risas y juegos?</p>
+          <p>Sabemos que hoy la tecnología nos desconectó del momento presente, y que es frustrante ver a tus hijos pegados a las pantallas. Por eso llegaron las nuevas bicicletas Olmo para chicos: la puerta a nuevas aventuras.</p>
+          <p>Balance y estabilidad en sus primeros pasos, diseños para cada gusto y edad, frenos v-brakes de fácil instalación y un alto nivel de resistencia a los impactos.</p>
+          <p>Con nuestras bicicletas vas a poder ver a tus hijos crecer llenos de experiencias, disfrutando el mundo que los rodea y sumando recuerdos en familia. Estas vacaciones de invierno, regalales una Olmo. Desconexión de las pantallas, conexión con el aire libre.</p>
+          <p>¿Qué esperás para comenzar la aventura? Hacé clic y encontrá el modelo perfecto para acompañar a tu hijo. ¡Solo por hoy, 20 % de descuento con el código BMX!</p>
+    </article>
+  </dialog>
+
+  <dialog class="caso lectura tema-claro" id="lectura-esquivel" data-lectura-dialogo aria-labelledby="lectura-esquivel-titulo">
+    <div class="caso__barra">
+      <span class="caso__nombre">Lo que escribo</span>
+      <button class="boton" type="button" data-cerrar-lectura>Cerrar</button>
+    </div>
+    <header class="caso__portada lectura__portada">
+      <h3 class="lectura__titulo" id="lectura-esquivel-titulo">El grito de Laura Esquivel contra el odio en las redes sociales</h3>
+      <p class="caso__categoria">Nota periodística · Dos entrevistas · Escrita en dupla · Foto propia</p>
+    </header>
+    <article class="capitulo lectura__texto">
+      <figure class="lectura__figura">
+        <img class="lectura__imagen" src="assets/img/escritos/nota-foto.webp" alt="Foto armada para la nota: manos de mujer con un celular que muestra los comentarios de odio, en la mesa de un café" width="1000" height="1035" loading="lazy">
+        <figcaption>Todo comienza con la palabra. Foto: escena armada por nosotros en un café</figcaption>
+      </figure>
+          <p>El pasado 19 de abril, Laura Esquivel recibió múltiples críticas de los usuarios en un video que subió a sus redes sociales, y ella les respondió con otro video.</p>
+          <p>Los comentarios llenos de odio aparecieron en una publicación en la que se la ve bailando y cantando muy contenta. No apuntaban a algo en concreto: eran críticas a todo el video, desde lo físico y lo personal hasta la ropa y los planos de la cámara.</p>
+          <p>En sus demás publicaciones suele tener un promedio de 150 comentarios; este video tuvo mucha más repercusión y superó las 10.700 interacciones, entre hate y personas que la defienden.</p>
+          <p>Cuando los comentarios pasaron a ser el centro de atención más que el propio video, Laura hizo otro leyendo algunos de los mensajes de odio —"ya falta una dieta, buen consejo, a cuidarse", "nunca despegó por su personalidad"— y les respondió con una frase que se repetía: "¿cómo te explico?". "¿Cómo te explico que como sano?", "¿cómo te explico que soy feliz con esta personalidad?".</p>
+          <p>Gracias a ese video, muchos simpatizaron aún más con la actriz, aunque algunos creen que sería mejor ignorar los comentarios para no alimentar el hate.</p>
+          <p>"No hay una forma concreta de protegerse: cuando uno quiere atacar, ataca, y cuando uno es objeto de algún tipo de violencia, lo es, y es muy difícil correrse de eso", sostuvo Constanza Rached, psicóloga social. Y agregó: "Cuando el problema es del otro, trataré de correrme: borrar el comentario, no responder, bloquear. Es decir, no dar lugar a esa agresión, porque si se responde con violencia se genera aún más violencia".</p>
+          <p>Estos discursos de odio traen consecuencias, no solo porque pueden perjudicar a personas o grupos específicos, sino porque fomentan un ambiente donde la violencia simbólica se perpetúa. Entre sus efectos están la baja autoestima, la ansiedad y la depresión.</p>
+          <p>También hablamos con el abogado Sebastián García para saber si se puede actuar legalmente: "Siempre existen acciones que se pueden iniciar en el ámbito civil. Se puede iniciar el reclamo penalmente e, independientemente de eso, acciones por daños y perjuicios".</p>
+          <p>"Es importante aclarar que no todo tipo de cyberbullying puede recaer en un delito. En muchos casos, el ciberacoso puede ser considerado una conducta inapropiada o desagradable, pero no alcanza el umbral para ser catalogado como un delito penal", concluyó.</p>
+    </article>
+  </dialog>
+
+  <dialog class="caso lectura tema-claro" id="lectura-cancha" data-lectura-dialogo aria-labelledby="lectura-cancha-titulo">
+    <div class="caso__barra">
+      <span class="caso__nombre">Lo que escribo</span>
+      <button class="boton" type="button" data-cerrar-lectura>Cerrar</button>
+    </div>
+    <header class="caso__portada lectura__portada">
+      <h3 class="lectura__titulo" id="lectura-cancha-titulo">Ella quiere ir a la cancha</h3>
+      <p class="caso__categoria">Perfil con entrevista · Taller de Expresión I, UBA · Equipo de 5</p>
+    </header>
+    <article class="capitulo lectura__texto">
+          <p>El 8 de diciembre de 2019, tras 25 años de gestión de las mismas agrupaciones políticas, Boca rompió el récord de máxima cantidad de votantes en elecciones de clubes argentinos. Un total de 38.363 personas se acercaron a Brandsen 805, La Boca, a ejercer su derecho societario.</p>
+          <p>El segundo hecho histórico de aquel domingo fue la consagración de la primera mujer en integrar la Comisión Directiva del Club. Quien rompió con 114 años de "pacto de caballeros" fue Adriana Bravo, hoy vicepresidenta del C.A.B.J.</p>
+          <p>Entramos a su despacho. Modesto, pero de apariencia a estrenar. Una gran mesa cubre casi toda la oficina, con sillas a los costados y una más alta en la cabecera; allí se sienta Bravo. A sus espaldas tiene réplicas de la Copa Libertadores y la Intercontinental. A su lado, una urna restaurada que dice "Activas 87", que remite a una foto publicada por el Archivo General de la Nación, tomada en las elecciones de Boca de 1955.</p>
+          <p>El frente que integra y ganó en 2019 obtuvo en la mesa de "Damas" el 57,05 %, un porcentaje altísimo y definitorio para posicionarla donde está hoy. Sergio Lodise, historiador del Club, no sabe a ciencia cierta en qué momento se dejó de hablar de "Activas" para hablar de "Damas", pero desde marzo de 2020 las socias de Boca volvieron a ser Activas.</p>
+          <p>—Para mí es la vicepresidencia de todas, no es solo mía, porque yo creo que sin la lucha de todas no hubiésemos llegado a esto.</p>
+          <p>El amor de Adriana Bravo por Boca comenzó en la clandestinidad, a escondidas de sus padres. Después de insistirle tanto a su novio de entonces, que después se convertiría en su marido y padre de sus tres hijas, terminaron presenciando un partido en La Bombonera.</p>
+          <p>—Y le dije "yo quiero ir a la cancha, yo quiero ir a la cancha, yo quiero ir a la cancha". Y fuimos.</p>
+          <p>En esa época, que una mujer fuera a la cancha no estaba bien visto; además se corrían riesgos. Una exponente de esto es "La Raulito", hincha del Xeneize que modificó su apariencia física, según ella, "porque los hombres recibían un mejor trato". Sin embargo, para La Raulito, para Adriana y para muchas mujeres, las ganas de alentar a su equipo en un espacio que históricamente se quiso masculinizar fueron más poderosas.</p>
+          <p>Corría el año 2013 cuando le ofrecieron a su marido, Martín, abrir una filial en el partido de Tres de Febrero. Al ser tan compañeros, consideraron que Adriana también podía formar parte del proyecto. Otra vez se enfrentó a las barreras que se resisten a la participación de las mujeres en el fútbol, esta vez en el plano político.</p>
+          <p>—Cuando él propone que sí, que se hacía cargo de la filial, les dice "bueno, Adriana me va a acompañar". Y le dicen "¿a vos te parece meter una mujer? Mirá que somos todos hombres, eh", y él les dice "sí, no pasa nada, Adri es una más".</p>
+          <p>Como presidenta del Departamento de Inclusión e Igualdad, comenzó saldando viejas deudas. Le dio la visibilidad que merecían a las históricas campeonas de fútbol femenino, que se habían cansado de golpear puertas buscando un lugarcito en la historia de la institución. Revolvió en el baúl de los recuerdos y restauró la histórica urna de Damas que hoy luce orgullosa en su oficina, como diciendo: acá estamos, siempre estuvimos, somos parte. Transmitió partidos femeninos, abrió las puertas de los entrenamientos y, junto a su equipo, creó el primer Protocolo de Acción Institucional en casos de discriminación, acoso y violencia por razones de género y/u orientación sexual.</p>
+          <p>—Hay cosas para mejorar y cambiar. Lo que podemos brindar para hacer esos cambios es el diálogo, la charla, la concientización. Quizás hoy no podés cambiarlo de un día para el otro, pero sí trabajar con las inferiores, empezar con charlas, para evitar a futuro todas estas cosas.</p>
+          <p>En su pequeña oficina sobran los proyectos, las ideas, el compromiso y, sobre todo, la paciencia. Es una mujer optimista, pero realista: sabe que para abrirles paso a derechos históricamente negados no alcanza con una mujer con ideas. Hace falta un compromiso social que empuje en la misma dirección, y saber esperar sin dejar de insistir.</p>
+          <p>Ya no es la nena que se escapaba para ir a la cancha, aunque conserva esa sencillez de piba de barrio. De jean y zapatillas, con el mate azul y oro en la mano, no se olvida de la Adriana que fue, y de que todos sus logros también son para ella. Y lo que va a venir, para todas.</p>
+          <p>—Por último, ¿con qué soñás? ¿Qué más te espera?</p>
+          <p>—Sueño con... Y, ¿por qué no con la presidencia de nuestro Club? ¿Por qué no?</p>
+    </article>
+  </dialog>
+
+  <dialog class="caso lectura tema-claro" id="lectura-armonia" data-lectura-dialogo aria-labelledby="lectura-armonia-titulo">
+    <div class="caso__barra">
+      <span class="caso__nombre">Lo que escribo</span>
+      <button class="boton" type="button" data-cerrar-lectura>Cerrar</button>
+    </div>
+    <header class="caso__portada lectura__portada">
+      <h3 class="lectura__titulo" id="lectura-armonia-titulo">Armonía</h3>
+      <p class="caso__categoria">Crónica de una salida al CCK · Taller de Expresión I, UBA · Individual</p>
+    </header>
+    <article class="capitulo lectura__texto">
+          <p>Llego a la puerta del CCK y, en el playón antes de la entrada, me encuentro con los preparativos de lo que parece ser un show de tango.</p>
+          <p>Mientras espero, observo a mi alrededor. La gente se va acercando tímidamente a presenciar el show que se está preparando. Más lejos veo la fila larga de gente esperando subir al 159; creo que ni la fila del bondi 148 que tomo todos los días para ir a casa llega a ser tan larga.</p>
+          <p>El centro es enorme: a su alrededor hay ventanales gigantes con rejas negras y puntas doradas. En las escaleras que dan a la entrada hay un hombre sentado que observa todo, al igual que yo. Viste campera verde agua, gorra de lana y guantes negros; no creo que haga tanto frío para usar guantes hoy, pero es solo mi opinión.</p>
+          <p>Estoy ansiosa por ingresar, estoy parada sin saber qué hacer y tengo frío.</p>
+          <p>Ahora sí, ingresamos. En el salón de la entrada veo un globo gigante compuesto por cuadraditos azules; algo me hace sentir que ya lo había visto antes. Subimos por escaleras mecánicas y, al llegar al segundo piso, me llama la atención una especie de óvalo gigante que parece estar hecho de alambre. Mi compañera me dice que representa una ballena, la ballena del CCK.</p>
+          <p>Realmente imaginaba que este lugar no me iba a decir nada, y resulta que ahora estoy muy emocionada por saber qué vamos a ver adentro de esta sala inmersiva para la que hacemos fila.</p>
+          <p>Entramos: todo alrededor está iluminado de azul, incluso el piso. Empiezan a aparecer imágenes por todas partes. Se tiñe de lo que parece ser la ciudad de Nueva York. Suena tango de fondo.</p>
+          <p>Se oscurece todo y comienza a sonar un bandoneón. Se oyen pasos en tacones. Alrededor hay imágenes antiguas en blanco y negro; se translucen páginas de periódicos. En una esquina, una señora se ve muy emocionada por lo que ve. Me recuerda a mi abuela; creo que ella estaría igual si viera esto. Siento una especie de felicidad y no sé por qué; serán todos los recuerdos de mi infancia junto a ella que el tango me trae.</p>
+          <p>Todo alrededor se llena de discos mientras suena "Libertango" de Piazzolla, precioso. Y para terminar se dibuja una frase en la pared: LA MÚSICA ES EL ARTE MÁS DIRECTO, ENTRA POR EL OÍDO Y VA AL CORAZÓN. Creo que, sin quererlo, esa fue justo la sensación que tuve hoy.</p>
+          <p>De casualidad todo estuvo en sintonía: ni me hubiera imaginado que la muestra haría honor a Astor Piazzolla y que afuera, justamente, se preparaba un show de tango. Me quedé con ganas de quedarme a verlo, pero ya se hacía tarde para volver a casa.</p>
+    </article>
+  </dialog>
   </main>
 
   <footer class="pie tema-oscuro">

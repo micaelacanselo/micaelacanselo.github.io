@@ -65,10 +65,16 @@ const rueda = document.querySelector("[data-rueda]");
 const apertura = document.querySelector("[data-apertura]");
 const fichaRueda = document.querySelector("[data-ficha]");
 const controlesRueda = document.querySelector("[data-rueda-controles]");
+const tituloRueda = document.querySelector("[data-rueda-titulo]");
 const lienzoPortada = document.querySelector("[data-hero-fondo]");
-const PASO_RUEDA = 360 / carpetas.length;
+// La rueda muestra solo los destacados y cierra con una tarjeta que abre el índice completo
+const destacados = carpetas.filter((c) => c.el.hasAttribute("data-destacado"));
+const PARADAS = destacados.length + 1;
+const CIERRE = destacados.length;
+const PASO_RUEDA = 360 / PARADAS;
 const RESERVA_RUEDA = 1.7; // la última tarjeta se queda quieta este tramo, en pantallas
-const INICIO_RUEDA = 0.14; // hasta acá manda la frase; después gira
+const INICIO_RUEDA = 0.22; // hasta acá manda la frase; después gira (igual que .trabajos__ancla en styles.css)
+const TEXTO_INDICE = "Ver todos los proyectos";
 const medidasRueda = { cw: 0, cyA: 0, cyB: 0, s: 1 };
 let avanceRueda = 0;
 let frenteRueda = -1;
@@ -89,11 +95,11 @@ function medirRueda() {
   const ch = cw * 0.75;
   const s = W < 768 ? 1.32 : 1.55;
   const piso = apertura.offsetHeight + 24;
-  Object.assign(medidasRueda, { cw, s, cyA: Math.max(piso, H * 0.5) + ch / 2 + R, cyB: H * (W < 768 ? 0.31 : 0.36) + R * s });
+  Object.assign(medidasRueda, { cw, s, cyA: Math.max(piso, H * 0.5) + ch / 2 + R, cyB: H * (W < 768 ? 0.36 : 0.42) + R * s });
   rueda.style.setProperty("--cw", `${cw}px`);
 }
 
-carpetas.forEach((c, i) => {
+destacados.forEach((c, i) => {
   const hash = c.el.querySelector("a").hash;
   const li = document.createElement("li");
   li.className = "rueda__carta";
@@ -113,6 +119,26 @@ carpetas.forEach((c, i) => {
   rueda?.append(li);
 });
 
+// Tarjeta de cierre: un mosaico con los trabajos que no entran en la rueda
+if (rueda) {
+  const li = document.createElement("li");
+  li.className = "rueda__carta rueda__carta--cierre";
+  li.style.setProperty("--angulo", `${CIERRE * PASO_RUEDA}deg`);
+  const resto = carpetas.filter((c) => !destacados.includes(c)).slice(0, 4);
+  const mosaico = resto.map((c) => `<img src="${c.el.querySelector(".carpeta__ficha img").getAttribute("src")}" alt="" width="1200" height="900" loading="lazy" decoding="async">`).join("");
+  li.innerHTML = `<a href="#trabajos" aria-haspopup="dialog"><span class="rueda__mosaico">${mosaico}</span><span class="rueda__nombre">${TEXTO_INDICE}</span></a>`;
+  const enlace = li.firstElementChild;
+  enlace.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (!reducido && frenteRueda !== CIERRE) irACarpeta(CIERRE);
+    else abrirIndice();
+  });
+  enlace.addEventListener("focus", () => {
+    if (!reducido && enlace.matches(":focus-visible")) irACarpeta(CIERRE);
+  });
+  rueda.append(li);
+}
+
 const suaveSalida = (t) => 1 - (1 - t) ** 3;
 const suaveAmbos = (t) => t * t * (3 - 2 * t);
 
@@ -121,7 +147,7 @@ function moverRueda() {
   const objetivo = progresoTrabajos();
   avanceRueda += (objetivo - avanceRueda) * 0.1;
   const t = suaveSalida(Math.min(avanceRueda / INICIO_RUEDA, 1));
-  const tramo = (Math.max(0, (avanceRueda - INICIO_RUEDA) / (1 - INICIO_RUEDA))) * (carpetas.length - 1);
+  const tramo = (Math.max(0, (avanceRueda - INICIO_RUEDA) / (1 - INICIO_RUEDA))) * (PARADAS - 1);
   // Se detiene derecha en cada proyecto y gira entre uno y otro
   const base = Math.floor(tramo);
   const giro = base + suaveAmbos(Math.min(Math.max((tramo - base - 0.25) / 0.5, 0), 1));
@@ -139,36 +165,53 @@ function moverRueda() {
   const tramoFinal = innerHeight * (RESERVA_RUEDA - 1);
   const pasado = -secTrabajos.getBoundingClientRect().top - (secTrabajos.offsetHeight - innerHeight * RESERVA_RUEDA);
   const costados = 1 - Math.min(Math.max(pasado / (tramoFinal * 0.8), 0), 1);
+  const frente = Math.min(Math.round(tramo), PARADAS - 1);
   [...rueda.children].forEach((carta, i) => {
-    carta.style.opacity = i === Math.min(Math.round(tramo), carpetas.length - 1) ? 1 : costados;
-    carta.style.visibility = i !== Math.min(Math.round(tramo), carpetas.length - 1) && costados === 0 ? "hidden" : "";
+    carta.style.opacity = i === frente ? 1 : costados;
+    carta.style.visibility = i !== frente && costados === 0 ? "hidden" : "";
   });
 
   const verFicha = Math.max(0, (t - 0.6) / 0.4);
-  for (const el of [fichaRueda, controlesRueda]) {
+  for (const el of [tituloRueda, fichaRueda, controlesRueda]) {
     el.style.opacity = el === controlesRueda ? verFicha * costados : verFicha;
     el.style.visibility = verFicha > 0 ? "" : "hidden";
   }
+  // El título se resalta cuando termina de aparecer
+  if (verFicha > 0.8) tituloRueda.firstElementChild.classList.add("titulo-marca--visible");
 
-  const n = Math.min(Math.round(tramo), carpetas.length - 1);
-  if (n !== frenteRueda) {
-    frenteRueda = n;
-    const c = carpetas[n];
-    fichaRueda.querySelector("[data-ficha-categoria]").textContent = datoCarpeta(c, "categoria").textContent;
-    fichaRueda.querySelector("[data-ficha-titulo]").textContent = datoCarpeta(c, "titulo").textContent;
-    fichaRueda.querySelector("[data-ficha-frase]").textContent = datoCarpeta(c, "frase").textContent;
-    const tipo = fichaRueda.querySelector("[data-ficha-tipo]");
-    tipo.textContent = datoCarpeta(c, "tipo").textContent;
-    tipo.classList.toggle("ficha__tipo--real", datoCarpeta(c, "tipo").classList.contains("carpeta__tipo--real"));
-    fichaRueda.querySelector("[data-ficha-abrir]").href = c.el.querySelector("a").hash;
+  if (frente !== frenteRueda) {
+    frenteRueda = frente;
+    pintarFicha(frente);
   }
 }
 
+// La ficha cuenta el proyecto del frente; en la última parada invita al índice completo
+function pintarFicha(n) {
+  const cierre = n === CIERRE;
+  const c = destacados[n];
+  const abrir = fichaRueda.querySelector("[data-ficha-abrir]");
+  const tipo = fichaRueda.querySelector("[data-ficha-tipo]");
+  fichaRueda.classList.toggle("ficha--cierre", cierre);
+  // En el cierre queda solo el botón: el mosaico ya dice que hay más
+  for (const [dato, clase] of [["categoria", "categoria"], ["titulo", "titulo"], ["frase", "frase"]]) {
+    const el = fichaRueda.querySelector(`[data-ficha-${dato}]`);
+    el.textContent = cierre ? "" : datoCarpeta(c, clase).textContent;
+    el.hidden = cierre;
+  }
+  tipo.textContent = cierre ? "" : datoCarpeta(c, "tipo").textContent;
+  tipo.hidden = cierre;
+  tipo.classList.toggle("ficha__tipo--real", !cierre && datoCarpeta(c, "tipo").classList.contains("carpeta__tipo--real"));
+  abrir.href = cierre ? "#trabajos" : c.el.querySelector("a").hash;
+  abrir.textContent = cierre ? TEXTO_INDICE : "Ver proyecto";
+  if (cierre) abrir.setAttribute("aria-haspopup", "dialog");
+  else abrir.removeAttribute("aria-haspopup");
+}
+
 function irACarpeta(i) {
-  const n = Math.min(Math.max(i, 0), carpetas.length - 1);
+  const n = Math.min(Math.max(i, 0), PARADAS - 1);
   const r = secTrabajos.getBoundingClientRect();
   const alto = r.height - innerHeight * RESERVA_RUEDA;
-  const p = INICIO_RUEDA + ((1 - INICIO_RUEDA) * n) / (carpetas.length - 1);
+  const p = INICIO_RUEDA + ((1 - INICIO_RUEDA) * n) / (PARADAS - 1);
   scrollTo({ top: scrollY + r.top + alto * p, behavior: "smooth" });
 }
 
@@ -176,7 +219,8 @@ secTrabajos?.querySelector("[data-anterior]").addEventListener("click", () => ir
 secTrabajos?.querySelector("[data-siguiente]").addEventListener("click", () => irACarpeta(frenteRueda + 1));
 fichaRueda?.querySelector("[data-ficha-abrir]").addEventListener("click", (e) => {
   e.preventDefault();
-  abrirCaso(e.currentTarget.hash);
+  if (frenteRueda === CIERRE) abrirIndice();
+  else abrirCaso(e.currentTarget.hash);
 });
 
 medirRueda();
@@ -358,18 +402,10 @@ addEventListener("popstate", () => {
 });
 if (casoDe(location.hash)) mostrarCaso(casoDe(location.hash));
 
-// ---------- Herramientas: los logos se mueven solos, así que se pueden pausar ----------
-const secHerramientas = document.querySelector("[data-herramientas]");
-secHerramientas?.querySelector("[data-pausar-herramientas]").addEventListener("click", (e) => {
-  const pausada = secHerramientas.classList.toggle("herramientas--pausada");
-  e.currentTarget.setAttribute("aria-pressed", String(pausada));
-  e.currentTarget.textContent = pausada ? "Seguir" : "Pausar";
-});
-
 // ---------- Secciones: cada bloque aparece al entrar en pantalla ----------
 if ("IntersectionObserver" in window && !reducido) {
   const bloques = [...document.querySelectorAll(
-    "#sobre-mi h2, #sobre-mi .sobre-mi__texto > p, #sobre-mi .datos > div, .certificados__titulo, .certificados__ventana, .certificados__pausa, #que-hago h2, #que-hago .seccion__bajada, #que-hago .pilar, #herramientas h2, #herramientas .seccion__bajada, #herramientas .herramienta, #contacto h2, #contacto .seccion__bajada, #contacto .hero__acciones"
+    "#sobre-mi h2, #sobre-mi .sobre-mi__texto > p, #sobre-mi .datos > div, .certificados__titulo, .certificados__ventana, .certificados__pausa, #que-hago h2, #que-hago .seccion__bajada, #que-hago .pilar, #escritos h2, #escritos .seccion__bajada, #escritos .escrito, #herramientas h2, #herramientas .seccion__bajada, #herramientas .herramienta, #contacto h2, #contacto .seccion__bajada, #contacto .hero__acciones"
   )];
   const verBloque = new IntersectionObserver((entradas) => {
     // Los que entran juntos salen escalonados
@@ -435,7 +471,10 @@ const indice = document.querySelector("[data-indice]");
 const listaIndice = document.querySelector("[data-indice-lista]");
 
 function llevarACarpeta(i) {
-  const enlace = rueda.children[i].firstElementChild;
+  // i es la posición en el índice; la rueda solo tiene los destacados
+  const enRueda = destacados.indexOf(carpetas[i]);
+  if (enRueda < 0) return;
+  const enlace = rueda.children[enRueda].firstElementChild;
   if (reducido) enlace.scrollIntoView({ block: "center" });
   else irACarpeta(i);
   enlace.focus({ preventScroll: true });
@@ -516,7 +555,45 @@ function abrirIndice(e) {
 
 document.querySelectorAll("[data-ver-todos]").forEach((boton) => boton.addEventListener("click", abrirIndice));
 document.querySelector("[data-cerrar-indice]")?.addEventListener("click", () => indice.close());
-indice?.addEventListener("close", () => document.documentElement.classList.remove("indice-abierto"));
+indice?.addEventListener("close", () => {
+  document.documentElement.classList.remove("indice-abierto");
+  // Si se abrió desde un link filtrado, al cerrar se limpia la dirección
+  if (filtroDelEnlace()) history.replaceState(null, "", location.pathname + location.search);
+});
+
+// Links para compartir con el índice ya filtrado: /#marketing, /#comunicacion, /#diseno-web…
+const aSlug = (texto) => texto.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/\s+/g, "-");
+
+function filtroDelEnlace() {
+  const pedido = decodeURIComponent(location.hash.slice(1));
+  if (!pedido) return null;
+  return [...contenedorFiltros.querySelectorAll(".filtro")].find((f) => aSlug(f.textContent) === pedido) || null;
+}
+
+function abrirIndiceFiltrado() {
+  const filtro = filtroDelEnlace();
+  if (!filtro || !indice) return;
+  filtro.click();
+  if (!indice.open) abrirIndice();
+}
+
+abrirIndiceFiltrado();
+addEventListener("hashchange", abrirIndiceFiltrado);
+
+// ---------- Lo que escribo: cada pieza abre su texto entero ----------
+document.querySelectorAll("[data-lectura]").forEach((pieza) => {
+  pieza.addEventListener("click", () => {
+    const lectura = document.getElementById(`lectura-${pieza.dataset.lectura}`);
+    if (!lectura) return;
+    bloquearFondo();
+    lectura.showModal();
+    lectura.scrollTop = 0;
+  });
+});
+document.querySelectorAll("[data-lectura-dialogo]").forEach((lectura) => {
+  lectura.querySelector("[data-cerrar-lectura]").addEventListener("click", () => lectura.close());
+  lectura.addEventListener("close", () => document.documentElement.classList.remove("indice-abierto"));
+});
 
 // ---------- Formulario de contacto: envía sin recargar ----------
 const panelContacto = document.querySelector("[data-contacto]");

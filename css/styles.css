@@ -671,8 +671,10 @@ p {
 
 /* ---------- Portada y trabajos: una sola escena ---------- */
 
+/* 4 destacados + cierre: unos 50vh de scroll por proyecto */
 .hero {
-  height: 620vh;
+  --alto-hero: 420vh;
+  height: var(--alto-hero);
   min-height: 0;
   padding: 0;
   overflow: visible;
@@ -754,7 +756,7 @@ p {
 
 .trabajos__ancla {
   position: absolute;
-  top: calc((620vh - 170svh) * 0.14);
+  top: calc((var(--alto-hero) - 170svh) * 0.22); /* 0.22 = INICIO_RUEDA en js/main.js */
   scroll-margin-top: 0;
 }
 
@@ -924,6 +926,12 @@ p {
   opacity: 0;
 }
 
+/* En celular, fuera de la portada: baja (js/mica.js) y se apaga para no tapar texto */
+.mica--escondida {
+  opacity: 0;
+  transition-duration: 0.3s;
+}
+
 .mica__brazo {
   transform-box: view-box;
   transform-origin: 141px 150px;
@@ -941,6 +949,12 @@ p {
 
   .mica__pelo {
     animation: mica-pelo 6s ease-in-out infinite alternate;
+  }
+
+  /* Saluda solo en la portada; al acompañar queda quieta */
+  .mica--acompana .mica__brazo,
+  .mica--acompana .mica__pelo {
+    animation: none;
   }
 
   html:not(.intro) .mica path {
@@ -1032,6 +1046,43 @@ p {
   display: none;
 }
 
+/* Cierre de la rueda: mosaico con los trabajos que siguen en el índice */
+.rueda__carta--cierre a {
+  background: var(--arena);
+}
+
+.rueda__mosaico {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--cw) * 0.025);
+  height: 100%;
+  padding: calc(var(--cw) * 0.035);
+}
+
+.rueda__mosaico img {
+  min-height: 0;
+  border-radius: calc(var(--radio) * 0.55);
+  object-fit: cover;
+}
+
+.ficha--cierre .ficha__botones .boton:not(.boton--principal) {
+  display: none;
+}
+
+/* Título de la rueda: aparece junto con la ficha, cuando se va la frase */
+.rueda__titulo {
+  position: absolute;
+  top: calc(var(--alto-encabezado) + 1.25rem);
+  left: 50%;
+  z-index: 3;
+  width: max-content;
+  max-width: calc(100% - 2 * var(--margen));
+  font-size: clamp(1.75rem, 1.2rem + 2vw, 3rem);
+  text-align: center;
+  opacity: 0;
+  transform: translateX(-50%);
+}
+
 .ficha {
   position: absolute;
   bottom: 1.25rem;
@@ -1110,6 +1161,7 @@ p {
 
 /* La intro queda sola en pantalla */
 .intro .rueda,
+.intro .rueda__titulo,
 .intro .ficha,
 .intro .rueda__controles {
   opacity: 0;
@@ -1179,6 +1231,13 @@ p {
 
   .ficha {
     display: none;
+  }
+
+  .rueda__titulo {
+    position: static;
+    margin: var(--esp-6) auto 0;
+    opacity: 1;
+    transform: none;
   }
 
   .rueda__controles {
@@ -1292,33 +1351,10 @@ main {
   background: linear-gradient(var(--arena), var(--arena)) no-repeat 0 78% / 0 40%;
 }
 
-/* Se pinta en vivo, queda, se borra y vuelve, como la frase de la portada */
+/* Se pinta una sola vez al aparecer y queda: el movimiento continuo es solo de la portada */
 .titulo-marca--visible {
-  animation: resaltar-titulo 11s linear infinite;
-}
-
-@keyframes resaltar-titulo {
-  0% {
-    background-position: 0 78%;
-    background-size: 0 40%;
-  }
-
-  11%,
-  88% {
-    background-position: 0 78%;
-    background-size: 100% 40%;
-  }
-
-  88.01% {
-    background-position: 100% 78%;
-    background-size: 100% 40%;
-  }
-
-  94%,
-  100% {
-    background-position: 100% 78%;
-    background-size: 0 40%;
-  }
+  background-size: 100% 40%;
+  transition: background-size 1.1s var(--curva) 0.15s;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1327,7 +1363,7 @@ main {
   }
 
   .titulo-marca--visible {
-    animation: none;
+    transition: none;
   }
 }
 
@@ -1503,7 +1539,6 @@ main {
   width: clamp(2.75rem, 2.2rem + 1.8vw, 4.25rem);
   height: clamp(2.75rem, 2.2rem + 1.8vw, 4.25rem);
   object-fit: contain;
-  animation: flotar-logo var(--dur) var(--retraso) ease-in-out infinite alternate;
 }
 
 /* Sus logos son palabras: al mismo tamaño que los otros no se leen */
@@ -1512,43 +1547,309 @@ main {
   scale: 1.3;
 }
 
-@keyframes flotar-logo {
-  from {
-    transform: translateY(0.5rem) rotate(-4deg);
-  }
 
-  to {
-    transform: translateY(-0.5rem) rotate(4deg);
-  }
+
+/* ---------- Lo que escribo: cada texto en su formato, como sobre una mesa ---------- */
+
+.escritos__cabecera {
+  display: grid;
+  gap: var(--esp-3);
+  max-width: 44rem;
+  margin-bottom: var(--esp-6);
 }
 
-.herramientas--pausada .herramienta img {
-  animation-play-state: paused;
+.escritos__mesa {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(1.5rem, 1rem + 2vw, 3rem) clamp(1rem, 0.5rem + 1.5vw, 2rem);
+  align-items: start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.escrito--mail { grid-column: 1 / 6; grid-row: 1 / 3; --giro: -1.6deg; }
+.escrito--nota { grid-column: 6 / 10; grid-row: 1 / 3; --giro: 1.2deg; margin-top: var(--esp-5); }
+.escrito--perfil { grid-column: 10 / 13; --giro: -1deg; }
+.escrito--cronica { grid-column: 10 / 13; --giro: 1.8deg; }
+
+.escrito__pieza {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.escrito__pieza > span {
+  display: block;
+  border-radius: var(--radio);
+  box-shadow: 0 14px 34px rgb(68 35 24 / 0.16);
+  transform: rotate(var(--giro, 0deg));
+  transition: transform var(--dur-media) var(--curva-fuerte), box-shadow var(--dur-media) var(--curva-fuerte);
+}
+
+.escrito__pieza:focus-visible {
+  outline: none;
+}
+
+.escrito__pieza:focus-visible > span {
+  outline: 3px solid var(--tinta);
+  outline-offset: 4px;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .herramientas__logos:hover .herramienta img {
-    animation-play-state: paused;
+  .escrito__pieza:hover > span {
+    box-shadow: 0 24px 48px rgb(68 35 24 / 0.22);
+    transform: rotate(0deg) translateY(-6px);
+  }
+}
+
+.escrito__pie {
+  margin-top: var(--esp-3);
+  color: var(--tinta-suave);
+  font-size: var(--texto-s);
+}
+
+.escrito__pie strong {
+  color: var(--tinta);
+  font-weight: 500;
+}
+
+/* El mail: asunto, remitente, imagen y botón, como llega a la bandeja */
+.mail {
+  overflow: hidden;
+  padding-bottom: var(--esp-4);
+  background: var(--papel);
+}
+
+.mail__asunto {
+  display: block;
+  padding: var(--esp-4) var(--esp-4) 0;
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.mail__de {
+  display: block;
+  padding: var(--esp-1) var(--esp-4) var(--esp-3);
+  border-bottom: 1px solid rgb(68 35 24 / 0.12);
+  color: var(--tinta-suave);
+  font-size: var(--texto-s);
+}
+
+.mail__imagen {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.mail__cuerpo {
+  display: block;
+  padding: var(--esp-4) var(--esp-4) 0;
+  line-height: 1.5;
+}
+
+.mail__cuerpo strong {
+  display: block;
+  margin-bottom: var(--esp-1);
+  font-weight: 500;
+}
+
+.mail__boton {
+  display: inline-block;
+  margin: var(--esp-4) var(--esp-4) 0;
+  padding: 0.7em 1.6em;
+  border-radius: var(--radio-pildora);
+  background: var(--tinta);
+  color: var(--papel);
+  font-size: var(--texto-s);
+  font-weight: 500;
+}
+
+/* La nota: como un recorte de diario */
+.nota {
+  padding: var(--esp-4);
+  background: var(--papel);
+}
+
+.nota__seccion {
+  display: block;
+  padding-bottom: var(--esp-2);
+  border-bottom: 2px solid var(--tinta);
+  font-size: var(--texto-s);
+  font-weight: 500;
+}
+
+.nota__titulo {
+  display: block;
+  margin-block: var(--esp-3);
+  font-size: clamp(1.375rem, 1.1rem + 1vw, 2rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.nota__foto {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: calc(var(--radio) * 0.4);
+}
+
+.nota__bajada {
+  display: block;
+  margin-top: var(--esp-3);
+  color: var(--tinta-suave);
+  line-height: 1.5;
+}
+
+/* El perfil: la frase que lo resume */
+.cita-grande {
+  padding: var(--esp-5) var(--esp-4);
+  background: var(--arena);
+}
+
+.cita-grande__texto {
+  display: block;
+  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.25rem);
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.cita-grande__quien {
+  display: block;
+  margin-top: var(--esp-4);
+  color: var(--tinta-suave);
+  font-size: var(--texto-s);
+}
+
+/* La crónica: su primera línea, sobre tinta */
+.cronica {
+  padding: var(--esp-5) var(--esp-4);
+  background: var(--tinta);
+  color: var(--crema);
+}
+
+.cronica__titulo {
+  display: block;
+  font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.75rem);
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.cronica__texto {
+  display: block;
+  margin-top: var(--esp-3);
+  line-height: 1.5;
+}
+
+/* Lectura: el texto entero, en una columna cómoda */
+.lectura__portada {
+  gap: var(--esp-2);
+  padding-bottom: 0;
+}
+
+.lectura__titulo {
+  max-width: 22ch;
+  font-size: clamp(2rem, 1.4rem + 2.6vw, 3.75rem);
+  letter-spacing: -0.05em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.capitulo.lectura__texto {
+  margin-top: var(--esp-5);
+  padding-bottom: var(--esp-6);
+}
+
+.lectura__texto h4 {
+  margin-top: var(--esp-6);
+  font-size: var(--titulo-s);
+}
+
+.lectura__texto h4:first-child {
+  margin-top: 0;
+}
+
+.lectura__imagen {
+  display: block;
+  width: 100%;
+  max-width: 40rem;
+  height: auto;
+  margin-top: var(--esp-4);
+  border-radius: var(--radio);
+}
+
+.lectura__figura {
+  margin: 0;
+}
+
+.lectura__figura figcaption {
+  margin-top: var(--esp-2);
+  color: var(--tinta-suave);
+  font-size: var(--texto-s);
+}
+
+/* Tablet: dos columnas; celular: una, con giros más chicos */
+@media (max-width: 59.99rem) {
+  .escritos__mesa {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .escrito--mail,
+  .escrito--nota,
+  .escrito--perfil,
+  .escrito--cronica {
+    grid-column: auto;
+    grid-row: auto;
+    margin-top: 0;
+  }
+}
+
+/* Celular: las piezas se pasan de costado, como hojas sobre la mesa */
+@media (max-width: 39.99rem) {
+  .escritos__mesa {
+    display: flex;
+    gap: var(--esp-3);
+    margin-inline: calc(var(--margen) * -1);
+    padding: var(--esp-2) var(--margen) var(--esp-3);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--margen);
+    scrollbar-width: none;
+  }
+
+  .escritos__mesa::-webkit-scrollbar {
+    display: none;
+  }
+
+  .escrito {
+    flex: 0 0 82%;
+    scroll-snap-align: start;
+  }
+
+  .escrito.escrito--perfil,
+  .escrito.escrito--cronica,
+  .escrito.escrito--mail,
+  .escrito.escrito--nota {
+    --giro: 0deg;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .herramienta img {
-    animation: none;
+  .escrito__pieza > span {
+    transition: none;
   }
-
-  .herramientas__pausa {
-    display: none;
-  }
-}
-
-.herramientas__pausa {
-  position: absolute;
-  top: var(--esp-4);
-  right: var(--margen);
-  min-height: 36px;
-  padding: 0.4em 1.1em;
-  font-size: 0.8125rem;
 }
 
 /* ---------- Índice de trabajos ---------- */
@@ -1861,6 +2162,18 @@ main {
   --fondo-lamina: var(--itba-azul);
 }
 
+.caso--adopciones {
+  --fondo-lamina: var(--adopciones-verde);
+}
+
+.caso--havanna {
+  --fondo-lamina: var(--havanna-rojo);
+}
+
+.caso--intensite {
+  --fondo-lamina: var(--intensite-azul);
+}
+
 .lamina--fondo {
   background: var(--fondo-lamina);
 }
@@ -2000,6 +2313,17 @@ main {
   justify-content: center;
 }
 
+/* Tres piezas verticales a la par (historias, fotos), también en el celular */
+.piezas--tres,
+.piezas--tres.piezas {
+  grid-template-columns: repeat(3, minmax(0, 15rem));
+  justify-content: center;
+}
+
+.piezas--tres > :first-child {
+  grid-row: auto;
+}
+
 .lamina.piezas--flyer > img {
   max-width: 38.5rem;
   margin-inline: auto;
@@ -2066,6 +2390,32 @@ main {
 
 .capitulo h4 + p ~ p {
   margin-top: var(--esp-3);
+}
+
+/* Lista dentro de un capítulo: un punto por red o por pieza */
+.caso__lista {
+  display: grid;
+  gap: var(--esp-2);
+  max-width: 40rem;
+  margin-top: var(--esp-3);
+  padding-left: 1.2em;
+  font-size: var(--texto-m);
+  line-height: 1.5;
+}
+
+.caso__lista strong {
+  font-weight: 500;
+}
+
+/* Copy de una pieza, citado tal cual */
+.caso__cita {
+  max-width: 36rem;
+  margin: var(--esp-4) 0 0;
+  padding-left: var(--esp-4);
+  color: var(--tinta-suave);
+  font-size: clamp(1.125rem, 1rem + 0.6vw, 1.375rem);
+  line-height: 1.45;
+  text-wrap: pretty;
 }
 
 /* Maqueta: laptop y celular superpuesto */
@@ -2812,7 +3162,12 @@ main {
 @media (min-width: 60rem) {
   .contacto__interior.contacto__interior {
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    align-items: center;
+    align-items: start;
+  }
+
+  /* "hablemos" arranca a la altura del título de la tarjeta: mismo relleno que la tarjeta */
+  .contacto__texto {
+    padding-top: clamp(1.25rem, 4vw, 3rem);
   }
 }
 
@@ -2921,15 +3276,10 @@ main {
   }
 }
 
-/* En celular, Pausar va debajo del texto para no pisar el título */
-@media (max-width: 47.99rem) {
-  .herramientas__pausa {
-    position: static;
-  }
-}
-
 /* Dos filas parejas de seis en compu */
-$1repeat(6, minmax(0, 1fr));
+@media (min-width: 60rem) {
+  .herramientas__logos {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 }
 

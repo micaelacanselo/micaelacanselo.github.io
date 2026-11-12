@@ -10,6 +10,7 @@ if (mica && lugar && hero) {
   const FRASES = [
     ["contacto", "¡Escribime!"],
     ["herramientas", "Con esto trabajo"],
+    ["escritos", "Esto lo escribí yo"],
     ["que-hago", "Esto es lo que hago"],
     ["sobre-mi", "Esta es mi historia"],
   ].map(([id, texto]) => [document.getElementById(id), texto]);
@@ -27,14 +28,44 @@ if (mica && lugar && hero) {
     return "Mirá mis proyectos";
   }
 
+  // En celular acompaña toda la página, pero se aparta mientras tiene contenido debajo
+  const CONTENIDO = "p, h1, h2, h3, h4, li, a, button, img, video, input, textarea, label, small, span, svg, figure";
+  let ocupada = false;
+  let libreDesde = 0;
+  let proximaRevision = 0;
+
+  function hayContenido(x, y, lado) {
+    const puntos = [[0.2, 0.2], [0.8, 0.2], [0.5, 0.5], [0.2, 0.8], [0.8, 0.8]];
+    return puntos.some(([px, py]) => {
+      const el = document.elementFromPoint(x + lado * px, y + lado * py);
+      return el?.closest(CONTENIDO) && !el.closest("[data-mica]");
+    });
+  }
+
   function cuadro(ahora) {
     const acompana = -hero.getBoundingClientRect().top > innerHeight * 0.1;
+    const chico = innerWidth < 768;
     const ancho = mica.offsetWidth;
     const r = lugar.getBoundingClientRect();
-    const margen = innerWidth < 768 ? 10 : 22;
-    const s = acompana ? (innerWidth < 768 ? 0.5 : 0.72) : 1;
+    const margen = chico ? 10 : 22;
+    const s = acompana ? (chico ? 0.5 : 0.72) : 1;
     const x = acompana ? margen : r.left + r.width / 2 - ancho * 0.92;
-    const y = acompana ? innerHeight - mica.offsetHeight * s - margen : r.top;
+    const yEsquina = innerHeight - mica.offsetHeight * s - margen;
+
+    // Revisa la esquina unas veces por segundo; vuelve recién cuando lleva un rato libre
+    if (!acompana || !chico) ocupada = false;
+    else if (ahora >= proximaRevision) {
+      proximaRevision = ahora + 150;
+      if (hayContenido(x, yEsquina, ancho * s)) {
+        ocupada = true;
+        libreDesde = 0;
+      } else if (ocupada) {
+        libreDesde ||= ahora;
+        if (ahora - libreDesde > 500) ocupada = false;
+      }
+    }
+    const escondida = acompana && chico && ocupada;
+    const y = escondida ? innerHeight + margen : acompana ? yEsquina : r.top;
     const paso = reducido || !pos.listo ? 1 : 0.07;
     pos.x += (x - pos.x) * paso;
     pos.y += (y - pos.y) * paso;
@@ -46,6 +77,7 @@ if (mica && lugar && hero) {
     scrollPrevio = scrollY;
     mica.style.transform = `translate(${pos.x.toFixed(1)}px, ${pos.y.toFixed(1)}px) scale(${pos.s.toFixed(3)}) rotate(${inclinacion.toFixed(2)}deg)`;
     mica.classList.toggle("mica--acompana", acompana);
+    mica.classList.toggle("mica--escondida", escondida);
 
     const nueva = fraseActual(acompana);
     if (nueva !== frase) {
