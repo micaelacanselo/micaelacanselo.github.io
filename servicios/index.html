@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Seguridad: solo corre código del propio sitio; el formulario envía a Web3Forms -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <title>Servicios y precios · Micaela Canselo</title>
+  <meta name="description" content="Rediseño, landing, web institucional, tienda online y web cinematográfica, en WordPress o código a medida. Precios de lanzamiento, plazos y qué incluye cada servicio.">
+  <meta name="author" content="Micaela Canselo">
+  <meta name="theme-color" content="#f3ece2">
+  <link rel="canonical" href="https://micaelacanselo.github.io/servicios/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://micaelacanselo.github.io/servicios/">
+  <meta property="og:locale" content="es_AR">
+  <meta property="og:site_name" content="Micaela Canselo">
+  <meta property="og:title" content="Servicios y precios · Micaela Canselo">
+  <meta property="og:description" content="Webs en WordPress o código a medida. Precios de lanzamiento, plazos y qué incluye cada servicio.">
+  <meta property="og:image" content="https://micaelacanselo.github.io/assets/img/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Micaela Canselo: comunicación, marketing digital, diseño y desarrollo web">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../assets/fonts/outfit-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/servicios.css">
+  <script src="../js/servicios.js" type="module"></script>
+</head>
+<body class="pagina-servicios">
+  <a class="saltar-contenido" href="#contenido">Saltar al contenido</a>
+
+  <header class="encabezado encabezado--sobre-claro" data-encabezado>
+    <div class="contenedor encabezado__interior">
+      <a class="encabezado__logo" href="../" aria-label="Micaela Canselo, Comunicación digital, ir al portfolio">
+        <img class="encabezado__foto" src="../assets/img/micaela-avatar.webp" alt="" width="96" height="96">
+        <span class="encabezado__marca"><span class="encabezado__nombre">Micaela Canselo</span><small>Comunicación digital</small></span>
+      </a>
+      <nav aria-label="Principal">
+        <ul class="nav__lista">
+          <li class="nav__item--secundario"><a class="nav__enlace" href="#servicios">Servicios</a></li>
+          <li class="nav__item--secundario"><a class="nav__enlace" href="#trabajos">Trabajos</a></li>
+          <li class="nav__item--secundario"><a class="nav__enlace" href="#preguntas">Preguntas</a></li>
+          <li class="nav__item--secundario"><a class="nav__enlace" href="../">Portfolio</a></li>
+          <li><a class="boton" href="#contacto"><span><span class="encabezado__cv-verbo">Pedir </span>presupuesto</span></a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <!-- Portada -->
+    <section class="portada tema-claro" aria-labelledby="portada-titulo">
+      <div class="contenedor portada__interior">
+        <div class="portada__texto">
+          <h1 id="portada-titulo">
+            <span class="portada__linea"><span>Diseño y armo</span></span>
+            <span class="portada__linea"><span>la web de <span class="titulo-marca" data-titulo-marca>tu negocio</span><span class="punto" aria-hidden="true"></span></span></span>
+          </h1>
+          <p class="portada__bajada">Una landing, el sitio completo, una tienda online o una web que se cuenta como una historia. En WordPress o en código a medida, según lo que necesites.</p>
+          <p class="lanzamiento"><span class="lanzamiento__punto" aria-hidden="true"></span>Precios de lanzamiento</p>
+          <div class="portada__acciones">
+            <a class="boton boton--principal" href="#contacto">Pedir presupuesto</a>
+            <a class="boton" href="#servicios">Ver servicios y precios</a>
+          </div>
+        </div>
+        <div class="portada__abanico" aria-hidden="true">
+          <img src="../assets/proyectos/tarjetas/raiz-fotografia.webp" alt="" width="1200" height="900">
+          <img src="../assets/proyectos/tarjetas/relax-spa.webp" alt="" width="1200" height="900">
+          <img src="../assets/proyectos/tarjetas/tono.webp" alt="" width="1200" height="900" fetchpriority="high">
+        </div>
+      </div>
+    </section>
+
+    <!-- Servicios -->
+    <section class="seccion tema-claro servicios" id="servicios" aria-labelledby="servicios-titulo">
+      <div class="contenedor">
+        <div class="seccion__cabecera" data-aparecer>
+          <h2 id="servicios-titulo"><span class="titulo-marca" data-titulo-marca>servicios</span><span class="punto" aria-hidden="true"></span></h2>
+          <p class="seccion__bajada">Los precios son en pesos y son “desde”: cuando me contás qué necesitás, te paso un número cerrado.</p>
+        </div>
+
+        <ul class="servicios__lista" role="list">
+          <li class="servicio" data-aparecer>
+            <div class="servicio__cabeza">
+              <h3>Rediseño de tu web</h3>
+              <p class="servicio__como">WordPress</p>
+            </div>
+            <p class="servicio__para">Si ya tenés una web en WordPress y no te gusta cómo se ve.</p>
+            <ul class="servicio__incluye" role="list" aria-label="Qué incluye">
+              <li>Reviso tu web y te paso una lista de mejoras antes de empezar</li>
+              <li>Ordeno lo que se ve primero y lo que va después</li>
+              <li>Tipografías y colores nuevos, parejos en todo el sitio</li>
+              <li>Un menú más claro y arreglos para que se vea bien en el celular</li>
+              <li>Corrijo lo que está roto o desalineado</li>
+              <li>Hasta 5 páginas y 1 ronda de cambios</li>
+            </ul>
+            <div class="servicio__pie">
+              <p class="servicio__precio"><span>desde</span> $120.000</p>
+              <p class="servicio__plazo"><svg class="icono" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.5 1.5"/></svg>5 a 7 días</p>
+              <a class="boton boton--principal" href="https://wa.me/5491124672964?text=Hola%20Mica%2C%20quiero%20pedir%20un%20presupuesto%20para%20el%20redise%C3%B1o%20de%20mi%20web" target="_blank" rel="noopener">Pedir presupuesto<span class="visualmente-oculto"> para un rediseño (se abre WhatsApp)</span></a>
+            </div>
+          </li>
+
+          <li class="servicio" data-aparecer>
+            <div class="servicio__cabeza">
+              <h3>Landing</h3>
+              <p class="servicio__como">WordPress o código a medida</p>
+            </div>
+            <p class="servicio__para">Una sola página con un objetivo: que te escriban.</p>
+            <ul class="servicio__incluye" role="list" aria-label="Qué incluye">
+              <li>Diseño propio, no una plantilla</li>
+              <li>Hasta 5 secciones: presentación, servicios, trabajos, opiniones, contacto</li>
+              <li>Formulario de contacto, botón de WhatsApp y enlaces a tus redes</li>
+              <li>Se ve bien en celular y en tablet</li>
+              <li>SEO básico, para que Google la encuentre</li>
+              <li>La publico en tu hosting. 2 rondas de cambios</li>
+            </ul>
+            <div class="servicio__pie">
+              <p class="servicio__precio"><span>desde</span> $200.000</p>
+              <p class="servicio__plazo"><svg class="icono" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.5 1.5"/></svg>7 a 10 días</p>
+              <a class="boton boton--principal" href="https://wa.me/5491124672964?text=Hola%20Mica%2C%20quiero%20pedir%20un%20presupuesto%20para%20una%20landing" target="_blank" rel="noopener">Pedir presupuesto<span class="visualmente-oculto"> para una landing (se abre WhatsApp)</span></a>
+            </div>
+          </li>
+
+          <li class="servicio" data-aparecer>
+            <div class="servicio__cabeza">
+              <h3>Web institucional</h3>
+              <p class="servicio__como">WordPress o código a medida</p>
+            </div>
+            <p class="servicio__para">El sitio completo de tu negocio.</p>
+            <ul class="servicio__incluye" role="list" aria-label="Qué incluye">
+              <li>Todo lo de la landing</li>
+              <li>Hasta 5 páginas: Inicio, Nosotros, Servicios, Trabajos, Contacto</li>
+              <li>Mapa de Google y SEO básico en cada página</li>
+              <li>En WordPress, un panel para que cambies textos y fotos</li>
+              <li>Cada página adicional: $30.000</li>
+            </ul>
+            <div class="servicio__pie">
+              <p class="servicio__precio"><span>desde</span> $280.000</p>
+              <p class="servicio__plazo"><svg class="icono" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.5 1.5"/></svg>2 a 3 semanas</p>
+              <a class="boton boton--principal" href="https://wa.me/5491124672964?text=Hola%20Mica%2C%20quiero%20pedir%20un%20presupuesto%20para%20una%20web%20institucional" target="_blank" rel="noopener">Pedir presupuesto<span class="visualmente-oculto"> para una web institucional (se abre WhatsApp)</span></a>
+            </div>
+          </li>
+
+          <li class="servicio" data-aparecer>
+            <div class="servicio__cabeza">
+              <h3>Tienda online</h3>
+              <p class="servicio__como">WooCommerce o Tiendanube</p>
+            </div>
+            <p class="servicio__para">Para vender tus productos desde tu web.</p>
+            <ul class="servicio__incluye" role="list" aria-label="Qué incluye">
+              <li>Todo lo de la web institucional</li>
+              <li>Hasta 30 productos cargados, con fotos, precios y variantes (talle, color)</li>
+              <li>Categorías, buscador, carrito y compra</li>
+              <li>Mercado Pago y transferencia</li>
+              <li>Envíos: retiro, costo fijo o por zona. Mails automáticos de compra</li>
+              <li>Te explico cómo cargar productos y ver pedidos. 2 rondas de cambios</li>
+            </ul>
+            <div class="servicio__pie">
+              <p class="servicio__precio"><span>desde</span> $380.000</p>
+              <p class="servicio__plazo"><svg class="icono" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.5 1.5"/></svg>3 a 4 semanas</p>
+              <a class="boton boton--principal" href="https://wa.me/5491124672964?text=Hola%20Mica%2C%20quiero%20pedir%20un%20presupuesto%20para%20una%20tienda%20online" target="_blank" rel="noopener">Pedir presupuesto<span class="visualmente-oculto"> para una tienda online (se abre WhatsApp)</span></a>
+            </div>
+          </li>
+
+          <li class="servicio servicio--destacado tema-oscuro" data-aparecer data-luz-tarjeta>
+            <div class="servicio__intro">
+              <div class="servicio__cabeza">
+                <h3>Web cinematográfica</h3>
+                <p class="servicio__como">Código a medida</p>
+              </div>
+              <p class="servicio__para">Para marcas que quieren una web que se recuerde. Se diseña como una historia que se va contando a medida que bajás.</p>
+              <p class="servicio__extra">¿Necesitás tienda online o reservas? Se pueden sumar y se cotizan aparte.</p>
+              <div class="servicio__pie">
+                <p class="servicio__precio"><span>desde</span> $450.000</p>
+                <p class="servicio__plazo"><svg class="icono" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.5 1.5"/></svg>3 a 4 semanas</p>
+                <a class="boton boton--principal" href="https://wa.me/5491124672964?text=Hola%20Mica%2C%20quiero%20pedir%20un%20presupuesto%20para%20una%20web%20cinematogr%C3%A1fica" target="_blank" rel="noopener">Pedir presupuesto<span class="visualmente-oculto"> para una web cinematográfica (se abre WhatsApp)</span></a>
+              </div>
+            </div>
+            <ul class="servicio__incluye" role="list" aria-label="Qué incluye">
+              <li>Diseño a medida, pensado como una historia</li>
+              <li>Animaciones al entrar y al hacer scroll</li>
+              <li>Transiciones entre secciones</li>
+              <li>Secciones que reaccionan al mouse o al dedo</li>
+              <li>Adaptada al celular, cuidando que las animaciones anden bien</li>
+              <li>Formulario de contacto, WhatsApp y SEO básico</li>
+              <li>La publico. 2 rondas de cambios</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- WordPress o código a medida -->
+    <section class="seccion tema-claro formas" id="formas" aria-labelledby="formas-titulo">
+      <div class="contenedor formas__interior">
+        <div class="seccion__cabecera" data-aparecer>
+          <h2 id="formas-titulo"><span class="titulo-marca" data-titulo-marca>WordPress o código a medida</span><span class="punto" aria-hidden="true"></span></h2>
+          <p class="seccion__bajada">La landing y la web institucional las puedo hacer de las dos maneras, y arrancan del mismo precio. Elegimos juntos según cómo vas a usar tu web.</p>
+        </div>
+
+        <div class="comparacion" data-aparecer>
+          <table>
+            <caption class="visualmente-oculto">Diferencias entre una web en WordPress y una en código a medida</caption>
+            <thead>
+              <tr>
+                <td></td>
+                <th scope="col">WordPress</th>
+                <th scope="col">Código a medida</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">¿La podés editar vos?</th>
+                <td>Sí, desde un panel.</td>
+                <td>No. Los cambios me los pedís, y pueden entrar en el mantenimiento.</td>
+              </tr>
+              <tr>
+                <th scope="row">Diseño</th>
+                <td>Muy personalizable.</td>
+                <td>Totalmente libre.</td>
+              </tr>
+              <tr>
+                <th scope="row">Velocidad de carga</th>
+                <td>Buena.</td>
+                <td>Muy rápida.</td>
+              </tr>
+              <tr>
+                <th scope="row">Te conviene si…</th>
+                <td>Querés tocar tu web vos.</td>
+                <td>Querés algo distinto y no la vas a editar seguido.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="formas__notas" data-aparecer>
+          <p><strong>La web cinematográfica</strong> siempre va en código a medida.</p>
+          <p><strong>La tienda online</strong> va en Tiendanube o en WooCommerce. Tiendanube es más fácil de manejar y se paga un plan mensual. WooCommerce da más libertad de diseño y funciona en tu propio hosting.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mantenimiento -->
+    <section class="tema-claro mantenimiento" id="mantenimiento" aria-labelledby="mantenimiento-titulo">
+      <div class="contenedor">
+        <div class="mantenimiento__caja" data-aparecer>
+          <div class="mantenimiento__texto">
+            <h2 id="mantenimiento-titulo">Mantenimiento mensual</h2>
+            <p>Solo para webs que hice yo.</p>
+            <p class="servicio__precio">$50.000 <span>por mes</span></p>
+            <a class="boton" href="https://wa.me/5491124672964?text=Hola%20Mica%2C%20quiero%20consultar%20por%20el%20mantenimiento%20mensual" target="_blank" rel="noopener">Consultar<span class="visualmente-oculto"> por el mantenimiento (se abre WhatsApp)</span></a>
+          </div>
+          <div>
+            <ul class="servicio__incluye" role="list" aria-label="Qué incluye">
+              <li>Actualizo WordPress y los plugins</li>
+              <li>Copia de seguridad cada semana</li>
+              <li>Reviso que la web funcione y arreglo errores</li>
+              <li>Hasta 3 cambios chicos por mes: un texto, una foto, un precio</li>
+              <li>Te respondo en 48 horas hábiles</li>
+            </ul>
+            <p class="mantenimiento__nota">Los cambios que no usás no pasan al mes siguiente. No incluye páginas o secciones nuevas, rediseño ni el costo del hosting y el dominio.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trabajos -->
+    <section class="seccion tema-claro trabajos-servicios" id="trabajos" aria-labelledby="trabajos-titulo">
+      <div class="contenedor">
+        <div class="seccion__cabecera" data-aparecer>
+          <h2 id="trabajos-titulo"><span class="titulo-marca" data-titulo-marca>trabajos</span><span class="punto" aria-hidden="true"></span></h2>
+          <p class="seccion__bajada">Algunos sitios que diseñé y armé. Tocá uno para ver cómo lo pensé.</p>
+        </div>
+        <ul class="obras" role="list">
+          <li class="obra" data-aparecer>
+            <a href="../#trabajo-tono">
+              <span class="obra__imagen"><img src="../assets/proyectos/tarjetas/tono.webp" alt="" width="1200" height="900" loading="lazy"></span>
+              <span class="obra__categoria">E-commerce · Identidad · WordPress</span>
+              <span class="obra__titulo">Tono</span>
+              <span class="obra__frase">Tienda de maquillaje donde todo empieza por el color.</span>
+              <span class="obra__tipo">Proyecto conceptual</span>
+            </a>
+          </li>
+          <li class="obra" data-aparecer>
+            <a href="../#trabajo-spa">
+              <span class="obra__imagen"><img src="../assets/proyectos/tarjetas/relax-spa.webp" alt="" width="1200" height="900" loading="lazy"></span>
+              <span class="obra__categoria">Diseño web · Identidad · WordPress</span>
+              <span class="obra__titulo">Relax Spa</span>
+              <span class="obra__frase">Marca y sitio para un spa, contados desde la hora que te reserva.</span>
+              <span class="obra__tipo">Proyecto conceptual</span>
+            </a>
+          </li>
+          <li class="obra" data-aparecer>
+            <a href="../#trabajo-raiz">
+              <span class="obra__imagen"><img src="../assets/proyectos/tarjetas/raiz-fotografia.webp" alt="" width="1200" height="900" loading="lazy"></span>
+              <span class="obra__categoria">Landing · Diseño web · WordPress</span>
+              <span class="obra__titulo">Raíz Fotografía</span>
+              <span class="obra__frase">Sitio para una agencia de fotografía de naturaleza.</span>
+              <span class="obra__tipo">Proyecto conceptual</span>
+            </a>
+          </li>
+          <li class="obra" data-aparecer>
+            <a href="../#trabajo-burgbox">
+              <span class="obra__imagen"><img src="../assets/proyectos/tarjetas/burgbox.webp" alt="" width="1200" height="900" loading="lazy"></span>
+              <span class="obra__categoria">Diseño web · WordPress</span>
+              <span class="obra__titulo">BurgBox</span>
+              <span class="obra__frase">Sitio para una hamburguesería de barrio.</span>
+              <span class="obra__tipo">Proyecto conceptual</span>
+            </a>
+          </li>
+          <li class="obra" data-aparecer>
+            <a href="../#trabajo-instituto">
+              <span class="obra__imagen"><img src="../assets/proyectos/tarjetas/instituto-del-parque.webp" alt="" width="1200" height="900" loading="lazy"></span>
+              <span class="obra__categoria">Diseño web · Comunicación</span>
+              <span class="obra__titulo">Instituto del Parque</span>
+              <span class="obra__frase">Sitio institucional para un colegio.</span>
+              <span class="obra__tipo">Proyecto conceptual</span>
+            </a>
+          </li>
+          <li class="obra" data-aparecer>
+            <a href="../#trabajo-plantilla">
+              <span class="obra__imagen"><img src="../assets/proyectos/tarjetas/plantilla-personalizada.webp" alt="" width="1200" height="900" loading="lazy"></span>
+              <span class="obra__categoria">Diseño web · Código · WordPress</span>
+              <span class="obra__titulo">Plantilla personalizada</span>
+              <span class="obra__frase">Un tema de WordPress que cada marca adapta desde el panel, sin tocar código.</span>
+              <span class="obra__tipo">Proyecto conceptual</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Cómo trabajo -->
+    <section class="seccion pasos-seccion" id="como-trabajo" aria-labelledby="pasos-titulo">
+      <div class="contenedor">
+        <div class="seccion__cabecera" data-aparecer>
+          <h2 id="pasos-titulo">cómo trabajo<span class="punto" aria-hidden="true"></span></h2>
+        </div>
+        <ol class="pasos" role="list">
+          <li class="paso" data-aparecer>
+            <span class="paso__numero" aria-hidden="true">1</span>
+            <h3>Me escribís</h3>
+            <p>Por WhatsApp, por mensaje de Instagram o por el formulario. Contame qué hace tu negocio y qué necesitás.</p>
+          </li>
+          <li class="paso" data-aparecer>
+            <span class="paso__numero" aria-hidden="true">2</span>
+            <h3>Te paso un número cerrado</h3>
+            <p>Con lo que incluye, el plazo y el precio final. Si algo queda afuera, te lo digo antes de empezar.</p>
+          </li>
+          <li class="paso" data-aparecer>
+            <span class="paso__numero" aria-hidden="true">3</span>
+            <h3>50% para arrancar, 50% antes de publicar</h3>
+            <p>Ves la web terminada y la aprobás. Con el otro 50%, la publico.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Preguntas frecuentes -->
+    <section class="seccion tema-claro preguntas" id="preguntas" aria-labelledby="preguntas-titulo">
+      <div class="contenedor preguntas__interior">
+        <div class="seccion__cabecera" data-aparecer>
+          <h2 id="preguntas-titulo"><span class="titulo-marca" data-titulo-marca>preguntas frecuentes</span><span class="punto" aria-hidden="true"></span></h2>
+        </div>
+        <div class="preguntas__lista" data-aparecer>
+          <details class="pregunta">
+            <summary>¿Qué no incluye cada servicio?<span class="pregunta__icono" aria-hidden="true"></span></summary>
+            <div class="pregunta__respuesta">
+              <dl class="no-incluye">
+                <div>
+                  <dt>Rediseño</dt>
+                  <dd>Rehacer la web desde cero (para eso está la landing o la web institucional), textos nuevos, fotos ni logo. Solo trabajo sobre webs en WordPress.</dd>
+                </div>
+                <div>
+                  <dt>Landing</dt>
+                  <dd>Hosting y dominio, redacción de textos, fotos profesionales ni logo. Las secciones extra se cotizan aparte.</dd>
+                </div>
+                <div>
+                  <dt>Web institucional</dt>
+                  <dd>Lo mismo que la landing, y tampoco tienda online ni un blog armado con contenidos.</dd>
+                </div>
+                <div>
+                  <dt>Tienda online</dt>
+                  <dd>Cargar más de 30 productos (se cotiza aparte), fotos de productos, facturación electrónica ni conexión con sistemas de stock o con correos como Andreani u OCA. Tampoco las comisiones de Mercado Pago, el hosting ni el plan de Tiendanube.</dd>
+                </div>
+                <div>
+                  <dt>Web cinematográfica</dt>
+                  <dd>Tienda online ni reservas, pero se pueden sumar y se cotizan aparte. Tampoco sistemas con usuarios. No tiene panel para editarla: los cambios de contenido me los pedís, y se pueden sumar al mantenimiento. Tampoco incluye video, fotos ni 3D hechos a medida.</dd>
+                </div>
+              </dl>
+            </div>
+          </details>
+
+          <details class="pregunta">
+            <summary>¿El hosting y el dominio están incluidos?<span class="pregunta__icono" aria-hidden="true"></span></summary>
+            <div class="pregunta__respuesta">
+              <p>No, se pagan aparte. Si todavía no tenés, te ayudo a contratarlos.</p>
+            </div>
+          </details>
+
+          <details class="pregunta">
+            <summary>¿Cuántos cambios entran?<span class="pregunta__icono" aria-hidden="true"></span></summary>
+            <div class="pregunta__respuesta">
+              <p>El rediseño tiene 1 ronda de cambios. La landing, la web institucional, la tienda online y la web cinematográfica tienen 2. Lo que pase de eso se cotiza aparte.</p>
+            </div>
+          </details>
+
+          <details class="pregunta">
+            <summary>¿Qué necesitás de mí?<span class="pregunta__icono" aria-hidden="true"></span></summary>
+            <div class="pregunta__respuesta">
+              <dl class="no-incluye">
+                <div>
+                  <dt>Rediseño</dt>
+                  <dd>Acceso a tu WordPress.</dd>
+                </div>
+                <div>
+                  <dt>Landing y web institucional</dt>
+                  <dd>Textos, imágenes, logo y tus datos de contacto.</dd>
+                </div>
+                <div>
+                  <dt>Tienda online</dt>
+                  <dd>La lista de productos con fotos, precios y variantes, tu cuenta de Mercado Pago y cómo hacés los envíos.</dd>
+                </div>
+                <div>
+                  <dt>Web cinematográfica</dt>
+                  <dd>Textos, imágenes y algunas webs que te gusten, como referencia.</dd>
+                </div>
+              </dl>
+              <p>Si no tenés los textos o las imágenes, se cotizan aparte.</p>
+            </div>
+          </details>
+
+          <details class="pregunta">
+            <summary>¿Voy a poder editar mi web?<span class="pregunta__icono" aria-hidden="true"></span></summary>
+            <div class="pregunta__respuesta">
+              <p>Si la hacemos en WordPress, sí: cambiás textos y fotos desde un panel, y te dejo una guía corta para hacerlo. En la tienda online te explico cómo cargar productos y ver los pedidos.</p>
+              <p>Si la hacemos en código a medida, como la web cinematográfica, los cambios me los pedís a mí. Para eso está el mantenimiento mensual, que incluye hasta 3 cambios chicos por mes.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cierre -->
+    <section class="seccion tema-oscuro contacto hoja" id="contacto" aria-labelledby="contacto-titulo">
+      <div class="contenedor contacto__interior">
+        <div class="contacto__texto" data-aparecer>
+          <h2 id="contacto-titulo">hablemos<span class="punto" aria-hidden="true"></span></h2>
+          <p class="seccion__bajada">Contame qué hace tu negocio y qué te gustaría tener. Te respondo con el precio y el plazo.</p>
+          <div class="portada__acciones">
+            <a class="boton boton--principal" href="https://wa.me/5491124672964?text=Hola%20Mica%2C%20vi%20tus%20servicios%20y%20quiero%20pedir%20un%20presupuesto" target="_blank" rel="noopener">Escribime por WhatsApp</a>
+          </div>
+        </div>
+        <!-- Formulario: lo envía Web3Forms, con la misma clave pública que el portfolio -->
+        <div class="formulario-panel__tarjeta tema-claro" data-aparecer>
+          <h3 class="formulario-panel__titulo" id="formulario-titulo">o dejame tu consulta<span class="punto" aria-hidden="true"></span></h3>
+          <form class="formulario" data-formulario data-envio="https://api.web3forms.com/submit" aria-labelledby="formulario-titulo">
+            <input type="hidden" name="access_key" value="616a8184-5ddb-490a-8f2c-065658d01b5b">
+            <div class="campo">
+              <label for="contacto-nombre">Nombre</label>
+              <input id="contacto-nombre" name="nombre" type="text" autocomplete="name" placeholder="Cómo te llamás" required>
+            </div>
+            <div class="campo">
+              <label for="contacto-mail">Mail</label>
+              <input id="contacto-mail" name="email" type="email" autocomplete="email" placeholder="Para poder responderte" required>
+            </div>
+            <fieldset class="campo campo--ancho opciones">
+              <legend>Me interesa</legend>
+              <label class="opcion"><input type="radio" name="servicio" value="Rediseño" checked><span>Rediseño</span></label>
+              <label class="opcion"><input type="radio" name="servicio" value="Landing"><span>Landing</span></label>
+              <label class="opcion"><input type="radio" name="servicio" value="Web institucional"><span>Web institucional</span></label>
+              <label class="opcion"><input type="radio" name="servicio" value="Tienda online"><span>Tienda online</span></label>
+              <label class="opcion"><input type="radio" name="servicio" value="Web cinematográfica"><span>Web cinematográfica</span></label>
+              <label class="opcion"><input type="radio" name="servicio" value="Mantenimiento"><span>Mantenimiento</span></label>
+              <label class="opcion"><input type="radio" name="servicio" value="Todavía no sé"><span>Todavía no sé</span></label>
+            </fieldset>
+            <div class="campo campo--ancho">
+              <label for="contacto-mensaje">Mensaje</label>
+              <textarea id="contacto-mensaje" name="mensaje" rows="5" placeholder="Qué hace tu negocio y qué necesitás" required></textarea>
+            </div>
+            <!-- Trampa para robots: una persona no lo ve ni lo completa -->
+            <input class="formulario__trampa" name="botcheck" type="checkbox" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <button class="boton boton--principal formulario__enviar" type="submit">Enviar consulta</button>
+            <p class="formulario__estado" data-formulario-estado role="status"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie tema-oscuro">
+    <div class="contenedor pie__interior">
+      <p>© <span data-anio>2026</span> Micaela Canselo</p>
+      <p><a href="../">Ver portfolio</a> · Buenos Aires, Argentina</p>
+    </div>
+  </footer>
+</body>
+</html>
