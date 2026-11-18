@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Seguridad: solo corre código del propio sitio. Si se edita el script de la intro, actualizar su hash -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-re+xWmeX3OBXWYICwVUM5e3yH/EAxxk9F9pLYgFE/Cw='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self'; font-src 'self'; connect-src 'self' https://api.web3forms.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-qA1SRV6LGxr7RMzdFlTG3rU0M/1JOSsbB8QGNPP/tuc='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self'; font-src 'self'; connect-src 'self' https://api.web3forms.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
   <title>Micaela Canselo · Comunicación, Marketing Digital y Diseño Web</title>
@@ -49,20 +49,18 @@
 
   <link rel="preload" href="assets/fonts/dm-mono-400.woff2" as="font" type="font/woff2" crossorigin>
   <script>
-    // La portada arranca en negro solo si se carga desde arriba de todo: al recargar más abajo
-    // se respeta el lugar donde estaba. Se ve una sola vez por visita (pestaña).
-    // Si hero.js no llega a correr, el contenido aparece igual
+    // La intro de fotos se ve en cada carga, arriba de todo. Se saltea con un enlace a una sección
+    // (#...) o al volver atrás a un lugar más abajo. Si hero.js no llega a correr, el contenido aparece igual
     let arriba = true;
-    let vista = false;
     try {
       const tipo = performance.getEntriesByType("navigation")[0]?.type;
-      if (tipo === "reload" || tipo === "back_forward") arriba = !Number(sessionStorage.getItem("scroll-salida"));
+      if (tipo === "back_forward") arriba = !Number(sessionStorage.getItem("scroll-salida"));
       addEventListener("pagehide", () => sessionStorage.setItem("scroll-salida", String(scrollY)));
-      vista = sessionStorage.getItem("intro-vista") === "1";
     } catch {}
-    if (arriba && !vista && !location.hash && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (arriba && !location.hash && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // Al recargar, la página vuelve arriba en vez de al lugar donde estaba
+      if ("scrollRestoration" in history) history.scrollRestoration = "manual";
       document.documentElement.classList.add("intro");
-      try { sessionStorage.setItem("intro-vista", "1"); } catch {}
       // Red de seguridad por si hero.js no corre; normalmente la intro la termina hero.js
       setTimeout(() => document.documentElement.classList.remove("intro"), 12000);
     }
@@ -94,40 +92,39 @@
   </header>
 
   <main id="contenido">
-    <section class="hero tema-claro hoja" id="inicio" aria-labelledby="hero-titulo" data-hero data-trabajos>
-      <!-- Una sola escena: la frase abre y, al bajar, la rueda pasa los destacados y cierra con el índice -->
+    <section class="hero tema-claro hoja" id="inicio" aria-labelledby="hero-titulo" data-hero>
       <div class="hero__fijo">
         <div class="hero__3d" aria-hidden="true">
           <div class="hero__aurora"><span></span><span></span></div>
           <div class="hero__luz" data-luz></div>
         </div>
-        <canvas class="hero__fondo" data-hero-fondo aria-hidden="true"></canvas>
+        <!-- Collage de proyectos: se apila en el centro, se abre alrededor de la frase y al bajar se junta (js/hero.js) -->
+        <div class="collage" data-hero-fondo aria-hidden="true"></div>
         <div class="contenedor apertura" data-apertura>
           <div class="mica-lugar" data-mica-lugar aria-hidden="true"></div>
           <h1 id="hero-titulo"><span class="palabra"><span style="--i: 0">Transformo</span></span> <span class="palabra"><span style="--i: 1">ideas</span></span> <span class="palabra"><span style="--i: 2">en</span></span> <br class="hero__corte"><em class="hero__resaltado"><span class="palabra"><span style="--i: 3">experiencias</span></span> <span class="palabra"><span style="--i: 4">digitales</span></span> <span class="palabra"><span style="--i: 5">con</span></span> <span class="palabra"><span style="--i: 6">identidad.</span></span></em></h1>
           <p class="hero__sub">Comunicación digital · Marketing · Diseño y desarrollo web</p>
           <span class="hero__linea" aria-hidden="true"></span>
           <div class="hero__acciones">
-            <button class="boton boton--principal" type="button" data-ver-todos aria-haspopup="dialog">Ver proyectos <span aria-hidden="true">→</span></button>
+            <a class="boton boton--principal" href="#trabajos">Ver proyectos <span aria-hidden="true">→</span></a>
             <a class="boton" href="#contacto">Hablemos</a>
           </div>
         </div>
-        <h2 class="rueda__titulo" data-rueda-titulo><span class="titulo-marca">proyectos destacados</span><span class="punto" aria-hidden="true"></span></h2>
-        <ul class="rueda" data-rueda></ul>
-        <div class="ficha" data-ficha>
-          <small data-ficha-categoria></small>
-          <h3 data-ficha-titulo></h3>
-          <p data-ficha-frase></p>
-          <small class="ficha__tipo" data-ficha-tipo></small>
-          <div class="ficha__botones"><a class="boton boton--principal" href="#trabajos" data-ficha-abrir>Ver proyecto</a><button class="boton" type="button" data-ver-todos aria-haspopup="dialog">Ver todos</button></div>
+      </div>
+      <!-- Proyectos: dos hileras que se deslizan de costado al scrollear; se arman desde las carpetas en js/main.js -->
+      <div class="trabajos" id="trabajos" data-trabajos>
+        <div class="contenedor trabajos__cabecera">
+          <h2 class="trabajos__titulo" id="trabajos-titulo"><span class="titulo-marca" data-titulo-marca>proyectos</span><span class="punto" aria-hidden="true"></span></h2>
+          <div class="trabajos__acciones">
+            <button class="boton boton--principal" type="button" data-ver-todos aria-haspopup="dialog">Ver todos</button>
+          </div>
         </div>
-        <div class="rueda__controles" data-rueda-controles>
-          <button class="boton" type="button" data-anterior aria-label="Proyecto anterior">←</button>
-          <button class="boton" type="button" data-siguiente aria-label="Proyecto siguiente">→</button>
+        <div class="hileras" data-hileras>
+          <div class="hilera"><ul class="hilera__pista" data-hilera aria-label="Proyectos"></ul></div>
+          <div class="hilera hilera--inversa"><ul class="hilera__pista" data-hilera aria-label="Más proyectos"></ul></div>
         </div>
       </div>
-      <span class="trabajos__ancla" id="trabajos"></span>
-      <!-- Datos de los proyectos: el índice muestra todos; la rueda, solo los marcados con data-destacado -->
+      <!-- Datos de los proyectos: el índice y las hileras los muestran todos; los data-destacado van primero -->
       <ul data-carpetas hidden>
         <li class="carpeta" data-destacado data-temas="Marketing|Diseño web|WordPress|Identidad">
           <a class="carpeta__enlace" href="#trabajo-magnolia" data-cursor="ver">

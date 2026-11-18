@@ -519,16 +519,6 @@ p {
   background-image: var(--rayas);
 }
 
-/* Fondo de íconos en movimiento (js/hero.js) */
-/* Mide toda la pantalla: la intro la ocupa entera aunque la portada sea más baja */
-.hero__fondo {
-  position: absolute;
-  inset: 0 0 auto;
-  width: 100%;
-  height: 100svh;
-  pointer-events: none;
-}
-
 .hero__contenido {
   position: relative;
   display: flex;
@@ -691,29 +681,187 @@ p {
   gap: var(--esp-3);
 }
 
-/* ---------- Portada y trabajos: una sola escena ---------- */
+/* ---------- Portada y proyectos ---------- */
 
-/* 4 destacados + cierre: unos 50vh de scroll por proyecto */
 .hero {
-  --alto-hero: 420vh;
-  height: var(--alto-hero);
   min-height: 0;
   padding: 0;
   overflow: visible;
 }
 
+/* La portada ocupa la pantalla; los proyectos corren debajo */
 .hero__fijo {
-  position: sticky;
-  top: 0;
+  position: relative;
   height: 100svh;
   overflow: hidden;
 }
 
-.hero__fondo {
+/* Dos hileras que se deslizan de costado al scrollear, en sentidos opuestos (js/main.js) */
+.trabajos {
+  position: relative;
+  padding-block: var(--esp-5) var(--esp-seccion);
+  scroll-margin-top: var(--alto-encabezado);
+}
+
+.trabajos__cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--esp-3);
+  margin-bottom: var(--esp-5);
+}
+
+.trabajos__titulo {
+  margin: 0;
+}
+
+.trabajos__acciones {
+  display: flex;
+  gap: var(--esp-2);
+}
+
+.trabajos__acciones .boton:not(.boton--principal) {
+  background: transparent;
+}
+
+.hileras {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--esp-4);
+}
+
+.hilera {
+  overflow: clip;
+  /* las puntas se desvanecen para que no se vea el corte */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.hilera__pista {
+  display: flex;
+  gap: var(--esp-4);
+  width: max-content;
+  margin: 0;
+  padding: 0.5rem 0;
+  list-style: none;
+  will-change: transform;
+}
+
+.hilera__item {
+  width: clamp(15rem, 11rem + 14vw, 24rem);
+}
+
+.proyecto {
+  display: block;
+  color: var(--tinta);
+  text-decoration: none;
+}
+
+.proyecto__imagen {
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radio);
+  box-shadow: 0 1rem 2rem -1.2rem rgb(68 35 24 / 0.35);
+}
+
+.proyecto__imagen img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  transition: transform var(--dur-larga) var(--curva-fuerte);
+}
+
+.proyecto__texto {
+  display: grid;
+  gap: 0.15rem;
+  margin-top: var(--esp-2);
+  padding-inline: 0.25rem;
+}
+
+.proyecto__titulo {
+  font-size: clamp(1.15rem, 1rem + 0.5vw, 1.45rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+.proyecto__categoria,
+.proyecto__tipo {
+  font-size: var(--texto-s);
+  color: var(--tinta-suave);
+}
+
+.proyecto__tipo--real {
+  color: var(--terracota-oscuro);
+  font-weight: 500;
+}
+
+.proyecto:focus-visible {
+  outline: none;
+}
+
+.proyecto:focus-visible .proyecto__imagen {
+  outline: 3px solid var(--tinta);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .proyecto:hover .proyecto__imagen img {
+    transform: scale(1.04);
+  }
+}
+
+/* Sin movimiento: cada hilera se recorre deslizando, sin copias */
+@media (prefers-reduced-motion: reduce) {
+  .hilera {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+    scroll-snap-type: x mandatory;
+    padding-inline: var(--margen);
+  }
+
+  .hilera__item {
+    scroll-snap-align: start;
+  }
+}
+
+/* Collage de proyectos alrededor de la frase: js/hero.js ubica cada foto con transform */
+.collage {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.collage__foto {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--ancho);
+  height: auto;
+  border-radius: 6px;
+  box-shadow: 0 0.6rem 1.6rem -0.8rem rgb(68 35 24 / 0.45);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* La frase entra palabra por palabra cuando el collage termina de abrirse */
+@media (prefers-reduced-motion: no-preference) {
+  .titulo-entra h1 .palabra > span {
+    display: inline-block;
+    animation: subir-palabra 900ms var(--curva) backwards;
+    animation-delay: calc(var(--i) * 70ms);
+  }
+}
+
+@keyframes subir-palabra {
+  from {
+    opacity: 0;
+    transform: translateY(0.45em);
+  }
 }
 
 /* Fondo: luces suaves que derivan muy lento y una más, tenue, que acompaña al mouse */
@@ -774,12 +922,6 @@ p {
 
 .intro .hero__3d {
   opacity: 0;
-}
-
-.trabajos__ancla {
-  position: absolute;
-  top: calc((var(--alto-hero) - 170svh) * 0.22); /* 0.22 = INICIO_RUEDA en js/main.js */
-  scroll-margin-top: 0;
 }
 
 .apertura {
@@ -1011,268 +1153,13 @@ p {
   to { transform: rotate(1.2deg) scale(1.01); }
 }
 
-/* La rueda: js/main.js la ubica, la agranda y la hace girar con el scroll */
-.rueda {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  z-index: 1;
-  width: 0;
-  height: 0;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  transition: opacity 1s ease 300ms;
-}
-
-.rueda__carta {
-  position: absolute;
-  width: var(--cw);
-  height: calc(var(--cw) * 0.75);
-  margin: calc(var(--cw) * -0.375) 0 0 calc(var(--cw) * -0.5);
-  transform: rotate(var(--angulo)) translateY(calc(var(--cw) * -1.62));
-}
-
-.rueda__carta a {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  border-radius: var(--radio);
-  box-shadow: 0 18px 40px rgb(68 35 24 / 0.25);
-  text-decoration: none;
-  transition: transform var(--dur-media) var(--curva-fuerte);
-}
-
-/* La imagen entera, sin recortes */
-.rueda__carta img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.rueda__carta a:focus-visible {
-  outline: 3px solid var(--tinta);
-  outline-offset: 3px;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .rueda__carta a:hover {
-    transform: scale(1.02);
-  }
-}
-
-.rueda__nombre {
-  display: none;
-}
-
-/* Cierre de la rueda: mosaico con los trabajos que siguen en el índice */
-.rueda__carta--cierre a {
-  background: var(--arena);
-}
-
-.rueda__mosaico {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: calc(var(--cw) * 0.025);
-  height: 100%;
-  padding: calc(var(--cw) * 0.035);
-}
-
-.rueda__mosaico img {
-  min-height: 0;
-  border-radius: calc(var(--radio) * 0.55);
-  object-fit: cover;
-}
-
-.ficha--cierre .ficha__botones .boton:not(.boton--principal) {
-  display: none;
-}
-
-/* Título de la rueda: aparece junto con la ficha, cuando se va la frase */
-.rueda__titulo {
-  position: absolute;
-  top: calc(var(--alto-encabezado) + 1.25rem);
-  left: 50%;
-  z-index: 3;
-  width: max-content;
-  max-width: calc(100% - 2 * var(--margen));
-  font-size: clamp(1.75rem, 1.2rem + 2vw, 3rem);
-  text-align: center;
-  opacity: 0;
-  transform: translateX(-50%);
-}
-
-.ficha {
-  position: absolute;
-  bottom: 1.25rem;
-  left: 50%;
-  z-index: 3;
-  display: grid;
-  justify-items: center;
-  gap: var(--esp-1);
-  width: min(100% - 2 * var(--margen), 34rem);
-  text-align: center;
-  transform: translateX(-50%);
-}
-
-.ficha small {
-  font-size: 0.875rem;
-  color: var(--tinta-suave);
-}
-
-.ficha h3 {
-  font-size: clamp(1.75rem, 3vw, 2.75rem);
-  font-weight: 400;
-  letter-spacing: -0.04em;
-  line-height: 1.05;
-}
-
-.ficha__botones {
-  display: flex;
-  gap: var(--esp-2);
-  margin-top: var(--esp-2);
-}
-
-.ficha .boton:not(.boton--principal) {
-  background: var(--beige);
-}
-
-.ficha__tipo--real {
-  color: var(--terracota-oscuro) !important;
-  font-weight: 500;
-}
-
-.rueda__controles {
-  position: absolute;
-  right: var(--margen);
-  bottom: 1.25rem;
-  z-index: 3;
-  display: flex;
-  gap: var(--esp-2);
-}
-
-.rueda__controles .boton {
-  background: var(--beige);
-  white-space: nowrap;
-}
-
-@media (max-width: 47.99rem) {
-  .ficha {
-    bottom: 5rem;
-  }
-
-  .ficha p {
-    font-size: var(--texto-s);
-    line-height: 1.35;
-  }
-
-  .rueda__controles {
-    right: 50%;
-    transform: translateX(50%);
-  }
-}
-
-@media (max-height: 700px) {
-  .ficha p {
-    display: none;
-  }
-}
-
 /* La intro queda sola en pantalla */
-.intro .rueda,
-.intro .rueda__titulo,
-.intro .ficha,
-.intro .rueda__controles {
-  opacity: 0;
-}
-
 .intro .hero h1 em {
   color: transparent;
 }
 
 .intro body {
   background: var(--limon);
-}
-
-/* Sin movimiento: la frase y, debajo, todos los proyectos en grilla */
-@media (prefers-reduced-motion: reduce) {
-  .hero {
-    height: auto;
-  }
-
-  .hero__fijo {
-    position: static;
-    height: auto;
-    overflow: visible;
-    padding-bottom: var(--esp-6);
-  }
-
-  .trabajos__ancla {
-    display: none;
-  }
-
-  .rueda {
-    position: static;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
-    gap: var(--esp-4);
-    width: auto;
-    height: auto;
-    margin-top: var(--esp-6);
-    padding-inline: var(--margen);
-  }
-
-  .rueda__carta {
-    position: static;
-    width: auto;
-    height: auto;
-    margin: 0;
-    transform: none;
-  }
-
-  .rueda__carta a {
-    height: auto;
-    overflow: visible;
-    box-shadow: none;
-    color: var(--tinta);
-  }
-
-  .rueda__carta img {
-    height: auto;
-    border-radius: var(--radio);
-  }
-
-  .rueda__nombre {
-    display: block;
-    margin-top: var(--esp-2);
-    font-weight: 500;
-  }
-
-  .ficha {
-    display: none;
-  }
-
-  .rueda__titulo {
-    position: static;
-    margin: var(--esp-6) auto 0;
-    opacity: 1;
-    transform: none;
-  }
-
-  .rueda__controles {
-    position: static;
-    justify-content: center;
-    margin-top: var(--esp-5);
-    transform: none;
-  }
-
-  [data-anterior],
-  [data-siguiente] {
-    display: none;
-  }
 }
 
 @media (max-width: 47.99rem) {

@@ -1,337 +1,231 @@
-// Portada: "de la idea a la experiencia". Entra en sand con un boom de íconos que, en unos
-// 3 segundos, van disminuyendo y se convierten en las letras del título. Unos pocos
-// quedan flotando muy lento y se avivan cerca del cursor. Cualquier interacción saltea la intro.
+// Portada: fotos de los proyectos. Se apilan en el centro una tras otra y se abren en un collage
+// alrededor de la frase; después se esconden y van apareciendo solo cerca del mouse (o del dedo).
+// Al bajar se juntan hacia el centro. Cualquier interacción saltea la intro.
+// Con movimiento reducido el collage queda quieto y a la vista.
 
 const hero = document.querySelector("[data-hero]");
-const cv = hero?.querySelector("[data-hero-fondo]");
-const titulo = hero?.querySelector("h1");
+const capa = hero?.querySelector("[data-hero-fondo]");
+const apertura = hero?.querySelector("[data-apertura]");
 const raiz = document.documentElement;
 
-if (hero && cv && titulo) {
-  const ctx = cv.getContext("2d");
-  const dpr = Math.min(devicePixelRatio || 1, 2);
-  const simbolos = ["idea", "marca", "copy", "web", "UX", "relato", "tono", "boceto", "brief", "voz", "forma"];
-  const estilos = getComputedStyle(raiz);
-  const acento = estilos.getPropertyValue("--tostado").trim();
-  const neutro = estilos.getPropertyValue("--marron").trim();
-  const tinta = estilos.getPropertyValue("--tinta").trim();
+// Miniaturas que arma 05-Herramientas/collage.mjs: [nombre, ancho, alto]
+const FOTOS = [
+  ["magnolia", 360, 270], ["havanna-foto", 360, 450], ["tono-celular", 360, 480], ["itba", 360, 270],
+  ["campagnola-foto", 360, 480], ["gae", 360, 270], ["itba-gondola", 360, 480], ["tono", 360, 270],
+  ["adopciones-historia", 360, 480], ["burgbox", 360, 270], ["spa-celular", 360, 480], ["raiz", 360, 270],
+  ["relax-spa", 360, 270], ["itba-entrega", 360, 480], ["havanna", 360, 270],
+  ["raiz-celular", 360, 480], ["campagnola", 360, 270], ["instituto", 360, 270], ["adopciones", 360, 270],
+  ["plantilla", 360, 270], ["escribo", 360, 270],
+];
 
-  // Línea de tiempo en milisegundos
-  const FIN_BOOM = 800; // hasta acá solo hay explosión
-  const ELIGE_QUEDAN = 1700; // de los que siguen en el aire, algunos se quedan de fondo
-  const FIN_ICONOS = 2500; // el último ícono ya salió hacia su letra
-  const VUELO = 500; // lo que tarda cada ícono en llegar a su letra
-  const DUR_POLVO = 1100; // lo que tarda cada partícula en asentarse
-  const FIN_POLVO = 3000; // la última partícula llega a su letra
-  const FUNDIDO = 700; // el texto real reemplaza a las partículas
-  const ALFA_FINAL = 0.3; // los íconos que quedan de fondo
+if (hero && capa && apertura) {
   const reducido = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const CURVA = "cubic-bezier(.2,.7,.2,1)";
+  const PASO_PILA = 75; // cada cuánto cae una foto en la pila
+  const EN_PILA = 14; // cuántas pasan por la pila antes de abrirse
+  const APERTURA = 1200; // lo que tarda el collage en abrirse
 
+  let fotos = [];
+  let terminada = false;
+  let viviendo = false;
+  let enPantalla = true;
+  new IntersectionObserver(([e]) => (enPantalla = e.isIntersecting)).observe(capa);
   let W = 0;
   let H = 0;
-  let iconos = [];
-  let polvo = [];
-  let inicio = 0;
-  let terminada = false;
-  let textoVisible = false;
-  let quedanElegidos = false;
-  let zonas = [];
-  let visible = true;
-  const puntero = { x: -9999, y: -9999 };
+  const LEJOS = -99999;
+  // x/y: posición relativa para el paralaje; px/py: posición en pantalla para revelar las fotos
+  const puntero = { x: 0, y: 0, vx: 0, vy: 0, px: LEJOS, py: LEJOS };
+  let soltarDedo = 0;
 
-  function medir() {
-    const r = cv.getBoundingClientRect();
-    W = cv.width = Math.round(r.width * dpr);
-    H = cv.height = Math.round(r.height * dpr);
+  // Pseudoaleatorio con semilla: el collage sale igual en cada visita y no salta al recargar
+  let semilla = 7;
+  const azar = () => ((semilla = (semilla * 16807) % 2147483647) - 1) / 2147483646;
+
+  fotos = FOTOS.map(([nombre, ancho, alto]) => {
+    const img = document.createElement("img");
+    img.className = "collage__foto";
+    img.src = `assets/img/collage/${nombre}.webp`;
+    img.alt = "";
+    img.width = ancho;
+    img.height = alto;
+    img.decoding = "async";
+    capa.append(img);
+    return { img, ratio: alto / ancho, x: 0, y: 0, w: 0, s: 1, prof: 0, visible: false, luz: 0 };
+  });
+
+  // Zonas libres: la frase con la bajada y los botones, y la figura de Mica
+  function zonasLibres() {
+    const base = capa.getBoundingClientRect();
+    const m = W < 700 ? 14 : 30;
+    const caja = (rects, margen) => ({
+      x1: Math.min(...rects.map((r) => r.left)) - base.left - margen,
+      x2: Math.max(...rects.map((r) => r.right)) - base.left + margen,
+      y1: Math.min(...rects.map((r) => r.top)) - base.top - margen,
+      y2: Math.max(...rects.map((r) => r.bottom)) - base.top + margen,
+    });
+    const zonas = [caja([...apertura.querySelectorAll("h1, .hero__sub, .hero__acciones")].map((el) => el.getBoundingClientRect()), m)];
+    // Mica y su globo de saludo (el globo sale de la figura, así que se mide aparte)
+    const mica = [".mica__figura", ".mica__globo", "[data-mica-lugar]"].map((sel) => document.querySelector(sel)?.getBoundingClientRect()).filter((r) => r?.width);
+    if (mica.length) zonas.push(caja(mica, 14));
+    return zonas;
   }
 
-  // Puntos de destino: se dibuja cada palabra en un canvas auxiliar y se muestrean sus píxeles
-  function objetivosTexto() {
-    const pts = [];
-    const base = cv.getBoundingClientRect();
-    const cs = getComputedStyle(titulo);
-    const tam = parseFloat(cs.fontSize);
-    const alto = parseFloat(cs.lineHeight) || tam * 0.95;
-
-    titulo.querySelectorAll(".palabra").forEach((el) => {
-      const r = el.getBoundingClientRect();
-      const color = tinta;
-      const off = document.createElement("canvas");
-      off.width = Math.ceil(r.width * dpr) + 20;
-      off.height = Math.ceil(r.height * dpr) + 20;
-      const o = off.getContext("2d", { willReadFrequently: true });
-      o.font = `${cs.fontWeight} ${tam * dpr}px ${cs.fontFamily}`;
-      o.letterSpacing = `${(parseFloat(cs.letterSpacing) || 0) * dpr}px`;
-      o.fillStyle = "#fff";
-      const m = o.measureText(el.textContent);
-      const linea = (alto * dpr - (m.fontBoundingBoxAscent + m.fontBoundingBoxDescent)) / 2 + m.fontBoundingBoxAscent;
-      o.fillText(el.textContent, 0, linea);
-      const datos = o.getImageData(0, 0, off.width, off.height).data;
-      const paso = Math.max(3, Math.round(2 * dpr));
-      for (let y = 0; y < off.height; y += paso) {
-        for (let x = 0; x < off.width; x += paso) {
-          if (datos[(y * off.width + x) * 4 + 3] > 140) {
-            pts.push({ x: (r.left - base.left) * dpr + x, y: (r.top - base.top) * dpr + y, color });
-          }
-        }
+  function ubicar() {
+    const r = capa.getBoundingClientRect();
+    W = r.width;
+    H = r.height;
+    semilla = 7;
+    const zonas = zonasLibres();
+    const techo = (document.querySelector(".encabezado")?.getBoundingClientRect().bottom || 72) - r.top + 10;
+    const chico = W < 700;
+    const base = chico ? Math.max(52, W * 0.15) : Math.min(Math.max(W * 0.068, 78), 132);
+    const hueco = chico ? 8 : 16;
+    const puestas = [];
+    for (const f of fotos) {
+      f.w = base * (0.8 + azar() * 0.45);
+      const h = f.w * f.ratio;
+      f.visible = false;
+      for (let i = 0; i < 400; i++) {
+        const x = 8 + azar() * (W - f.w - 16);
+        const y = techo + azar() * (H - h - techo - 8);
+        const choca = (a) => x < a.x2 + hueco && x + f.w > a.x1 - hueco && y < a.y2 + hueco && y + h > a.y1 - hueco;
+        if (zonas.some(choca) || puestas.some(choca)) continue;
+        puestas.push({ x1: x, x2: x + f.w, y1: y, y2: y + h });
+        Object.assign(f, { x, y, visible: true, prof: 0.4 + azar() * 0.9 });
+        break;
       }
-    });
-    return pts;
-  }
-
-  // Zonas que los íconos esquivan: cada palabra del título, el saludo, la bajada y los botones
-  function medirZonas() {
-    const base = cv.getBoundingClientRect();
-    const margen = 24 * dpr;
-    zonas = [...hero.querySelectorAll(".palabra, .hero__sub, .hero__acciones, .rueda__carta")].map((el) => {
-      const r = el.getBoundingClientRect();
-      return {
-        x1: (r.left - base.left) * dpr - margen,
-        x2: (r.right - base.left) * dpr + margen,
-        y1: (r.top - base.top) * dpr - margen,
-        y2: (r.bottom - base.top) * dpr + margen,
-      };
-    });
-  }
-
-  const zonaEn = (x, y) => zonas.find((z) => x > z.x1 && x < z.x2 && y > z.y1 && y < z.y2);
-
-  // Elige los que se quedan y les da un lugar libre, repartidos por la pantalla
-  function elegirQuedan(t = 0) {
-    quedanElegidos = true;
-    medirZonas();
-    const margen = 30 * dpr;
-    const techo = 90 * dpr;
-    const separacion = (innerWidth < 700 ? 90 : 130) * dpr;
-    const maximo = 0;
-    const lugares = [];
-    for (let i = 0; i < 600 && lugares.length < maximo; i++) {
-      const x = margen + Math.random() * (W - margen * 2);
-      const y = techo + Math.random() * (H - techo - margen);
-      if (!zonaEn(x, y) && lugares.every((o) => Math.hypot(o.x - x, o.y - y) > separacion)) lugares.push({ x, y });
-    }
-    const candidatos = iconos.filter((p) => p.parte > t);
-    lugares.forEach((lugar, i) => {
-      const p = candidatos[i];
-      if (!p) return;
-      p.queda = true;
-      p.t = "✦"; // las que quedan de fondo son solo estrellitas
-      p.fin = lugar;
-    });
-  }
-
-  function preparar() {
-    medir();
-    const pts = objetivosTexto();
-    const destino = () => pts[Math.floor(Math.random() * pts.length)] || { x: W / 2, y: H / 2 };
-    iconos = crearIconos(destino, true);
-    polvo = pts.map((p) => ({
-      ...p,
-      ox: Math.random() * W,
-      oy: Math.random() * H,
-      parte: FIN_BOOM + 300 + Math.random() * (FIN_POLVO - DUR_POLVO - FIN_BOOM - 300),
-    }));
-  }
-
-  function crearIconos(destino, desdeElCentro) {
-    const n = innerWidth < 700 ? 80 : 190;
-    return Array.from({ length: n }, () => {
-      const a = Math.random() * 6.28;
-      const v = (12 + Math.random() * 45) * dpr;
-      return {
-        x: desdeElCentro ? W / 2 : Math.random() * W,
-        y: desdeElCentro ? H / 2 : Math.random() * H,
-        queda: false,
-        vx: Math.cos(a) * v,
-        vy: Math.sin(a) * v,
-        z: 0.35 + Math.random() * 1.1,
-        t: simbolos[Math.floor(Math.random() * simbolos.length)],
-        rot: Math.random() * 6.28,
-        esAcento: Math.random() < 0.28,
-        parte: FIN_BOOM + Math.random() * (FIN_ICONOS - FIN_BOOM),
-        destino: destino(),
-      };
-    });
-  }
-
-  const corriente = (x, y, t) =>
-    Math.sin(x * 0.0016 + t * 0.00025) * 2.2 + Math.cos(y * 0.0021 - t * 0.0002) * 2.2 + Math.sin((x + y) * 0.0009 + t * 0.0003);
-  const suave = (k) => 1 - Math.pow(1 - k, 3);
-
-  function dibujarIconos(t) {
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    for (const p of iconos) {
-      if (p.queda) {
-        // No va a ninguna letra: frena y se apaga hasta quedar de fondo
-        const c = Math.min(Math.max((t - ELIGE_QUEDAN) / (FIN_POLVO - ELIGE_QUEDAN), 0), 1);
-        const ang = corriente(p.x, p.y, t);
-        p.vx += (Math.cos(ang) * dpr - p.vx) * 0.025;
-        p.vy += (Math.sin(ang) * dpr - p.vy) * 0.025;
-        p.x += p.vx * (1 - c) + (p.fin.x - p.x) * c * 0.05;
-        p.y += p.vy * (1 - c) + (p.fin.y - p.y) * c * 0.05;
-        const alfa = Math.min(1, 0.35 + p.z * 0.4);
-        pintar(p, alfa + (ALFA_FINAL - alfa) * c, 1);
-        continue;
-      }
-      const k = Math.min(Math.max((t - p.parte) / VUELO, 0), 1);
-      if (k >= 1) continue;
-      if (k > 0) {
-        // Vuela hacia su letra y se achica hasta volverse parte de ella
-        const e = k * k;
-        p.x += (p.destino.x - p.x) * e;
-        p.y += (p.destino.y - p.y) * e;
-      } else {
-        const ang = corriente(p.x, p.y, t);
-        const vel = (0.8 + p.z * 1.2) * dpr;
-        p.vx += (Math.cos(ang) * vel - p.vx) * 0.025;
-        p.vy += (Math.sin(ang) * vel - p.vy) * 0.025;
-        p.x += p.vx;
-        p.y += p.vy;
-        p.rot += 0.01;
-      }
-      pintar(p, Math.min(1, 0.35 + p.z * 0.4) * (1 - k * k), 1 - k * 0.85);
+      f.img.style.setProperty("--ancho", `${f.w.toFixed(1)}px`);
     }
   }
 
-  function pintar(p, alfa, escala) {
-    ctx.globalAlpha = alfa;
-    ctx.fillStyle = p.esAcento ? acento : neutro;
-    ctx.font = `${Math.round((12 + p.z * 15) * dpr * escala)}px "DM Mono", monospace`;
-    ctx.save();
-    ctx.translate(p.x, p.y);
-    ctx.rotate(Math.sin(p.rot) * 0.5);
-    ctx.fillText(p.t, 0, 0);
-    ctx.restore();
-  }
+  const transformar = (f, x, y, s = 1) => `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) scale(${s.toFixed(3)})`;
 
-  // Estado final: los íconos de fondo flotan muy lento, esquivan el texto y se avivan cerca del cursor
-  function dibujarFinal(ahora = 0) {
-    ctx.clearRect(0, 0, W, H);
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    const m = 40 * dpr;
-    for (const p of iconos) {
-      if (!p.queda) continue;
-      if (!reducido) {
-        const ang = corriente(p.x, p.y, ahora);
-        const vel = (0.1 + p.z * 0.14) * dpr;
-        p.vx += (Math.cos(ang) * vel - p.vx) * 0.02;
-        p.vy += (Math.sin(ang) * vel - p.vy) * 0.02;
-        const z = zonaEn(p.x, p.y);
-        if (z) p.vy += Math.sign(p.y - (z.y1 + z.y2) / 2 || 1) * 0.03 * dpr;
-        p.x += p.vx;
-        p.y += p.vy;
-        p.rot += 0.002;
-        if (p.x < -m) p.x = W + m;
-        if (p.x > W + m) p.x = -m;
-        if (p.y < -m) p.y = H + m;
-        if (p.y > H + m) p.y = -m;
+  // Estado final: cada foto se enciende cuando el puntero pasa cerca (aparece rápido y se apaga lento)
+  // y, al bajar, todas se juntan hacia el centro y se apagan
+  function pintarFinal() {
+    const p = Math.min(Math.max(scrollY / (innerHeight * 0.6), 0), 1);
+    const k = 1 - (1 - p) ** 3;
+    puntero.vx += (puntero.x - puntero.vx) * 0.06;
+    puntero.vy += (puntero.y - puntero.vy) * 0.06;
+    const base = capa.getBoundingClientRect();
+    const radio = Math.max(W, H) * (W < 700 ? 0.32 : 0.2);
+    for (const f of fotos) {
+      if (!f.visible) continue;
+      const h = f.w * f.ratio;
+      const cx = W / 2 - f.w / 2;
+      const cy = H / 2 - h / 2;
+      const dx = reducido ? 0 : -puntero.vx * 14 * f.prof;
+      const dy = reducido ? 0 : -puntero.vy * 10 * f.prof;
+      const x = f.x + (cx - f.x) * k * 0.92 + dx;
+      const y = f.y + (cy - f.y) * k * 0.92 + dy;
+      if (reducido) f.luz = 1;
+      else {
+        const d = Math.hypot(puntero.px - (base.left + x + f.w / 2), puntero.py - (base.top + y + h / 2));
+        const t = Math.max(0, 1 - d / radio);
+        const cerca = t * t * (3 - 2 * t);
+        f.luz += (cerca - f.luz) * (cerca > f.luz ? 0.16 : 0.025);
       }
-      const cerca = Math.max(0, 1 - Math.hypot(p.x - puntero.x, p.y - puntero.y) / (220 * dpr));
-      pintar(p, ALFA_FINAL + cerca * 0.4, 1);
+      f.img.style.transform = transformar(f, x, y, (1 - k * 0.55) * (0.9 + f.luz * 0.1));
+      f.img.style.opacity = (f.luz * (1 - k * k)).toFixed(3);
     }
-    ctx.globalAlpha = 1;
   }
 
-  function vivir(ahora) {
-    // Cuando la rueda tapa la portada, main.js deja el lienzo en opacidad 0: no hace falta dibujar
-    if (visible && cv.style.opacity !== "0") dibujarFinal(ahora);
+  function vivir() {
+    if (enPantalla) pintarFinal();
     requestAnimationFrame(vivir);
   }
 
-  function arrancarFondo() {
-    if (reducido) return;
-    new IntersectionObserver(([en]) => (visible = en.isIntersecting)).observe(hero);
-    addEventListener("pointermove", (ev) => {
-      const r = cv.getBoundingClientRect();
-      puntero.x = (ev.clientX - r.left) * dpr;
-      puntero.y = (ev.clientY - r.top) * dpr;
-    }, { passive: true });
-    requestAnimationFrame(vivir);
-  }
-
-  function armarFinal() {
-    medir();
-    iconos = crearIconos(() => null, false);
-    elegirQuedan();
-    for (const p of iconos) {
-      if (!p.queda) continue;
-      p.x = p.fin.x;
-      p.y = p.fin.y;
-      p.vx = p.vy = 0;
+  // desdeIntro: las fotos arrancan encendidas y se van apagando despacio
+  function mostrarFinal(desdeIntro = false) {
+    for (const f of fotos) {
+      f.img.style.transition = "none";
+      f.luz = desdeIntro && f.visible ? 1 : 0;
     }
-    dibujarFinal();
-  }
-
-  function dibujarPolvo(t, salida) {
-    const lado = 2 * dpr;
-    for (const q of polvo) {
-      const k = Math.min(Math.max((t - q.parte) / DUR_POLVO, 0), 1);
-      if (k <= 0) continue;
-      const e = 1 - Math.pow(1 - k, 5);
-      ctx.globalAlpha = (0.35 + e * 0.65) * (1 - salida);
-      ctx.fillStyle = q.color;
-      ctx.fillRect(q.ox + (q.x - q.ox) * e - dpr, q.oy + (q.y - q.oy) * e - dpr, lado, lado);
+    pintarFinal();
+    if (!reducido && !viviendo) {
+      viviendo = true;
+      requestAnimationFrame(vivir);
     }
   }
 
   function terminar() {
     if (terminada) return;
     terminada = true;
-    raiz.classList.remove("intro");
     quitarSaltos();
-    if (!quedanElegidos) armarFinal();
-    else medirZonas();
-    arrancarFondo();
+    raiz.classList.remove("intro");
+    mostrarFinal(true);
   }
 
-  function cuadro(ahora) {
-    if (terminada) return;
-    if (!inicio) inicio = ahora;
-    const t = ahora - inicio;
-    if (t >= ELIGE_QUEDAN && !quedanElegidos) elegirQuedan(t);
-    ctx.clearRect(0, 0, W, H);
-    dibujarIconos(t);
-    const salida = Math.min(Math.max((t - FIN_POLVO) / FUNDIDO, 0), 1);
-    dibujarPolvo(t, salida);
-    ctx.globalAlpha = 1;
-    // El texto real aparece debajo de las partículas ya armadas
-    if (t >= FIN_POLVO && !textoVisible) {
-      textoVisible = true;
-      raiz.classList.remove("intro");
+  // Intro: pila en el centro y después el collage se abre
+  function intro() {
+    const cx = W / 2;
+    const cy = H / 2;
+    const pila = fotos.slice(0, EN_PILA);
+    for (const f of fotos) {
+      const ancho = Math.min(W * 0.36, 190);
+      const s = ancho / f.w;
+      const jx = (azar() - 0.5) * 50;
+      const jy = (azar() - 0.5) * 40;
+      f.img.style.transition = "none";
+      f.img.style.transform = transformar(f, cx - f.w / 2 + jx, cy - (f.w * f.ratio) / 2 + jy, s);
     }
-    if (salida >= 1) {
-      terminar();
-      return;
-    }
-    requestAnimationFrame(cuadro);
+    pila.forEach((f, i) => setTimeout(() => !terminada && (f.img.style.opacity = 1), 120 + i * PASO_PILA));
+    const abre = 120 + EN_PILA * PASO_PILA + 250;
+    setTimeout(() => {
+      if (terminada) return;
+      for (const f of fotos) {
+        const demora = Math.round(azar() * 220);
+        f.img.style.transition = `transform ${APERTURA}ms ${CURVA} ${demora}ms, opacity 500ms ease ${demora}ms`;
+        f.img.style.opacity = f.visible ? 1 : 0;
+        f.img.style.transform = transformar(f, f.x, f.y, 1);
+      }
+      // La frase entra cuando el collage ya dejó el centro libre
+      setTimeout(() => {
+        if (terminada) return;
+        hero.classList.add("titulo-entra");
+        raiz.classList.remove("intro");
+      }, 420);
+      setTimeout(terminar, APERTURA + 260);
+    }, abre);
   }
 
-  const saltos = ["wheel", "touchmove", "keydown", "pointerdown", "scroll", "resize"];
+  const saltos = ["wheel", "touchmove", "keydown", "pointerdown", "scroll"];
   const quitarSaltos = () => saltos.forEach((e) => removeEventListener(e, terminar));
 
-  if (raiz.classList.contains("intro")) {
-    saltos.forEach((e) => addEventListener(e, terminar, { passive: true }));
-    document.fonts.ready.then(() => {
-      if (terminada) return;
-      preparar();
-      requestAnimationFrame(cuadro);
-    });
-  } else {
-    // Movimiento reducido o página ya scrolleada: directo al estado final
-    terminada = true;
-    document.fonts.ready.then(() => {
-      armarFinal();
-      arrancarFondo();
-    });
+  if (!reducido) {
+    const seguir = (ev) => {
+      clearTimeout(soltarDedo);
+      puntero.x = ev.clientX / innerWidth - 0.5;
+      puntero.y = ev.clientY / innerHeight - 0.5;
+      puntero.px = ev.clientX;
+      puntero.py = ev.clientY;
+    };
+    addEventListener("pointermove", seguir, { passive: true });
+    addEventListener("pointerdown", seguir, { passive: true });
+    // Con el dedo, las fotos quedan un momento y se apagan; con el mouse, al salir de la ventana
+    addEventListener("pointerup", (ev) => {
+      if (ev.pointerType !== "mouse") soltarDedo = setTimeout(() => (puntero.px = puntero.py = LEJOS), 900);
+    }, { passive: true });
+    document.documentElement.addEventListener("pointerleave", () => (puntero.px = puntero.py = LEJOS));
   }
 
-  // Si cambia el ancho se rearma el fondo; en celular la barra del navegador solo cambia el alto
+  document.fonts.ready.then(() => {
+    ubicar();
+    if (raiz.classList.contains("intro")) {
+      saltos.forEach((e) => addEventListener(e, terminar, { passive: true }));
+      intro();
+    } else {
+      terminada = true;
+      mostrarFinal();
+    }
+  });
+
+  // Si cambia el ancho se vuelve a repartir; en celular la barra del navegador solo cambia el alto
   let anchoPrevio = innerWidth;
   addEventListener("resize", () => {
     if (innerWidth === anchoPrevio) return;
     anchoPrevio = innerWidth;
-    if (terminada) armarFinal();
+    ubicar();
+    if (terminada) mostrarFinal();
   });
 }

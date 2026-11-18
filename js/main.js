@@ -58,175 +58,98 @@ function actualizarPilares() {
   pilares.forEach((li) => li.classList.toggle("activo", li === mejor && dist < innerHeight * 0.4));
 }
 
-// ---------- Portada y trabajos: la frase abre y la rueda pasa los proyectos con el scroll ----------
+// ---------- Proyectos: dos hileras que se deslizan de costado, en sentidos opuestos, al scrollear ----------
 const secTrabajos = document.querySelector("[data-trabajos]");
 const carpetas = [...document.querySelectorAll("[data-carpetas] > .carpeta")].map((el) => ({ el }));
-const rueda = document.querySelector("[data-rueda]");
-const apertura = document.querySelector("[data-apertura]");
-const fichaRueda = document.querySelector("[data-ficha]");
-const controlesRueda = document.querySelector("[data-rueda-controles]");
-const tituloRueda = document.querySelector("[data-rueda-titulo]");
-const lienzoPortada = document.querySelector("[data-hero-fondo]");
-// La rueda muestra solo los destacados y cierra con una tarjeta que abre el índice completo
 const destacados = carpetas.filter((c) => c.el.hasAttribute("data-destacado"));
-const PARADAS = destacados.length + 1;
-const CIERRE = destacados.length;
-const PASO_RUEDA = 360 / PARADAS;
-const RESERVA_RUEDA = 1.7; // la última tarjeta se queda quieta este tramo, en pantallas
-const INICIO_RUEDA = 0.22; // hasta acá manda la frase; después gira (igual que .trabajos__ancla en styles.css)
-const TEXTO_INDICE = "Ver todos los proyectos";
-const medidasRueda = { cw: 0, cyA: 0, cyB: 0, s: 1 };
-let avanceRueda = 0;
-let frenteRueda = -1;
+const pistas = [...document.querySelectorAll("[data-hilera]")];
+const DESLIZA = 0.7; // px de costado por cada px de scroll
+const hileras = [];
+let hilerasVisibles = false;
 
 const datoCarpeta = (c, clase) => c.el.querySelector(`.carpeta__${clase}`);
 
-function progresoTrabajos() {
-  const r = secTrabajos.getBoundingClientRect();
-  return Math.min(Math.max(-r.top / (r.height - innerHeight * RESERVA_RUEDA), 0), 1);
-}
-
-function medirRueda() {
-  if (!rueda || reducido) return;
-  const W = innerWidth;
-  const H = innerHeight;
-  const cw = Math.min(W * (W < 768 ? 0.62 : 0.27), H * 0.42);
-  const R = cw * 1.62;
-  const ch = cw * 0.75;
-  const s = W < 768 ? 1.32 : 1.55;
-  const piso = apertura.offsetHeight + 24;
-  Object.assign(medidasRueda, { cw, s, cyA: Math.max(piso, H * 0.5) + ch / 2 + R, cyB: H * (W < 768 ? 0.36 : 0.42) + R * s });
-  rueda.style.setProperty("--cw", `${cw}px`);
-}
-
-destacados.forEach((c, i) => {
+function tarjetaProyecto(c, copia) {
   const hash = c.el.querySelector("a").hash;
+  const tipo = datoCarpeta(c, "tipo");
   const li = document.createElement("li");
-  li.className = "rueda__carta";
-  li.style.setProperty("--angulo", `${i * PASO_RUEDA}deg`);
-  const titulo = datoCarpeta(c, "titulo").textContent;
-  li.innerHTML = `<a href="${hash}" data-cursor="ver" aria-label="${titulo}"><img src="${c.el.querySelector(".carpeta__ficha img").getAttribute("src")}" alt="" width="1200" height="900"><span class="rueda__nombre">${titulo}</span></a>`;
-  const enlace = li.firstElementChild;
-  // Una carta de costado pasa al frente; la del frente abre su caso
-  enlace.addEventListener("click", (e) => {
+  li.className = "hilera__item";
+  if (copia) {
+    li.setAttribute("aria-hidden", "true");
+    li.inert = true;
+  }
+  li.innerHTML = `<a class="proyecto" href="${hash}" data-cursor="ver">
+      <span class="proyecto__imagen"><img src="${c.el.querySelector(".carpeta__ficha img").getAttribute("src")}" alt="" width="1200" height="900" loading="lazy" decoding="async"></span>
+      <span class="proyecto__texto">
+        <span class="proyecto__titulo">${datoCarpeta(c, "titulo").textContent}</span>
+        <span class="proyecto__categoria">${datoCarpeta(c, "categoria").textContent}</span>
+        <span class="proyecto__tipo${tipo.classList.contains("carpeta__tipo--real") ? " proyecto__tipo--real" : ""}">${tipo.textContent}</span>
+      </span>
+    </a>`;
+  li.firstElementChild.addEventListener("click", (e) => {
+    if (!casoDe(hash)) return; // Lo que escribo es una sección: el enlace baja solo
     e.preventDefault();
-    if (!reducido && i !== frenteRueda) irACarpeta(i);
-    else abrirCaso(hash);
+    abrirCaso(hash);
   });
-  enlace.addEventListener("focus", () => {
-    if (!reducido && enlace.matches(":focus-visible")) irACarpeta(i);
+  return li;
+}
+
+// Primera hilera: los destacados primero; la segunda, el resto
+const mitad = Math.ceil(carpetas.length / 2);
+const orden = [...destacados, ...carpetas.filter((c) => !destacados.includes(c))];
+[orden.slice(0, mitad), orden.slice(mitad)].forEach((grupo, n) => {
+  const pista = pistas[n];
+  if (!pista) return;
+  grupo.forEach((c) => pista.append(tarjetaProyecto(c, false)));
+  // Una copia de relleno para que la hilera no tenga fin; con movimiento reducido se recorre a mano
+  if (!reducido) grupo.forEach((c) => pista.append(tarjetaProyecto(c, true)));
+  const h = { pista, x: 0, ajuste: 0, inicio: n === 0 ? 0 : 0.5, sentido: n === 0 ? -1 : 1, ancho: 0 };
+  // Con teclado, la tarjeta enfocada se corre hasta quedar a la vista
+  pista.addEventListener("focusin", (e) => {
+    if (reducido) return;
+    const r = e.target.getBoundingClientRect();
+    const margen = innerWidth * 0.08;
+    if (r.left < margen) h.ajuste += margen - r.left;
+    else if (r.right > innerWidth - margen) h.ajuste -= r.right - (innerWidth - margen);
   });
-  rueda?.append(li);
+  hileras.push(h);
 });
 
-// Tarjeta de cierre: un mosaico con los trabajos que no entran en la rueda
-if (rueda) {
-  const li = document.createElement("li");
-  li.className = "rueda__carta rueda__carta--cierre";
-  li.style.setProperty("--angulo", `${CIERRE * PASO_RUEDA}deg`);
-  const resto = carpetas.filter((c) => !destacados.includes(c)).slice(0, 4);
-  const mosaico = resto.map((c) => `<img src="${c.el.querySelector(".carpeta__ficha img").getAttribute("src")}" alt="" width="1200" height="900" loading="lazy" decoding="async">`).join("");
-  li.innerHTML = `<a href="#trabajos" aria-haspopup="dialog" aria-label="${TEXTO_INDICE}"><span class="rueda__mosaico">${mosaico}</span><span class="rueda__nombre">${TEXTO_INDICE}</span></a>`;
-  const enlace = li.firstElementChild;
-  enlace.addEventListener("click", (e) => {
-    e.preventDefault();
-    if (!reducido && frenteRueda !== CIERRE) irACarpeta(CIERRE);
-    else abrirIndice();
-  });
-  enlace.addEventListener("focus", () => {
-    if (!reducido && enlace.matches(":focus-visible")) irACarpeta(CIERRE);
-  });
-  rueda.append(li);
+function medirHileras() {
+  for (const h of hileras) h.ancho = h.pista.scrollWidth / 2;
 }
 
-const suaveSalida = (t) => 1 - (1 - t) ** 3;
-const suaveAmbos = (t) => t * t * (3 - 2 * t);
-
-function moverRueda() {
-  if (!rueda || reducido) return;
-  const objetivo = progresoTrabajos();
-  avanceRueda += (objetivo - avanceRueda) * 0.1;
-  const t = suaveSalida(Math.min(avanceRueda / INICIO_RUEDA, 1));
-  const tramo = (Math.max(0, (avanceRueda - INICIO_RUEDA) / (1 - INICIO_RUEDA))) * (PARADAS - 1);
-  // Se detiene derecha en cada proyecto y gira entre uno y otro
-  const base = Math.floor(tramo);
-  const giro = base + suaveAmbos(Math.min(Math.max((tramo - base - 0.25) / 0.5, 0), 1));
-  const { cyA, cyB, s } = medidasRueda;
-  const y = cyA + (cyB - cyA) * t;
-  const escala = 1 + (s - 1) * t;
-  rueda.style.transform = `translateY(${y.toFixed(1)}px) scale(${escala.toFixed(3)}) rotate(${(-giro * PASO_RUEDA).toFixed(2)}deg)`;
-
-  apertura.style.opacity = 1 - suaveSalida(Math.min(avanceRueda / 0.08, 1));
-  apertura.style.transform = `translateY(${(-t * 60).toFixed(1)}px)`;
-  apertura.style.visibility = t > 0.9 ? "hidden" : "";
-  if (lienzoPortada) lienzoPortada.style.opacity = 1 - t;
-
-  // Antes de que suba la sección siguiente, las tarjetas de los costados se apagan para que no queden cortadas
-  const tramoFinal = innerHeight * (RESERVA_RUEDA - 1);
-  const pasado = -secTrabajos.getBoundingClientRect().top - (secTrabajos.offsetHeight - innerHeight * RESERVA_RUEDA);
-  const costados = 1 - Math.min(Math.max(pasado / (tramoFinal * 0.8), 0), 1);
-  const frente = Math.min(Math.round(tramo), PARADAS - 1);
-  [...rueda.children].forEach((carta, i) => {
-    carta.style.opacity = i === frente ? 1 : costados;
-    carta.style.visibility = i !== frente && costados === 0 ? "hidden" : "";
-  });
-
-  const verFicha = Math.max(0, (t - 0.6) / 0.4);
-  for (const el of [tituloRueda, fichaRueda, controlesRueda]) {
-    el.style.opacity = el === controlesRueda ? verFicha * costados : verFicha;
-    el.style.visibility = verFicha > 0 ? "" : "hidden";
-  }
-  // El título se resalta cuando termina de aparecer
-  if (verFicha > 0.8) tituloRueda.firstElementChild.classList.add("titulo-marca--visible");
-
-  if (frente !== frenteRueda) {
-    frenteRueda = frente;
-    pintarFicha(frente);
+// La posición sale del scroll: la primera hilera va a la izquierda y la segunda a la derecha.
+// Se acerca suave a su lugar, así el movimiento sigue un instante después de frenar
+function moverHileras() {
+  if (reducido || !hilerasVisibles) return;
+  const recorrido = innerHeight - secTrabajos.getBoundingClientRect().top;
+  for (const h of hileras) {
+    if (!h.ancho) continue;
+    const objetivo = -h.inicio * h.ancho + recorrido * DESLIZA * h.sentido + h.ajuste;
+    h.x += (objetivo - h.x) * 0.12;
+    // Las copias de relleno hacen que nunca se vea el final
+    const visible = (((h.x % h.ancho) + h.ancho) % h.ancho) - h.ancho;
+    h.pista.style.transform = `translate3d(${visible.toFixed(1)}px, 0, 0)`;
   }
 }
 
-// La ficha cuenta el proyecto del frente; en la última parada invita al índice completo
-function pintarFicha(n) {
-  const cierre = n === CIERRE;
-  const c = destacados[n];
-  const abrir = fichaRueda.querySelector("[data-ficha-abrir]");
-  const tipo = fichaRueda.querySelector("[data-ficha-tipo]");
-  fichaRueda.classList.toggle("ficha--cierre", cierre);
-  // En el cierre queda solo el botón: el mosaico ya dice que hay más
-  for (const [dato, clase] of [["categoria", "categoria"], ["titulo", "titulo"], ["frase", "frase"]]) {
-    const el = fichaRueda.querySelector(`[data-ficha-${dato}]`);
-    el.textContent = cierre ? "" : datoCarpeta(c, clase).textContent;
-    el.hidden = cierre;
-  }
-  tipo.textContent = cierre ? "" : datoCarpeta(c, "tipo").textContent;
-  tipo.hidden = cierre;
-  tipo.classList.toggle("ficha__tipo--real", !cierre && datoCarpeta(c, "tipo").classList.contains("carpeta__tipo--real"));
-  abrir.href = cierre ? "#trabajos" : c.el.querySelector("a").hash;
-  abrir.textContent = cierre ? TEXTO_INDICE : "Ver proyecto";
-  if (cierre) abrir.setAttribute("aria-haspopup", "dialog");
-  else abrir.removeAttribute("aria-haspopup");
+if (secTrabajos && !reducido) {
+  medirHileras();
+  addEventListener("resize", medirHileras);
+  addEventListener("load", medirHileras);
+  new IntersectionObserver(([e]) => (hilerasVisibles = e.isIntersecting)).observe(secTrabajos);
 }
 
-function irACarpeta(i) {
-  const n = Math.min(Math.max(i, 0), PARADAS - 1);
-  const r = secTrabajos.getBoundingClientRect();
-  const alto = r.height - innerHeight * RESERVA_RUEDA;
-  const p = INICIO_RUEDA + ((1 - INICIO_RUEDA) * n) / (PARADAS - 1);
-  scrollTo({ top: scrollY + r.top + alto * p, behavior: "smooth" });
+
+// Lleva a la tarjeta de un proyecto en las hileras (desde el índice)
+function llevarAProyecto(i) {
+  const enlace = [...document.querySelectorAll(".hilera__item:not([aria-hidden]) .proyecto")].find((a) => a.hash === carpetas[i].el.querySelector("a").hash);
+  if (!enlace) return;
+  secTrabajos.scrollIntoView({ behavior: reducido ? "auto" : "smooth" });
+  enlace.focus({ preventScroll: true });
 }
 
-secTrabajos?.querySelector("[data-anterior]").addEventListener("click", () => irACarpeta(frenteRueda - 1));
-secTrabajos?.querySelector("[data-siguiente]").addEventListener("click", () => irACarpeta(frenteRueda + 1));
-fichaRueda?.querySelector("[data-ficha-abrir]").addEventListener("click", (e) => {
-  e.preventDefault();
-  if (frenteRueda === CIERRE) abrirIndice();
-  else abrirCaso(e.currentTarget.hash);
-});
-
-medirRueda();
-addEventListener("resize", medirRueda);
-addEventListener("load", medirRueda);
-document.fonts?.ready.then(medirRueda);
 
 // ---------- Casos: paneles dentro de la página, con enlace propio (#trabajo-slug) ----------
 const FLECHA = '<span class="tarjeta__flecha" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12 12 4M5.5 4H12v6.5"/></svg></span>';
@@ -293,8 +216,7 @@ document.querySelectorAll("[data-caso]").forEach((caso) => {
     else {
       // Llegó por enlace directo: al cerrar, queda en Trabajos
       history.replaceState(null, "", "#trabajos");
-      if (reducido) secTrabajos.querySelector("[data-rueda]").scrollIntoView();
-      else irACarpeta(0);
+      secTrabajos.scrollIntoView();
     }
     casoAbiertoAca = false;
   });
@@ -316,7 +238,7 @@ document.querySelectorAll("[data-caso]").forEach((caso) => {
         mostrarCaso(casoDe(hash));
       } else {
         caso.close();
-        setTimeout(() => llevarACarpeta(i), 60);
+        setTimeout(() => llevarAProyecto(i), 60);
       }
     });
   });
@@ -470,16 +392,6 @@ if (certificados && !reducido) {
 const indice = document.querySelector("[data-indice]");
 const listaIndice = document.querySelector("[data-indice-lista]");
 
-function llevarACarpeta(i) {
-  // i es la posición en el índice; la rueda solo tiene los destacados
-  const enRueda = destacados.indexOf(carpetas[i]);
-  if (enRueda < 0) return;
-  const enlace = rueda.children[enRueda].firstElementChild;
-  if (reducido) enlace.scrollIntoView({ block: "center" });
-  else irACarpeta(enRueda);
-  enlace.focus({ preventScroll: true });
-}
-
 // Abre el caso del trabajo si ya existe; si no, lleva a su carpeta
 function irATrabajo(i) {
   const hash = carpetas[i].el.querySelector("a").hash;
@@ -491,7 +403,7 @@ function irATrabajo(i) {
     const titulo = seccion.querySelector("h2");
     titulo.setAttribute("tabindex", "-1");
     titulo.focus({ preventScroll: true });
-  } else llevarACarpeta(i);
+  } else llevarAProyecto(i);
 }
 
 carpetas.forEach((c, i) => {
@@ -553,7 +465,7 @@ temas.forEach((tema) => {
   contenedorFiltros.append(item);
 });
 
-// El enlace "Trabajos" del menú también abre el índice (sin JS, baja a la rueda)
+// El enlace "Trabajos" del menú también abre el índice (sin JS, baja a los proyectos)
 function abrirIndice(e) {
   e?.preventDefault();
   bloquearFondo();
@@ -718,7 +630,7 @@ function cuadro() {
   }
 
   actualizarPilares();
-  moverRueda();
+  moverHileras();
   if (luzPortada?.classList.contains("hero__luz--activa")) {
     luz.rx += (luz.x - luz.rx) * 0.05;
     luz.ry += (luz.y - luz.ry) * 0.05;
