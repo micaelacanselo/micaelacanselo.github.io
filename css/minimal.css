@@ -191,13 +191,34 @@ a {
 
 @media (max-width: 47.99rem) {
   .barra__dato,
-  .navegacion__marca,
-  .navegacion__secundario {
+  .navegacion__marca {
     display: none;
   }
 
   .navegacion {
     justify-content: center;
+    padding-inline: 0.75rem;
+  }
+
+  /* En celular entran los cuatro: Trabajos, Sobre mí, Servicios y Hablemos */
+  .navegacion ul {
+    gap: 0.9rem;
+  }
+
+  .navegacion a:not(.pildora) {
+    font-size: 0.875rem;
+  }
+
+  .navegacion .pildora {
+    padding-inline: 1.1em;
+    font-size: 0.875rem;
+  }
+}
+
+/* En pantallas muy angostas "Sobre mí" cede su lugar: se llega bajando */
+@media (max-width: 22.4rem) {
+  .navegacion li:has(a[href="#sobre-mi"]) {
+    display: none;
   }
 }
 
@@ -729,9 +750,19 @@ a {
   margin-bottom: 0.6rem;
 }
 
+/* El radio invisible ocupa justo su píldora: si no, toma el ancho del formulario y se sale de la pantalla */
+.opcion {
+  position: relative;
+}
+
 .opcion input {
   position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
   opacity: 0;
+  cursor: pointer;
 }
 
 .opcion span {
