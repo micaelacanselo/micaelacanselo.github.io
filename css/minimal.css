@@ -19,8 +19,13 @@ html {
   }
 }
 
+/* Grano de papel: ruido muy suave en el tono del café, en mosaico, sobre el fondo crema */
+:root {
+  --grano: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .25 0 0 0 0 .15 0 0 0 0 .11 0 0 0 .17 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
 body {
-  background: var(--beige);
+  background: var(--grano), var(--beige);
   color: var(--cafe);
   font-family: var(--fuente);
   font-size: 1.0625rem;
@@ -354,7 +359,7 @@ a {
   grid-template-columns: 1fr;
   align-content: center;
   gap: 2rem;
-  padding: 5rem var(--m) 6rem;
+  padding: 5rem var(--m) 3rem;
 }
 
 @media (min-width: 60rem) {
@@ -480,12 +485,14 @@ a {
   align-items: end;
   justify-content: space-between;
   gap: 1rem;
-  margin-bottom: clamp(3rem, 2rem + 4vw, 6rem);
+  margin-bottom: clamp(1.5rem, 1rem + 2vw, 3rem);
 }
 
 /* Dos hileras que se deslizan en sentidos opuestos mientras se baja */
+/* Arriba, menos aire: viene justo después de la escena fija de Qué hago, que ya deja espacio */
 .trabajos {
   padding-inline: 0;
+  padding-top: clamp(2rem, 1rem + 3vw, 4.5rem);
   overflow: hidden;
 }
 
@@ -495,7 +502,7 @@ a {
 
 .hileras {
   display: grid;
-  gap: clamp(2.5rem, 1.5rem + 3vw, 4.5rem);
+  gap: clamp(1.5rem, 1rem + 2vw, 3rem);
 }
 
 .hilera {
@@ -507,8 +514,10 @@ a {
   will-change: transform;
 }
 
+/* Más chicas, para que las dos hileras entren juntas en la pantalla */
 .trabajo {
-  width: clamp(16rem, 11rem + 18vw, 30rem);
+  /* También según el alto: en pantallas bajas se achican para que entren las dos hileras */
+  width: max(8.5rem, min(clamp(11.5rem, 6.5rem + 10vw, 18rem), calc((100svh - 24rem) / 1.5)));
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -547,15 +556,19 @@ a {
 }
 
 .trabajo__pie {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 0.15rem 1rem;
-  margin-top: 0.85rem;
+  /* Nombre arriba y una sola línea chica con tipo y categoría (si no entra, termina en …) */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-top: 0.7rem;
   padding-top: 0.6rem;
   border-top: 1px solid var(--linea);
 }
 
 .trabajo__titulo {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-weight: 500;
   letter-spacing: -0.01em;
 }
@@ -566,12 +579,8 @@ a {
   font-size: 0.8125rem;
 }
 
-.trabajo__tipo {
-  text-align: right;
-}
-
-.trabajo__categoria {
-  grid-column: 1 / -1;
+.trabajo__categoria::before {
+  content: " · ";
 }
 
 /* ---------- Sobre mí ---------- */
@@ -860,4 +869,78 @@ a {
   .trabajos__acciones .contador {
     display: none;
   }
+}
+
+/* ---------- Títulos: cada palabra sube desde una máscara, escalonadas ---------- */
+
+/* La ventana recorta la palabra; el relleno deja lugar a tildes y descendentes (é, g, p) y el margen negativo lo compensa */
+/* Recorta solo arriba y abajo: a los costados la letra puede pasarse (las palabras van muy juntas y la última se cortaba) */
+.palabra {
+  display: inline-block;
+  overflow-x: visible;
+  overflow-y: clip;
+  padding: 0.14em 0.08em 0.16em;
+  margin: -0.14em -0.08em -0.16em;
+  vertical-align: top;
+}
+
+/* Sube apenas inclinada y se endereza al llegar; la curva suave del sitio hace que el recorrido se vea entero */
+.palabra__interior {
+  display: inline-block;
+  translate: 0 110%;
+  rotate: 5deg;
+  transform-origin: 0 100%;
+  transition:
+    translate 1000ms var(--curva),
+    rotate 1000ms var(--curva);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+
+/* Disparadores: el título de sección al asomar, la portada al terminar la intro y cada paso de Qué hago al activarse */
+.titulo.entra .palabra__interior,
+.portada:not(.en-intro) h1 .palabra__interior,
+.paso.activo h3 .palabra__interior {
+  translate: 0 0;
+  rotate: 0deg;
+}
+
+/* Al salir de un paso, las palabras bajan rápido y sin escalonar, para que el siguiente entre limpio */
+.paso:not(.activo) h3 .palabra__interior {
+  transition-duration: 250ms;
+  transition-delay: 0ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .palabra__interior {
+    translate: none;
+    rotate: none;
+    transition: none;
+  }
+}
+
+/* Los casos y el índice comparten el grano del papel */
+.caso,
+.indice {
+  background-image: var(--grano);
+}
+
+/* Clip de papel que sujeta la foto de Sobre mí: línea fina café, apenas inclinado, montado sobre el borde */
+.polaroid--clip {
+  position: relative;
+}
+
+.polaroid__clip {
+  position: absolute;
+  top: -1.6rem;
+  left: 22%;
+  width: 1.5rem;
+  height: auto;
+  overflow: visible;
+  fill: none;
+  stroke: var(--cafe);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  rotate: -8deg;
+  filter: drop-shadow(0 2px 1.5px color-mix(in srgb, var(--cafe) 30%, transparent));
 }
