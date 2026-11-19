@@ -1,9 +1,34 @@
 /* Sistema de diseño: fuentes y variables */
 
+/* Satoshi: la tipografía de imprenta del manual de marca de Micaela (licencia en assets/fonts) */
 @font-face {
-  font-family: "Outfit";
-  src: url("../assets/fonts/outfit-var.woff2") format("woff2");
-  font-weight: 100 900;
+  font-family: "Satoshi";
+  src: url("../assets/fonts/satoshi-300.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Satoshi";
+  src: url("../assets/fonts/satoshi-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Satoshi";
+  src: url("../assets/fonts/satoshi-500.woff2") format("woff2");
+  font-weight: 500 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Satoshi";
+  src: url("../assets/fonts/satoshi-700.woff2") format("woff2");
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
@@ -17,26 +42,29 @@
 }
 
 :root {
-  /* Color: paleta de higos. Tinta suave y marrón medio son derivados */
+  /* Color: paleta del manual de marca de Micaela, sobre una base cálida (no el hueso del manual, que en pantalla se ve gris) */
+  --cafe: #40261d; /* café: texto, botones, Qué hago, Hablemos y pie */
+  --manteca: #fef2bc; /* solo títulos grandes sobre café */
+  --manteca-suave: #f8f1dc; /* derivado: fondo de Lo que escribo */
+  --arena: #d9bfa0; /* resaltado y detalles */
+  --taupe: #8c775d; /* líneas, puntito de los títulos e íconos; nunca texto chico */
+  --beige: #efe6da; /* derivado de arena: fondo principal */
   --negro: #000;
-  --cafe: #442318; /* brown: texto, Trabajos y pie */
-  --cafe-2: #5a3324;
-  --marron: #9c7a66; /* derivado: íconos de la portada */
-  --beige: #efe5d3; /* lactic: fondo principal */
-  --arena: #d1beaf; /* sand */
-  --limon: #d1beaf; /* acento claro: resaltador e intro */
-  --tostado: #7d3722; /* terracotta */
-  --tinta: #442318;
-  --tinta-suave: #6b4634;
-  --crema: #efe5d3;
+  --cafe-2: #6e5a45;
+  --marron: var(--taupe);
+  --limon: var(--arena);
+  --tostado: var(--cafe);
+  --tinta: var(--cafe);
+  --tinta-suave: #6e5a45; /* derivado: texto secundario (5,3:1 sobre el fondo) */
+  --crema: var(--beige);
   --papel: #fbf7ef; /* hoja de diario y ventana de mail en Lo que escribo */
-  --suave: #efe5d3;
-  --terracota: #7d3722;
-  --terracota-oscuro: #5e2818;
+  --suave: var(--beige);
+  --terracota: var(--cafe);
+  --terracota-oscuro: #2b1913; /* derivado: hover de botones */
   --terracota-hover: var(--terracota-oscuro);
-  --terracota-claro: #d1beaf;
-  --naranja-hover: #efe5d3;
-  --resaltado: #442318;
+  --terracota-claro: var(--arena);
+  --naranja-hover: var(--manteca);
+  --resaltado: var(--cafe);
   --rayas: none;
 
   /* Colores de marca de los proyectos, solo para sus láminas */
@@ -61,7 +89,7 @@
   --google-gris: #4d5156;
 
   /* Tipografía */
-  --fuente: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fuente: "Satoshi", system-ui, -apple-system, "Segoe UI", sans-serif;
   --fuente-mono: "DM Mono", ui-monospace, Consolas, monospace;
 
   --texto-s: 0.9375rem;

@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Seguridad: solo corre código del propio sitio. Si se edita el script de la intro, actualizar su hash -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-qA1SRV6LGxr7RMzdFlTG3rU0M/1JOSsbB8QGNPP/tuc='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self'; font-src 'self'; connect-src 'self' https://api.web3forms.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self'; font-src 'self'; connect-src 'self' https://api.web3forms.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com">
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
   <title>Micaela Canselo · Comunicación, Marketing Digital y Diseño Web</title>
   <meta name="description" content="Soy Micaela Canselo, Técnica en Comunicación y Marketing Digital en Buenos Aires. Ayudo a marcas a comunicar con claridad, llegar a su público y verse bien en la web.">
   <meta name="author" content="Micaela Canselo">
-  <meta name="theme-color" content="#efe5d3">
+  <meta name="theme-color" content="#efe6da">
   <link rel="canonical" href="https://micaelacanselo.github.io/">
 
   <meta property="og:type" content="website">
@@ -27,9 +27,10 @@
 
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 
-  <link rel="preload" href="assets/fonts/outfit-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/satoshi-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/tokens.css">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/casos.css">
+  <link rel="stylesheet" href="css/minimal.css">
 
   <script type="application/ld+json">
   {
@@ -47,89 +48,288 @@
   }
   </script>
 
-  <link rel="preload" href="assets/fonts/dm-mono-400.woff2" as="font" type="font/woff2" crossorigin>
-  <script>
-    // La intro de fotos se ve en cada carga, arriba de todo. Se saltea con un enlace a una sección
-    // (#...) o al volver atrás a un lugar más abajo. Si hero.js no llega a correr, el contenido aparece igual
-    let arriba = true;
-    try {
-      const tipo = performance.getEntriesByType("navigation")[0]?.type;
-      if (tipo === "back_forward") arriba = !Number(sessionStorage.getItem("scroll-salida"));
-      addEventListener("pagehide", () => sessionStorage.setItem("scroll-salida", String(scrollY)));
-    } catch {}
-    if (arriba && !location.hash && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      // Al recargar, la página vuelve arriba en vez de al lugar donde estaba
-      if ("scrollRestoration" in history) history.scrollRestoration = "manual";
-      document.documentElement.classList.add("intro");
-      // Red de seguridad por si hero.js no corre; normalmente la intro la termina hero.js
-      setTimeout(() => document.documentElement.classList.remove("intro"), 12000);
-    }
-  </script>
-  <script src="js/main.js" type="module"></script>
-  <script src="js/hero.js" type="module"></script>
-  <script src="js/mica.js" type="module"></script>
+  <script src="js/minimal.js" type="module"></script>
+  <script src="js/casos.js" type="module"></script>
 </head>
 <body>
-  <a class="saltar-contenido" href="#contenido">Saltar al contenido</a>
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
 
-  <header class="encabezado">
-    <div class="contenedor encabezado__interior">
-      <a class="encabezado__logo" href="#inicio" aria-label="Micaela Canselo, Comunicación digital, ir al inicio">
-        <img class="encabezado__foto" src="assets/img/micaela-avatar.webp" alt="" width="96" height="96">
-        <span class="encabezado__marca"><span class="encabezado__nombre">Micaela Canselo</span><small>Comunicación digital</small></span>
-      </a>
-      <nav aria-label="Principal">
-        <ul class="nav__lista">
-          <li class="nav__item--secundario"><a class="nav__enlace" href="#trabajos" data-ver-todos aria-haspopup="dialog">Trabajos</a></li>
-          <li class="nav__item--secundario"><a class="nav__enlace" href="#sobre-mi">Sobre mí</a></li>
-          <li class="nav__item--secundario"><a class="nav__enlace" href="#que-hago">Qué hago</a></li>
-          <li class="nav__item--secundario"><a class="nav__enlace" href="servicios/">Servicios</a></li>
-          <li class="nav__item--secundario"><a class="nav__enlace" href="#contacto">Contacto</a></li>
-          <li><a class="boton" href="assets/cv/cv-micaela-canselo.pdf" download><span><span class="encabezado__cv-verbo">Descargar </span>CV</span> <svg class="icono" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 2v8m0 0 3-3M8 10 5 7M2.5 13.5h11"/></svg></a></li>
-        </ul>
-      </nav>
-    </div>
+  <header class="barra">
+    <a class="barra__nombre" href="#inicio"><img src="assets/img/micaela-avatar.webp" alt="" width="96" height="96">Micaela Canselo</a>
+    <span class="barra__dato">Comunicación digital · Buenos Aires</span>
   </header>
 
+  <nav class="navegacion" aria-label="Principal">
+    <a class="navegacion__marca" href="#inicio">Micaela Canselo</a>
+    <ul>
+      <li><a href="#trabajos">Trabajos</a></li>
+      <li><a href="#sobre-mi">Sobre mí</a></li>
+      <li class="navegacion__secundario"><a href="servicios/">Servicios</a></li>
+      <li><a class="pildora pildora--llena" href="#contacto">Hablemos</a></li>
+    </ul>
+  </nav>
+
   <main id="contenido">
-    <section class="hero tema-claro hoja" id="inicio" aria-labelledby="hero-titulo" data-hero>
-      <div class="hero__fijo">
-        <div class="hero__3d" aria-hidden="true">
-          <div class="hero__aurora"><span></span><span></span></div>
-          <div class="hero__luz" data-luz></div>
-        </div>
-        <!-- Collage de proyectos: se apila en el centro, se abre alrededor de la frase y al bajar se junta (js/hero.js) -->
-        <div class="collage" data-hero-fondo aria-hidden="true"></div>
-        <div class="contenedor apertura" data-apertura>
-          <div class="mica-lugar" data-mica-lugar aria-hidden="true"></div>
-          <h1 id="hero-titulo"><span class="palabra"><span style="--i: 0">Transformo</span></span> <span class="palabra"><span style="--i: 1">ideas</span></span> <span class="palabra"><span style="--i: 2">en</span></span> <br class="hero__corte"><em class="hero__resaltado"><span class="palabra"><span style="--i: 3">experiencias</span></span> <span class="palabra"><span style="--i: 4">digitales</span></span> <span class="palabra"><span style="--i: 5">con</span></span> <span class="palabra"><span style="--i: 6">identidad.</span></span></em></h1>
-          <p class="hero__sub">Comunicación digital · Marketing · Diseño y desarrollo web</p>
-          <span class="hero__linea" aria-hidden="true"></span>
-          <div class="hero__acciones">
-            <a class="boton boton--principal" href="#trabajos">Ver proyectos <span aria-hidden="true">→</span></a>
-            <a class="boton" href="#contacto">Hablemos</a>
+    <section class="portada en-intro" id="inicio" aria-labelledby="portada-titulo" data-portada>
+      <div class="portada__escena">
+        <div class="portada__fotos" data-collage aria-hidden="true"></div>
+        <div class="portada__texto">
+          <h1 id="portada-titulo">Transformo ideas en <span class="fuerte">experiencias digitales con identidad.</span></h1>
+          <p class="portada__sub">Comunicación digital · Marketing · Diseño y desarrollo web</p>
+          <div class="portada__acciones">
+            <a class="pildora pildora--llena" href="#trabajos">Ver trabajos</a>
+            <a class="pildora" href="assets/cv/cv-micaela-canselo.pdf" download>Descargar CV</a>
           </div>
         </div>
+        <p class="portada__deslizar" aria-hidden="true">Deslizá</p>
       </div>
-      <!-- Proyectos: dos hileras que se deslizan de costado al scrollear; se arman desde las carpetas en js/main.js -->
-      <div class="trabajos" id="trabajos" data-trabajos>
-        <div class="contenedor trabajos__cabecera">
-          <h2 class="trabajos__titulo" id="trabajos-titulo"><span class="titulo-marca" data-titulo-marca>proyectos</span><span class="punto" aria-hidden="true"></span></h2>
-          <div class="trabajos__acciones">
-            <button class="boton boton--principal" type="button" data-ver-todos aria-haspopup="dialog">Ver todos</button>
+    </section>
+
+    <section class="que-hago" aria-labelledby="que-hago-titulo" style="--pasos: 4" data-que-hago>
+      <div class="que-hago__escena">
+        <div>
+          <h2 class="visualmente-oculto" id="que-hago-titulo">Qué hago</h2>
+          <p class="que-hago__intro">Resuelvo cómo se entiende una marca: qué dice, a quién le habla y cómo se ve en la web.</p>
+          <div class="que-hago__textos">
+            <div class="paso activo" data-paso><h3>Comunicación de <span class="fuerte">marca</span></h3><p>Qué decir y con qué voz.</p></div>
+            <div class="paso" data-paso><h3>Marketing <span class="fuerte">digital</span></h3><p>A quién hablarle y en qué canales.</p></div>
+            <div class="paso" data-paso><h3><span class="fuerte">Copywriting</span></h3><p>Frases que se entienden y hacen actuar.</p></div>
+            <div class="paso" data-paso><h3>Diseño <span class="fuerte">web</span></h3><p>Sitios con identidad, fáciles de usar en cualquier pantalla.</p></div>
           </div>
+          <ol class="que-hago__puntos" aria-hidden="true">
+            <li class="activo"></li>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ol>
         </div>
-        <div class="hileras" data-hileras>
-          <div class="hilera"><ul class="hilera__pista" data-hilera aria-label="Proyectos"></ul></div>
-          <div class="hilera hilera--inversa"><ul class="hilera__pista" data-hilera aria-label="Más proyectos"></ul></div>
+        <div class="que-hago__fotos" aria-hidden="true">
+          <figure class="polaroid activo" style="--giro: 3deg"><img src="assets/proyectos/que-hago/marca.webp" alt="Láminas del manual de marca de La Campagnola y la identidad de Magnolia aplicada" width="1200" height="900" loading="eager"><figcaption>La Campagnola y Magnolia</figcaption></figure>
+          <figure class="polaroid" style="--giro: -2deg"><img src="assets/proyectos/que-hago/marketing.webp" alt="Láminas de la estrategia de redes de Havanna: FODA, buyer persona y objetivo SMART" width="1200" height="900" loading="lazy"><figcaption>Havanna</figcaption></figure>
+          <figure class="polaroid" style="--giro: 2.5deg"><img src="assets/proyectos/tarjetas-paleta/lo-que-escribo.webp" alt="Las piezas de Lo que escribo: un newsletter, una nota, un perfil y una crónica" width="1200" height="900" loading="lazy"><figcaption>Lo que escribo</figcaption></figure>
+          <figure class="polaroid" style="--giro: -3deg"><img src="assets/proyectos/que-hago/web.webp" alt="Tres sitios en el celular: Tono, Relax Spa y Raíz Fotografía" width="1200" height="900" loading="lazy"><figcaption>Tono, Relax Spa y Raíz</figcaption></figure>
         </div>
       </div>
-      <!-- Datos de los proyectos: el índice y las hileras los muestran todos; los data-destacado van primero -->
-      <ul data-carpetas hidden>
+    </section>
+
+    <section class="seccion trabajos" id="trabajos" data-trabajos aria-labelledby="trabajos-titulo">
+      <div class="trabajos__cabecera aparece">
+        <h2 class="titulo" id="trabajos-titulo"><span class="fuerte">Trabajos</span></h2>
+        <div class="trabajos__acciones"><p class="contador">13 proyectos</p><a class="pildora" href="#todo">Ver todos</a></div>
+      </div>
+      <div class="hileras" data-hileras>
+        <ul class="hilera" data-hilera="0">
+          <li class="trabajo">
+            <a data-cursor="ver" href="#trabajo-magnolia">
+              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy"></div>
+              <div class="trabajo__pie">
+                <span class="trabajo__titulo">Magnolia Eventos</span>
+                <span class="trabajo__tipo">Proyecto académico</span>
+                <span class="trabajo__categoria">Plan de marketing · Web · App</span>
+              </div>
+            </a>
+          </li>
+          <li class="trabajo">
+            <a data-cursor="ver" href="#trabajo-itba">
+              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/comunicacion-itba.webp" alt="" width="1200" height="900" loading="lazy"></div>
+              <div class="trabajo__pie">
+                <span class="trabajo__titulo">Comunicación en el ITBA</span>
+                <span class="trabajo__tipo">Proyecto real</span>
+                <span class="trabajo__categoria">Comunicación interna · Cartelería · ITBA</span>
+              </div>
+            </a>
+          </li>
+          <li class="trabajo">
+            <a data-cursor="ver" href="#trabajo-gae">
+              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/centro-operativo-gae.webp" alt="" width="1200" height="900" loading="lazy"></div>
+              <div class="trabajo__pie">
+                <span class="trabajo__titulo">Centro Operativo GAE</span>
+                <span class="trabajo__tipo">Proyecto real · en uso</span>
+                <span class="trabajo__categoria">UX · Plataforma web · ITBA</span>
+              </div>
+            </a>
+          </li>
+          <li class="trabajo">
+            <a data-cursor="ver" href="#trabajo-tono">
+              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/tono.webp" alt="" width="1200" height="900" loading="lazy"></div>
+              <div class="trabajo__pie">
+                <span class="trabajo__titulo">Tono</span>
+                <span class="trabajo__tipo">Proyecto conceptual</span>
+                <span class="trabajo__categoria">E-commerce · Identidad · WordPress</span>
+              </div>
+            </a>
+          </li>
+          <li class="trabajo">
+            <a data-cursor="ver" href="#trabajo-adopciones">
+              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/adopciones-quilmes.webp" alt="" width="1200" height="900" loading="lazy"></div>
+              <div class="trabajo__pie">
+                <span class="trabajo__titulo">Adopciones Quilmes</span>
+                <span class="trabajo__tipo">Proyecto académico</span>
+                <span class="trabajo__categoria">Community management · Contenido · Crisis</span>
+              </div>
+            </a>
+          </li>
+          <li class="trabajo">
+            <a data-cursor="ver" href="#trabajo-havanna">
+              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/havanna.webp" alt="" width="1200" height="900" loading="lazy"></div>
+              <div class="trabajo__pie">
+                <span class="trabajo__titulo">Havanna</span>
+                <span class="trabajo__tipo">Proyecto académico</span>
+                <span class="trabajo__categoria">Estrategia de redes · Contenido</span>
+              </div>
+            </a>
+          </li>
+          <li class="trabajo">
+            <a data-cursor="ver" href="#trabajo-campagnola">
+              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/la-campagnola.webp" alt="" width="1200" height="900" loading="lazy"></div>
+              <div class="trabajo__pie">
+                <span class="trabajo__titulo">La Campagnola</span>
+                <span class="trabajo__tipo">Proyecto académico</span>
+                <span class="trabajo__categoria">Packaging · Fotografía de producto · Contenido</span>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <ul class="hilera" data-hilera="1">
+          <li class="trabajo">
+            <a data-cursor="ver" href="#trabajo-escritos">
+              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/lo-que-escribo.webp" alt="" width="1200" height="900" loading="lazy"></div>
+              <div class="trabajo__pie">
+                <span class="trabajo__titulo">Lo que escribo</span>
+                <span class="trabajo__tipo">Proyecto académico</span>
+                <span class="trabajo__categoria">Redacción · Periodismo · Newsletter</span>
+              </div>
+            </a>
+          </li>
+          <li class="trabajo">
+            <a data-cursor="ver" href="#trabajo-burgbox">
+              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/burgbox.webp" alt="" width="1200" height="900" loading="lazy"></div>
+              <div class="trabajo__pie">
+                <span class="trabajo__titulo">BurgBox</span>
+                <span class="trabajo__tipo">Proyecto conceptual</span>
+                <span class="trabajo__categoria">Diseño web · WordPress</span>
+              </div>
+            </a>
+          </li>
+          <li class="trabajo">
+            <a data-cursor="ver" href="#trabajo-raiz">
+              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/raiz-fotografia.webp" alt="" width="1200" height="900" loading="lazy"></div>
+              <div class="trabajo__pie">
+                <span class="trabajo__titulo">Raíz Fotografía</span>
+                <span class="trabajo__tipo">Proyecto conceptual</span>
+                <span class="trabajo__categoria">Landing · Diseño web · WordPress</span>
+              </div>
+            </a>
+          </li>
+          <li class="trabajo">
+            <a data-cursor="ver" href="#trabajo-spa">
+              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/relax-spa.webp" alt="" width="1200" height="900" loading="lazy"></div>
+              <div class="trabajo__pie">
+                <span class="trabajo__titulo">Relax Spa</span>
+                <span class="trabajo__tipo">Proyecto conceptual</span>
+                <span class="trabajo__categoria">Diseño web · Identidad · WordPress</span>
+              </div>
+            </a>
+          </li>
+          <li class="trabajo">
+            <a data-cursor="ver" href="#trabajo-instituto">
+              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/instituto-del-parque.webp" alt="" width="1200" height="900" loading="lazy"></div>
+              <div class="trabajo__pie">
+                <span class="trabajo__titulo">Instituto del Parque</span>
+                <span class="trabajo__tipo">Proyecto conceptual</span>
+                <span class="trabajo__categoria">Diseño web · Comunicación</span>
+              </div>
+            </a>
+          </li>
+          <li class="trabajo">
+            <a data-cursor="ver" href="#trabajo-plantilla">
+              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/plantilla-personalizada.webp" alt="" width="1200" height="900" loading="lazy"></div>
+              <div class="trabajo__pie">
+                <span class="trabajo__titulo">Plantilla personalizada</span>
+                <span class="trabajo__tipo">Proyecto conceptual</span>
+                <span class="trabajo__categoria">Diseño web · Código · WordPress</span>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="seccion sobre-mi" id="sobre-mi" aria-labelledby="sobre-mi-titulo">
+      <figure class="polaroid aparece">
+        <img src="assets/img/micaela-retrato-640.webp" srcset="assets/img/micaela-retrato-640.webp 640w, assets/img/micaela-retrato-1000.webp 1000w" sizes="(min-width: 60rem) 24rem, 80vw" alt="Retrato de Micaela Canselo sonriendo, con la mano en el mentón y camisa clara" width="1000" height="1250" loading="lazy">
+        <figcaption>Buenos Aires</figcaption>
+      </figure>
+      <div class="sobre-mi__texto aparece">
+        <h2 class="titulo" id="sobre-mi-titulo">Sobre <span class="fuerte">mí</span></h2>
+        <p class="sobre-mi__entrada">Soy técnica en Comunicación y Marketing Digital, y diseño y desarrollo sitios web.</p>
+        <p>Me formo en este mundo desde 2022. En la carrera trabajé redes, contenido y estrategia, y descubrí lo que más me apasiona: darle forma a todo eso en la web. Por eso lo sigo puliendo por mi cuenta, todo el tiempo.</p>
+        <p>En mi trabajo actual, en el GAE (Grupo de Ayuda a Espacios) del ITBA, el equipo manejaba todo en planillas de Excel sueltas. Diseñé y desarrollé, con asistencia de IA, una plataforma que hoy usan unas diez personas todos los días en tres sedes.</p>
+        <ul class="lista">
+          <li><span>Técnica Superior en Comunicación y Marketing Digital</span><span>ISEC, 2025</span></li>
+          <li><span>Ciclo de Licenciatura en Comunicación</span><span>UADE, desde 2027</span></li>
+          <li><span><a href="assets/img/certificados/copywriting.webp" target="_blank" rel="noopener">Copywriting</a></span><span>Trabajando Remoto</span></li>
+          <li><span><a href="assets/img/certificados/community-manager.webp" target="_blank" rel="noopener">Community Manager</a></span><span>Rúcula</span></li>
+          <li><span><a href="assets/img/certificados/wordpress.webp" target="_blank" rel="noopener">WordPress</a></span><span>Udemy</span></li>
+          <li><span><a href="assets/img/certificados/google-ads.webp" target="_blank" rel="noopener">Google Ads</a></span><span>Google</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="seccion herramientas" aria-labelledby="herramientas-titulo">
+      <h2 class="titulo aparece" id="herramientas-titulo"><span class="fuerte">Herramientas</span></h2>
+      <p class="aparece">Figma, Canva, WordPress, Elementor, WooCommerce, HTML, CSS, Claude, Office, Doppler y Google Drive.</p>
+    </section>
+
+    <section class="seccion contacto" id="contacto" aria-labelledby="contacto-titulo">
+      <div class="contacto__texto aparece">
+        <h2 class="titulo" id="contacto-titulo"><span class="fuerte">Hablemos</span></h2>
+        <p>Si tenés una idea que todavía no encontró su forma, me gustaría escucharla. Busco sumarme a un equipo de comunicación, marketing digital o diseño web, y también tomo proyectos freelance.</p>
+        <div class="contacto__links">
+          <a class="pildora" href="https://wa.me/5491124672964?text=Hola%20Mica%2C%20vi%20tu%20portfolio" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="pildora" href="https://www.linkedin.com/in/micaela-solange-canselo/" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="pildora" href="assets/cv/cv-micaela-canselo.pdf" download>Descargar CV</a>
+        </div>
+      </div>
+      <!-- Formulario: lo envía Web3Forms. access_key es pública (no expone el mail) -->
+      <form class="formulario aparece" data-formulario data-envio="https://api.web3forms.com/submit" aria-label="Contame qué estás buscando">
+        <input type="hidden" name="access_key" value="616a8184-5ddb-490a-8f2c-065658d01b5b">
+        <div class="campo">
+          <label for="contacto-nombre">Nombre</label>
+          <input id="contacto-nombre" name="nombre" type="text" autocomplete="name" placeholder="Cómo te llamás" required>
+        </div>
+        <div class="campo">
+          <label for="contacto-mail">Mail</label>
+          <input id="contacto-mail" name="email" type="email" autocomplete="email" placeholder="Para poder responderte" required>
+        </div>
+        <fieldset class="campo campo--ancho opciones">
+          <legend>Te escribo por</legend>
+          <label class="opcion"><input type="radio" name="motivo" value="Una propuesta de trabajo" checked><span>Una propuesta de trabajo</span></label>
+          <label class="opcion"><input type="radio" name="motivo" value="Un proyecto freelance"><span>Un proyecto freelance</span></label>
+          <label class="opcion"><input type="radio" name="motivo" value="Otra consulta"><span>Otra consulta</span></label>
+        </fieldset>
+        <div class="campo campo--ancho">
+          <label for="contacto-mensaje">Mensaje</label>
+          <textarea id="contacto-mensaje" name="mensaje" rows="4" placeholder="Contame un poco más" required></textarea>
+        </div>
+        <input class="formulario__trampa" name="botcheck" type="checkbox" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="pildora pildora--llena" type="submit">Enviar</button>
+        <p class="formulario__estado" data-formulario-estado role="status"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <span>© <span data-anio>2026</span> Micaela Canselo</span>
+    <span>Buenos Aires, Argentina</span>
+  </footer>
+
+  <!-- Datos de cada trabajo: alimentan el índice "Ver todos" y sus filtros (js/casos.js) -->
+  <ul data-carpetas hidden>
         <li class="carpeta" data-destacado data-temas="Marketing|Diseño web|WordPress|Identidad">
           <a class="carpeta__enlace" href="#trabajo-magnolia" data-cursor="ver">
             <span class="carpeta__dorso"></span>
-            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas-paleta/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy"></span>
             <span class="carpeta__frente">
               <span class="carpeta__categoria">Plan de marketing · Web · App</span>
               <span class="carpeta__titulo">Magnolia Eventos</span>
@@ -141,7 +341,7 @@
         <li class="carpeta" data-destacado data-temas="Comunicación|Diseño gráfico">
           <a class="carpeta__enlace" href="#trabajo-itba" data-cursor="ver">
             <span class="carpeta__dorso"></span>
-            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/comunicacion-itba.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas-paleta/comunicacion-itba.webp" alt="" width="1200" height="900" loading="lazy"></span>
             <span class="carpeta__frente">
               <span class="carpeta__categoria">Comunicación interna · Cartelería · ITBA</span>
               <span class="carpeta__titulo">Comunicación en el ITBA</span>
@@ -153,7 +353,7 @@
         <li class="carpeta" data-destacado data-temas="UX">
           <a class="carpeta__enlace" href="#trabajo-gae" data-cursor="ver">
             <span class="carpeta__dorso"></span>
-            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/centro-operativo-gae.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas-paleta/centro-operativo-gae.webp" alt="" width="1200" height="900" loading="lazy"></span>
             <span class="carpeta__frente">
               <span class="carpeta__categoria">UX · Plataforma web · ITBA</span>
               <span class="carpeta__titulo">Centro Operativo GAE</span>
@@ -165,7 +365,7 @@
         <li class="carpeta" data-destacado data-temas="Diseño web|WordPress|Identidad|E-commerce">
           <a class="carpeta__enlace" href="#trabajo-tono" data-cursor="ver">
             <span class="carpeta__dorso"></span>
-            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/tono.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas-paleta/tono.webp" alt="" width="1200" height="900" loading="lazy"></span>
             <span class="carpeta__frente">
               <span class="carpeta__categoria">E-commerce · Identidad · WordPress</span>
               <span class="carpeta__titulo">Tono</span>
@@ -177,7 +377,7 @@
         <li class="carpeta" data-temas="Marketing|Comunicación|Redes">
           <a class="carpeta__enlace" href="#trabajo-adopciones" data-cursor="ver">
             <span class="carpeta__dorso"></span>
-            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/adopciones-quilmes.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas-paleta/adopciones-quilmes.webp" alt="" width="1200" height="900" loading="lazy"></span>
             <span class="carpeta__frente">
               <span class="carpeta__categoria">Community management · Contenido · Crisis</span>
               <span class="carpeta__titulo">Adopciones Quilmes</span>
@@ -189,7 +389,7 @@
         <li class="carpeta" data-temas="Marketing|Redes">
           <a class="carpeta__enlace" href="#trabajo-havanna" data-cursor="ver">
             <span class="carpeta__dorso"></span>
-            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/havanna.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas-paleta/havanna.webp" alt="" width="1200" height="900" loading="lazy"></span>
             <span class="carpeta__frente">
               <span class="carpeta__categoria">Estrategia de redes · Contenido</span>
               <span class="carpeta__titulo">Havanna</span>
@@ -201,7 +401,7 @@
         <li class="carpeta" data-temas="Marketing|Identidad|Redes">
           <a class="carpeta__enlace" href="#trabajo-campagnola" data-cursor="ver">
             <span class="carpeta__dorso"></span>
-            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/la-campagnola.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas-paleta/la-campagnola.webp" alt="" width="1200" height="900" loading="lazy"></span>
             <span class="carpeta__frente">
               <span class="carpeta__categoria">Packaging · Fotografía de producto · Contenido</span>
               <span class="carpeta__titulo">La Campagnola</span>
@@ -211,9 +411,9 @@
           </a>
         </li>
         <li class="carpeta" data-temas="Comunicación|Redacción">
-          <a class="carpeta__enlace" href="#escritos" data-cursor="ver">
+          <a class="carpeta__enlace" href="#trabajo-escritos" data-cursor="ver">
             <span class="carpeta__dorso"></span>
-            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/lo-que-escribo.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas-paleta/lo-que-escribo.webp" alt="" width="1200" height="900" loading="lazy"></span>
             <span class="carpeta__frente">
               <span class="carpeta__categoria">Redacción · Periodismo · Newsletter</span>
               <span class="carpeta__titulo">Lo que escribo</span>
@@ -225,7 +425,7 @@
         <li class="carpeta" data-temas="Diseño web|WordPress">
           <a class="carpeta__enlace" href="#trabajo-burgbox" data-cursor="ver">
             <span class="carpeta__dorso"></span>
-            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/burgbox.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas-paleta/burgbox.webp" alt="" width="1200" height="900" loading="lazy"></span>
             <span class="carpeta__frente">
               <span class="carpeta__categoria">Diseño web · WordPress</span>
               <span class="carpeta__titulo">BurgBox</span>
@@ -237,7 +437,7 @@
         <li class="carpeta" data-temas="Diseño web|WordPress|Landing">
           <a class="carpeta__enlace" href="#trabajo-raiz" data-cursor="ver">
             <span class="carpeta__dorso"></span>
-            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/raiz-fotografia.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas-paleta/raiz-fotografia.webp" alt="" width="1200" height="900" loading="lazy"></span>
             <span class="carpeta__frente">
               <span class="carpeta__categoria">Landing · Diseño web · WordPress</span>
               <span class="carpeta__titulo">Raíz Fotografía</span>
@@ -249,7 +449,7 @@
         <li class="carpeta" data-temas="Diseño web|WordPress|Identidad">
           <a class="carpeta__enlace" href="#trabajo-spa" data-cursor="ver">
             <span class="carpeta__dorso"></span>
-            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/relax-spa.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas-paleta/relax-spa.webp" alt="" width="1200" height="900" loading="lazy"></span>
             <span class="carpeta__frente">
               <span class="carpeta__categoria">Diseño web · Identidad · WordPress</span>
               <span class="carpeta__titulo">Relax Spa</span>
@@ -261,7 +461,7 @@
         <li class="carpeta" data-temas="Diseño web|WordPress">
           <a class="carpeta__enlace" href="#trabajo-instituto" data-cursor="ver">
             <span class="carpeta__dorso"></span>
-            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/instituto-del-parque.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas-paleta/instituto-del-parque.webp" alt="" width="1200" height="900" loading="lazy"></span>
             <span class="carpeta__frente">
               <span class="carpeta__categoria">Diseño web · Comunicación</span>
               <span class="carpeta__titulo">Instituto del Parque</span>
@@ -273,7 +473,7 @@
         <li class="carpeta" data-temas="Diseño web|WordPress">
           <a class="carpeta__enlace" href="#trabajo-plantilla" data-cursor="ver">
             <span class="carpeta__dorso"></span>
-            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas/plantilla-personalizada.webp" alt="" width="1200" height="900" loading="lazy"></span>
+            <span class="carpeta__ficha"><img src="assets/proyectos/tarjetas-paleta/plantilla-personalizada.webp" alt="" width="1200" height="900" loading="lazy"></span>
             <span class="carpeta__frente">
               <span class="carpeta__categoria">Diseño web · Código · WordPress</span>
               <span class="carpeta__titulo">Plantilla personalizada</span>
@@ -283,8 +483,8 @@
           </a>
         </li>
       </ul>
-      <!-- Índice de trabajos: las filas se arman desde las carpetas en js/main.js -->
-      <dialog class="indice tema-claro" data-indice aria-labelledby="indice-titulo">
+
+  <dialog class="indice tema-claro" data-indice aria-labelledby="indice-titulo">
         <div class="indice__interior">
           <header class="indice__cabecera">
             <h3 id="indice-titulo">todos los trabajos<span class="punto" aria-hidden="true"></span></h3>
@@ -295,8 +495,7 @@
         </div>
       </dialog>
 
-      <!-- Caso Magnolia: se abre en la misma página, con enlace propio -->
-      <dialog class="caso caso--magnolia tema-claro" id="trabajo-magnolia" data-caso aria-labelledby="caso-magnolia-titulo">
+  <dialog class="caso caso--magnolia tema-claro" id="trabajo-magnolia" data-caso aria-labelledby="caso-magnolia-titulo">
         <div class="caso__barra">
           <span class="caso__nombre">Magnolia Eventos</span>
           <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
@@ -523,20 +722,20 @@
           <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
           <div class="caso__ancho caso__otros">
             <button class="tarjeta" type="button" data-ir-a="Centro Operativo GAE">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/centro-operativo-gae.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/centro-operativo-gae.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Centro Operativo GAE</span>
               <span class="tarjeta__categoria">UX · Plataforma web · ITBA</span>
             </button>
             <button class="tarjeta" type="button" data-ir-a="Tono">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/tono.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/tono.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Tono</span>
               <span class="tarjeta__categoria">E-commerce · Identidad · WordPress</span>
             </button>
           </div>
         </footer>
       </dialog>
-      <!-- Caso GAE -->
-      <dialog class="caso caso--gae tema-claro" id="trabajo-gae" data-caso aria-labelledby="caso-gae-titulo">
+
+  <dialog class="caso caso--gae tema-claro" id="trabajo-gae" data-caso aria-labelledby="caso-gae-titulo">
         <div class="caso__barra">
           <span class="caso__nombre">Centro Operativo GAE</span>
           <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
@@ -624,20 +823,20 @@
           <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
           <div class="caso__ancho caso__otros">
             <button class="tarjeta" type="button" data-ir-a="Magnolia Eventos">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Magnolia Eventos</span>
               <span class="tarjeta__categoria">Plan de marketing · Web · App</span>
             </button>
             <button class="tarjeta" type="button" data-ir-a="Plantilla personalizada">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/plantilla-personalizada.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/plantilla-personalizada.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Plantilla personalizada</span>
               <span class="tarjeta__categoria">Diseño web · Código · WordPress</span>
             </button>
           </div>
         </footer>
       </dialog>
-      <!-- Caso Comunicación en el ITBA: piezas reales; los QR están difuminados. El capítulo de aprendizajes lo revisa Micaela -->
-      <dialog class="caso caso--itba tema-claro" id="trabajo-itba" data-caso aria-labelledby="caso-itba-titulo">
+
+  <dialog class="caso caso--itba tema-claro" id="trabajo-itba" data-caso aria-labelledby="caso-itba-titulo">
         <div class="caso__barra">
           <span class="caso__nombre">Comunicación en el ITBA</span>
           <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
@@ -748,12 +947,12 @@
           <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
           <div class="caso__ancho caso__otros">
             <button class="tarjeta" type="button" data-ir-a="Centro Operativo GAE">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/centro-operativo-gae.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/centro-operativo-gae.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Centro Operativo GAE</span>
               <span class="tarjeta__categoria">UX · Plataforma web · ITBA</span>
             </button>
             <button class="tarjeta" type="button" data-ir-a="Magnolia Eventos">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Magnolia Eventos</span>
               <span class="tarjeta__categoria">Plan de marketing · Web · App</span>
             </button>
@@ -761,8 +960,7 @@
         </footer>
       </dialog>
 
-      <!-- Caso Adopciones Quilmes: propuesta de redes del curso de Community Manager (piezas: 05-Herramientas/adopciones-caso.mjs) -->
-      <dialog class="caso caso--adopciones tema-claro" id="trabajo-adopciones" data-caso aria-labelledby="caso-adopciones-titulo">
+  <dialog class="caso caso--adopciones tema-claro" id="trabajo-adopciones" data-caso aria-labelledby="caso-adopciones-titulo">
         <div class="caso__barra">
           <span class="caso__nombre">Adopciones Quilmes</span>
           <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
@@ -833,12 +1031,12 @@
           <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
           <div class="caso__ancho caso__otros">
             <button class="tarjeta" type="button" data-ir-a="Magnolia Eventos">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Magnolia Eventos</span>
               <span class="tarjeta__categoria">Plan de marketing · Web · App</span>
             </button>
             <button class="tarjeta" type="button" data-ir-a="Comunicación en el ITBA">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/comunicacion-itba.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/comunicacion-itba.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Comunicación en el ITBA</span>
               <span class="tarjeta__categoria">Comunicación interna · Cartelería · ITBA</span>
             </button>
@@ -846,8 +1044,7 @@
         </footer>
       </dialog>
 
-      <!-- Caso Havanna: estrategia de redes, parcial de Producción de Contenidos (láminas: 05-Herramientas/havanna-caso.mjs) -->
-      <dialog class="caso caso--havanna tema-claro" id="trabajo-havanna" data-caso aria-labelledby="caso-havanna-titulo">
+  <dialog class="caso caso--havanna tema-claro" id="trabajo-havanna" data-caso aria-labelledby="caso-havanna-titulo">
         <div class="caso__barra">
           <span class="caso__nombre">Havanna</span>
           <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
@@ -952,12 +1149,12 @@
           <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
           <div class="caso__ancho caso__otros">
             <button class="tarjeta" type="button" data-ir-a="Adopciones Quilmes">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/adopciones-quilmes.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/adopciones-quilmes.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Adopciones Quilmes</span>
               <span class="tarjeta__categoria">Community management · Contenido · Crisis</span>
             </button>
             <button class="tarjeta" type="button" data-ir-a="Magnolia Eventos">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Magnolia Eventos</span>
               <span class="tarjeta__categoria">Plan de marketing · Web · App</span>
             </button>
@@ -965,8 +1162,7 @@
         </footer>
       </dialog>
 
-      <!-- Caso La Campagnola: etiqueta de un producto nuevo (piezas: 05-Herramientas/la-campagnola-caso.mjs) -->
-      <dialog class="caso caso--campagnola tema-claro" id="trabajo-campagnola" data-caso aria-labelledby="caso-campagnola-titulo">
+  <dialog class="caso caso--campagnola tema-claro" id="trabajo-campagnola" data-caso aria-labelledby="caso-campagnola-titulo">
         <div class="caso__barra">
           <span class="caso__nombre">La Campagnola</span>
           <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
@@ -1032,20 +1228,20 @@
           <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
           <div class="caso__ancho caso__otros">
             <button class="tarjeta" type="button" data-ir-a="Havanna">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/havanna.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/havanna.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Havanna</span>
               <span class="tarjeta__categoria">Estrategia de redes · Contenido</span>
             </button>
             <button class="tarjeta" type="button" data-ir-a="Tono">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/tono.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/tono.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Tono</span>
               <span class="tarjeta__categoria">E-commerce · Identidad · WordPress</span>
             </button>
           </div>
         </footer>
       </dialog>
-      <!-- Caso Plantilla personalizada: antes y después. El capítulo de aprendizajes lo escribe Micaela -->
-      <dialog class="caso caso--plantilla tema-claro" id="trabajo-plantilla" data-caso aria-labelledby="caso-plantilla-titulo">
+
+  <dialog class="caso caso--plantilla tema-claro" id="trabajo-plantilla" data-caso aria-labelledby="caso-plantilla-titulo">
         <div class="caso__barra">
           <span class="caso__nombre">Plantilla personalizada</span>
           <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
@@ -1210,20 +1406,20 @@
           <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
           <div class="caso__ancho caso__otros">
             <button class="tarjeta" type="button" data-ir-a="Centro Operativo GAE">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/centro-operativo-gae.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/centro-operativo-gae.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Centro Operativo GAE</span>
               <span class="tarjeta__categoria">UX · Plataforma web · ITBA</span>
             </button>
             <button class="tarjeta" type="button" data-ir-a="Magnolia Eventos">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Magnolia Eventos</span>
               <span class="tarjeta__categoria">Plan de marketing · Web · App</span>
             </button>
           </div>
         </footer>
       </dialog>
-      <!-- Caso Tono -->
-      <dialog class="caso caso--tono tema-claro" id="trabajo-tono" data-caso aria-labelledby="caso-tono-titulo">
+
+  <dialog class="caso caso--tono tema-claro" id="trabajo-tono" data-caso aria-labelledby="caso-tono-titulo">
         <div class="caso__barra">
           <span class="caso__nombre">Tono</span>
           <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
@@ -1348,12 +1544,12 @@
           <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
           <div class="caso__ancho caso__otros">
             <button class="tarjeta" type="button" data-ir-a="Magnolia Eventos">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Magnolia Eventos</span>
               <span class="tarjeta__categoria">Plan de marketing · Web · App</span>
             </button>
             <button class="tarjeta" type="button" data-ir-a="Plantilla personalizada">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/plantilla-personalizada.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/plantilla-personalizada.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Plantilla personalizada</span>
               <span class="tarjeta__categoria">Diseño web · Código · WordPress</span>
             </button>
@@ -1361,8 +1557,7 @@
         </footer>
       </dialog>
 
-      <!-- Caso BurgBox: se abre en la misma página, con enlace propio -->
-      <dialog class="caso caso--burgbox tema-claro" id="trabajo-burgbox" data-caso aria-labelledby="caso-burgbox-titulo">
+  <dialog class="caso caso--burgbox tema-claro" id="trabajo-burgbox" data-caso aria-labelledby="caso-burgbox-titulo">
         <div class="caso__barra">
           <span class="caso__nombre">BurgBox</span>
           <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
@@ -1485,12 +1680,12 @@
           <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
           <div class="caso__ancho caso__otros">
             <button class="tarjeta" type="button" data-ir-a="Tono">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/tono.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/tono.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Tono</span>
               <span class="tarjeta__categoria">E-commerce · Identidad · WordPress</span>
             </button>
             <button class="tarjeta" type="button" data-ir-a="Centro Operativo GAE">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/centro-operativo-gae.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/centro-operativo-gae.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Centro Operativo GAE</span>
               <span class="tarjeta__categoria">UX · Plataforma web · ITBA</span>
             </button>
@@ -1498,8 +1693,7 @@
         </footer>
       </dialog>
 
-      <!-- Caso Raíz: se abre en la misma página, con enlace propio -->
-      <dialog class="caso caso--raiz tema-claro" id="trabajo-raiz" data-caso aria-labelledby="caso-raiz-titulo">
+  <dialog class="caso caso--raiz tema-claro" id="trabajo-raiz" data-caso aria-labelledby="caso-raiz-titulo">
         <div class="caso__barra">
           <span class="caso__nombre">Raíz Fotografía</span>
           <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
@@ -1629,12 +1823,12 @@
           <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
           <div class="caso__ancho caso__otros">
             <button class="tarjeta" type="button" data-ir-a="BurgBox">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/burgbox.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/burgbox.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">BurgBox</span>
               <span class="tarjeta__categoria">Diseño web · WordPress</span>
             </button>
             <button class="tarjeta" type="button" data-ir-a="Magnolia Eventos">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Magnolia Eventos</span>
               <span class="tarjeta__categoria">Plan de marketing · Web · App</span>
             </button>
@@ -1642,8 +1836,7 @@
         </footer>
       </dialog>
 
-      <!-- Caso Relax Spa: se abre en la misma página, con enlace propio -->
-      <dialog class="caso caso--spa tema-claro" id="trabajo-spa" data-caso aria-labelledby="caso-spa-titulo">
+  <dialog class="caso caso--spa tema-claro" id="trabajo-spa" data-caso aria-labelledby="caso-spa-titulo">
         <div class="caso__barra">
           <span class="caso__nombre">Relax Spa</span>
           <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
@@ -1758,12 +1951,12 @@
           <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
           <div class="caso__ancho caso__otros">
             <button class="tarjeta" type="button" data-ir-a="Raíz Fotografía">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/raiz-fotografia.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/raiz-fotografia.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Raíz Fotografía</span>
               <span class="tarjeta__categoria">Landing · Diseño web · WordPress</span>
             </button>
             <button class="tarjeta" type="button" data-ir-a="Tono">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/tono.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/tono.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Tono</span>
               <span class="tarjeta__categoria">E-commerce · Identidad · WordPress</span>
             </button>
@@ -1771,8 +1964,7 @@
         </footer>
       </dialog>
 
-      <!-- Caso Instituto del Parque: se abre en la misma página, con enlace propio -->
-      <dialog class="caso caso--instituto tema-claro" id="trabajo-instituto" data-caso aria-labelledby="caso-instituto-titulo">
+  <dialog class="caso caso--instituto tema-claro" id="trabajo-instituto" data-caso aria-labelledby="caso-instituto-titulo">
         <div class="caso__barra">
           <span class="caso__nombre">Instituto del Parque</span>
           <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
@@ -1893,233 +2085,19 @@
           <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
           <div class="caso__ancho caso__otros">
             <button class="tarjeta" type="button" data-ir-a="Centro Operativo GAE">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/centro-operativo-gae.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/centro-operativo-gae.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Centro Operativo GAE</span>
               <span class="tarjeta__categoria">UX · Plataforma web · ITBA</span>
             </button>
             <button class="tarjeta" type="button" data-ir-a="Relax Spa">
-              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas/relax-spa.webp" alt="" width="1200" height="900" loading="lazy">
+              <img class="tarjeta__imagen" src="assets/proyectos/tarjetas-paleta/relax-spa.webp" alt="" width="1200" height="900" loading="lazy">
               <span class="tarjeta__titulo">Relax Spa</span>
               <span class="tarjeta__categoria">Diseño web · Identidad · WordPress</span>
             </button>
           </div>
         </footer>
       </dialog>
-    </section>
 
-    <section class="seccion tema-claro hoja" id="sobre-mi" aria-labelledby="sobre-mi-titulo">
-      <div class="contenedor sobre-mi">
-        <figure class="retrato retrato--arco" data-revelar>
-          <img src="assets/img/micaela-retrato-1000.webp" srcset="assets/img/micaela-retrato-640.webp 640w, assets/img/micaela-retrato-1000.webp 1000w" sizes="(min-width: 60rem) 30rem, 90vw" alt="Retrato de Micaela Canselo sonriendo, con la mano en el mentón y camisa clara" width="1000" height="1250" loading="lazy">
-        </figure>
-        <div class="sobre-mi__texto">
-          <h2 id="sobre-mi-titulo"><span class="titulo-marca" data-titulo-marca>sobre mí</span><span class="punto" aria-hidden="true"></span></h2>
-          <!-- Profesión, experiencia, a quién y resultado -->
-          <p class="sobre-mi__entrada">Soy técnica en Comunicación y Marketing Digital, y diseño y desarrollo sitios web.</p>
-          <p>Me formo en este mundo desde 2022. En la carrera trabajé redes, contenido y estrategia, y descubrí lo que más me apasiona: darle forma a todo eso en la web. Por eso lo sigo puliendo por mi cuenta, todo el tiempo.</p>
-          <p>Ayudo a marcas y equipos que necesitan comunicar con claridad y verse bien en lo digital.</p>
-          <p>En mi trabajo actual, en el GAE (Grupo de Ayuda a Espacios) del ITBA, el equipo manejaba todo en planillas de Excel sueltas. Diseñé y desarrollé, con asistencia de IA, una plataforma que hoy usan unas diez personas todos los días en tres sedes.</p>
-          <dl class="datos">
-            <div>
-              <dt>Formación</dt>
-              <dd>Técnica Superior en Comunicación y Marketing Digital (2025)</dd>
-              <dd>Ciclo de Licenciatura en Comunicación, UADE (desde 2027)</dd>
-              <dd>Formación constante en diseño y desarrollo web</dd>
-            </div>
-          </dl>
-        </div>
-      </div>
-      <div class="certificados" data-certificados>
-        <p class="certificados__titulo">Título y certificados</p>
-                <div class="certificados__ventana">
-                  <ul class="certificados__pista">
-                    <li class="certificado">
-                      <a href="assets/img/certificados/titulo-isec.webp" target="_blank" rel="noopener">
-                        <img src="assets/img/certificados/titulo-isec-chica.webp" alt="Tarjeta ilustrativa con el logo de ISEC: Técnica Superior en Comunicación y Marketing Digital, egresada en diciembre de 2025" width="600" height="450" loading="lazy">
-                        <span>Tecnicatura · ISEC</span>
-                      </a>
-                    </li>
-                    <li class="certificado">
-                      <a href="assets/img/certificados/copywriting.webp" target="_blank" rel="noopener">
-                        <img src="assets/img/certificados/copywriting-chica.webp" alt="Certificado de Copywriting Persuasivo de Trabajando Remoto, 2025" width="600" height="464" loading="lazy">
-                        <span>Copywriting · Trabajando Remoto</span>
-                      </a>
-                    </li>
-                    <li class="certificado">
-                      <a href="assets/img/certificados/community-manager.webp" target="_blank" rel="noopener">
-                        <img src="assets/img/certificados/community-manager-chica.webp" alt="Certificado de Community Manager de Rúcula Digital Academy, 2022" width="600" height="424" loading="lazy">
-                        <span>Community Manager · Rúcula</span>
-                      </a>
-                    </li>
-                    <li class="certificado">
-                      <a href="assets/img/certificados/wordpress.webp" target="_blank" rel="noopener">
-                        <img src="assets/img/certificados/wordpress-chica.webp" alt="Certificado del Mega Curso de WordPress de Udemy, 2026" width="600" height="446" loading="lazy">
-                        <span>WordPress · Udemy</span>
-                      </a>
-                    </li>
-                    <li class="certificado">
-                      <a href="assets/img/certificados/google-ads.webp" target="_blank" rel="noopener">
-                        <img src="assets/img/certificados/google-ads-chica.webp" alt="Certificación en Búsqueda de Google Ads, emitida por Google en abril de 2025" width="600" height="464" loading="lazy">
-                        <span>Google Ads · Google</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <button class="boton certificados__pausa" type="button" data-pausar-certificados aria-pressed="false">Pausar</button>
-      </div>
-    </section>
-
-    <section class="tema-claro hoja" id="que-hago" aria-labelledby="que-hago-titulo">
-      <div class="seccion">
-      <div class="contenedor que-hago">
-        <header class="que-hago__cabecera">
-          <h2 id="que-hago-titulo"><span class="titulo-marca" data-titulo-marca>qué hago</span><span class="punto" aria-hidden="true"></span></h2>
-          <p class="seccion__bajada">Resuelvo cómo se entiende una marca: qué dice, a quién le habla y cómo se ve en la web. Cuando todo habla con la misma voz, la marca se recuerda.</p>
-        </header>
-        <ul class="pilares" data-pilares>
-          <li class="pilar">
-            <span class="pilar__nombre"><svg class="pilar__estrella" viewBox="0 0 400 400" aria-hidden="true"><path fill="currentColor" d="M200 20C212 130 270 188 380 200C270 212 212 270 200 380C188 270 130 212 20 200C130 188 188 130 200 20Z"/></svg>Comunicación de marca</span>
-            <span class="pilar__detalle">Qué decir y con qué voz</span>
-          </li>
-          <li class="pilar">
-            <span class="pilar__nombre"><svg class="pilar__estrella" viewBox="0 0 400 400" aria-hidden="true"><path fill="currentColor" d="M200 20C212 130 270 188 380 200C270 212 212 270 200 380C188 270 130 212 20 200C130 188 188 130 200 20Z"/></svg>Marketing digital</span>
-            <span class="pilar__detalle">A quién hablarle y en qué canales</span>
-          </li>
-          <li class="pilar">
-            <span class="pilar__nombre"><svg class="pilar__estrella" viewBox="0 0 400 400" aria-hidden="true"><path fill="currentColor" d="M200 20C212 130 270 188 380 200C270 212 212 270 200 380C188 270 130 212 20 200C130 188 188 130 200 20Z"/></svg>Copywriting</span>
-            <span class="pilar__detalle">Frases que se entienden y hacen actuar</span>
-          </li>
-          <li class="pilar">
-            <span class="pilar__nombre"><svg class="pilar__estrella" viewBox="0 0 400 400" aria-hidden="true"><path fill="currentColor" d="M200 20C212 130 270 188 380 200C270 212 212 270 200 380C188 270 130 212 20 200C130 188 188 130 200 20Z"/></svg>Diseño web</span>
-            <span class="pilar__detalle">Sitios con identidad, fáciles de usar en cualquier pantalla</span>
-          </li>
-        </ul>
-      </div>
-      </div>
-    </section>
-
-    <!-- Lo que escribo: cada texto en su formato (mail, nota, perfil, crónica); al tocarlo se lee entero -->
-    <section class="seccion tema-claro hoja escritos" id="escritos" aria-labelledby="escritos-titulo">
-      <div class="contenedor">
-        <header class="escritos__cabecera">
-          <h2 id="escritos-titulo"><span class="titulo-marca" data-titulo-marca>lo que escribo</span><span class="punto" aria-hidden="true"></span></h2>
-          <p class="seccion__bajada">Antes de escribir para marcas, escribí sobre personas, lugares y noticias. Tocá cualquiera para leerlo entero.</p>
-        </header>
-        <ul class="escritos__mesa">
-          <li class="escrito escrito--mail">
-            <button class="escrito__pieza" type="button" data-lectura="olmo" aria-haspopup="dialog" aria-label="Leer los newsletters para Bicicletas Olmo">
-              <span class="mail">
-                <span class="mail__asunto">Preparate para vivir la emoción sobre pedales en Palermo</span>
-                <span class="mail__de">Olmo · para Julia</span>
-                <img class="mail__imagen" src="assets/img/escritos/olmo-expo.webp" alt="" width="1000" height="556" loading="lazy">
-                <span class="mail__cuerpo"><strong>¡Hola, Julia!</strong> ¿Estás buscando una forma de alejar a tus hijos de las pantallas y disfrutar juntos de la vida al aire libre?</span>
-                <span class="mail__boton">Registrarme</span>
-              </span>
-            </button>
-            <p class="escrito__pie"><strong>Newsletter</strong> · Bicicletas Olmo · en dupla</p>
-          </li>
-          <li class="escrito escrito--nota">
-            <button class="escrito__pieza" type="button" data-lectura="esquivel" aria-haspopup="dialog" aria-label="Leer la nota sobre Laura Esquivel y el odio en las redes">
-              <span class="nota">
-                <span class="nota__seccion">Redes sociales</span>
-                <span class="nota__titulo">El grito de Laura Esquivel contra el odio en las redes sociales</span>
-                <img class="nota__foto" src="assets/img/escritos/nota-foto.webp" alt="" width="1000" height="1035" loading="lazy">
-                <span class="nota__bajada">Recibió miles de comentarios de odio por un video y respondió con otro. Hablamos con una psicóloga y un abogado.</span>
-              </span>
-            </button>
-            <p class="escrito__pie"><strong>Nota</strong> · dos entrevistas y foto propia · en dupla</p>
-          </li>
-          <li class="escrito escrito--perfil">
-            <button class="escrito__pieza" type="button" data-lectura="cancha" aria-haspopup="dialog" aria-label="Leer el perfil Ella quiere ir a la cancha">
-              <span class="cita-grande">
-                <span class="cita-grande__texto">«Yo quiero ir a la cancha, yo quiero ir a la cancha, yo quiero ir a la cancha.»</span>
-                <span class="cita-grande__quien">Adriana Bravo, la primera mujer en la Comisión Directiva de Boca</span>
-              </span>
-            </button>
-            <p class="escrito__pie"><strong>Perfil</strong> con entrevista · en equipo</p>
-          </li>
-          <li class="escrito escrito--cronica">
-            <button class="escrito__pieza" type="button" data-lectura="armonia" aria-haspopup="dialog" aria-label="Leer la crónica Armonía">
-              <span class="cronica">
-                <span class="cronica__titulo">Armonía</span>
-                <span class="cronica__texto">Llego a la puerta del CCK y, en el playón antes de la entrada, me encuentro con los preparativos de lo que parece ser un show de tango.</span>
-              </span>
-            </button>
-            <p class="escrito__pie"><strong>Crónica</strong> · individual</p>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Herramientas: los logos aparecen una vez y quedan quietos -->
-    <section class="herramientas tema-claro hoja" id="herramientas" aria-labelledby="herramientas-titulo" data-herramientas>
-      <div class="herramientas__fijo">
-        <div class="herramientas__texto">
-          <h2 id="herramientas-titulo"><span class="titulo-marca" data-titulo-marca>herramientas</span><span class="punto" aria-hidden="true"></span></h2>
-          <p class="seccion__bajada">Con lo que armo cada proyecto, de la idea a la publicación.</p>
-        </div>
-        <ul class="herramientas__logos">
-          <li class="herramienta"><img src="assets/img/herramientas/figma.svg" alt="" width="96" height="96" loading="lazy"><span>Figma</span></li>
-          <li class="herramienta"><img src="assets/img/herramientas/canva.svg" alt="" width="96" height="96" loading="lazy"><span>Canva</span></li>
-          <li class="herramienta"><img src="assets/img/herramientas/wordpress.svg" alt="" width="96" height="96" loading="lazy"><span>WordPress</span></li>
-          <li class="herramienta"><img src="assets/img/herramientas/elementor.svg" alt="" width="96" height="96" loading="lazy"><span>Elementor</span></li>
-          <li class="herramienta"><img src="assets/img/herramientas/woocommerce.svg" alt="" width="96" height="96" loading="lazy"><span>WooCommerce</span></li>
-          <li class="herramienta"><img src="assets/img/herramientas/html.svg" alt="" width="96" height="96" loading="lazy"><span>HTML</span></li>
-          <li class="herramienta"><img src="assets/img/herramientas/css.svg" alt="" width="96" height="96" loading="lazy"><span>CSS</span></li>
-          <li class="herramienta"><img src="assets/img/herramientas/claude.svg" alt="" width="96" height="96" loading="lazy"><span>Claude</span></li>
-          <li class="herramienta"><img src="assets/img/herramientas/office.svg" alt="" width="96" height="96" loading="lazy"><span>Office</span></li>
-          <li class="herramienta"><img src="assets/img/herramientas/doppler.svg" alt="" width="110" height="39" loading="lazy"><span>Doppler</span></li>
-          <li class="herramienta"><img src="assets/img/herramientas/looker.svg" alt="" width="96" height="96" loading="lazy"><span>Looker Studio</span></li>
-          <li class="herramienta"><img src="assets/img/herramientas/drive.svg" alt="" width="96" height="96" loading="lazy"><span>Google Drive</span></li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="seccion tema-oscuro contacto hoja" id="contacto" aria-labelledby="contacto-titulo">
-      <div class="contenedor contacto__interior">
-        <div class="contacto__texto">
-          <h2 id="contacto-titulo">hablemos<span class="punto" aria-hidden="true"></span></h2>
-          <p class="seccion__bajada">Si tenés una idea que todavía no encontró su forma, me gustaría escucharla. Busco sumarme a un equipo de comunicación, marketing digital o diseño web, y también tomo proyectos freelance.</p>
-          <div class="hero__acciones">
-            <a class="boton" href="https://wa.me/5491124672964?text=Hola%20Mica%2C%20vi%20tu%20portfolio" data-whatsapp target="_blank" rel="noopener">WhatsApp</a>
-            <a class="boton" href="https://www.linkedin.com/in/micaela-solange-canselo/" data-linkedin target="_blank" rel="noopener">LinkedIn</a>
-            <a class="boton" href="assets/cv/cv-micaela-canselo.pdf" download>Descargar CV</a>
-          </div>
-        </div>
-        <!-- Formulario: lo envía Web3Forms. access_key es pública (no expone el mail); se saca en web3forms.com -->
-        <div class="formulario-panel__tarjeta tema-claro" data-contacto>
-          <h3 class="formulario-panel__titulo" id="formulario-titulo" data-letras>contame qué estás buscando<span class="punto" aria-hidden="true"></span></h3>
-          <form class="formulario" data-formulario data-envio="https://api.web3forms.com/submit">
-            <input type="hidden" name="access_key" value="616a8184-5ddb-490a-8f2c-065658d01b5b">
-            <div class="campo">
-              <label for="contacto-nombre">Nombre</label>
-              <input id="contacto-nombre" name="nombre" type="text" autocomplete="name" placeholder="Cómo te llamás" required>
-            </div>
-            <div class="campo">
-              <label for="contacto-mail">Mail</label>
-              <input id="contacto-mail" name="email" type="email" autocomplete="email" placeholder="Para poder responderte" required>
-            </div>
-            <fieldset class="campo campo--ancho opciones">
-              <legend>Te escribo por</legend>
-              <label class="opcion"><input type="radio" name="motivo" value="Una propuesta de trabajo" checked><span>Una propuesta de trabajo</span></label>
-              <label class="opcion"><input type="radio" name="motivo" value="Un proyecto freelance"><span>Un proyecto freelance</span></label>
-              <label class="opcion"><input type="radio" name="motivo" value="Otra consulta"><span>Otra consulta</span></label>
-            </fieldset>
-            <div class="campo campo--ancho">
-              <label for="contacto-mensaje">Mensaje</label>
-              <textarea id="contacto-mensaje" name="mensaje" rows="5" placeholder="Contame un poco más" required></textarea>
-            </div>
-            <!-- Trampa para robots: una persona no lo ve ni lo completa -->
-            <input class="formulario__trampa" name="botcheck" type="checkbox" tabindex="-1" autocomplete="off" aria-hidden="true">
-            <button class="boton boton--principal formulario__enviar" type="submit">Enviar</button>
-            <p class="formulario__estado" data-formulario-estado role="status"></p>
-          </form>
-        </div>
-      </div>
-
-      
-    </section>
-  <!-- Lecturas de "lo que escribo": se abren desde cada pieza (js/main.js) -->
   <dialog class="caso lectura tema-claro" id="lectura-olmo" data-lectura-dialogo aria-labelledby="lectura-olmo-titulo">
     <div class="caso__barra">
       <span class="caso__nombre">Lo que escribo</span>
@@ -2226,38 +2204,68 @@
           <p>De casualidad todo estuvo en sintonía: ni me hubiera imaginado que la muestra haría honor a Astor Piazzolla y que afuera, justamente, se preparaba un show de tango. Me quedé con ganas de quedarme a verlo, pero ya se hacía tarde para volver a casa.</p>
     </article>
   </dialog>
-  </main>
 
-  <footer class="pie tema-oscuro">
-    <div class="contenedor pie__interior">
-      <p>© <span data-anio>2026</span> Micaela Canselo</p>
-      <p>Buenos Aires, Argentina</p>
+  <!-- Caso Lo que escribo: la mesa con las cuatro piezas; cada una abre su lectura -->
+  <dialog class="caso tema-claro" id="trabajo-escritos" data-caso aria-labelledby="caso-escritos-titulo">
+    <div class="caso__barra">
+      <span class="caso__nombre">Lo que escribo</span>
+      <button class="boton" type="button" data-cerrar-caso>Cerrar</button>
     </div>
-  </footer>
-
-  <!-- Cursor propio (solo con mouse) -->
-  <!-- Mica: saluda en la portada y acompaña el recorrido (js/mica.js) -->
-  <div class="mica" data-mica aria-hidden="true">
-      <svg class="mica__figura" viewBox="0 0 200 190" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <g class="mica__pelo">
-          <path pathLength="1" d="M84 30C68 26 56 38 60 52C48 50 40 62 48 72C37 74 33 88 43 94C33 100 34 114 45 116C39 126 46 137 56 134C54 143 62 150 70 146"/>
-          <path pathLength="1" d="M84 30C92 20 112 20 120 30C134 28 146 40 140 54C152 54 158 68 148 76C158 82 156 96 146 98C154 106 150 118 140 118C144 128 136 136 127 132C128 141 120 147 113 142"/>
-          <path pathLength="1" d="M70 58C62 62 62 72 70 72M126 58C134 62 134 72 126 74M60 92C54 96 56 104 63 104M136 96C142 100 140 108 133 108"/>
-          <path pathLength="1" d="M78 40C74 34 82 28 88 34C88 28 98 26 102 34C106 28 116 32 114 40"/>
-        </g>
-        <path pathLength="1" d="M72 62C70 76 72 90 80 100C86 107 92 110 98 110C106 110 114 104 119 96C125 86 126 74 124 60"/>
-        <path pathLength="1" d="M72 62C78 58 80 50 78 42M124 60C118 56 114 48 114 40"/>
-        <path pathLength="1" d="M82 76Q86 72 90 76M106 76Q110 72 114 76M90 92Q98 99 106 92"/>
-        <path pathLength="1" d="M88 108C89 116 88 122 84 126C72 134 52 136 42 150C36 160 34 174 34 188"/>
-        <path pathLength="1" d="M110 107C110 116 112 122 118 126C126 130 134 132 141 138"/>
-        <g class="mica__brazo">
-          <path pathLength="1" d="M124 188C127 172 136 158 148 146C158 134 165 118 168 98"/>
-          <path pathLength="1" d="M141 138C150 128 155 112 157 96"/>
-          <path pathLength="1" d="M157 96C153 88 151 80 152 72C152 68 157 68 158 73L160 82M160 82L161 62C161 57 167 57 167 62L167 80M167 80L171 64C172 59 178 60 177 65L174 82M174 82L181 72C184 68 189 72 186 76L176 94C174 98 171 100 168 98"/>
-        </g>
-      </svg>
-      <p class="mica__globo" data-mica-globo>¡Hola, soy Mica!</p>
-  </div>
+    <header class="caso__portada">
+      <p class="caso__categoria">Redacción · Periodismo · Newsletter</p>
+      <h3 class="caso__titulo" id="caso-escritos-titulo">lo que escribo<span class="punto" aria-hidden="true"></span></h3>
+      <p class="caso__bajada">Antes de escribir para marcas, escribí sobre personas, lugares y noticias. Tocá cualquiera para leerlo entero.</p>
+    </header>
+    <div class="caso__ancho escritos">
+      <ul class="escritos__mesa">
+          <li class="escrito escrito--mail">
+            <button class="escrito__pieza" type="button" data-lectura="olmo" aria-haspopup="dialog" aria-label="Leer los newsletters para Bicicletas Olmo">
+              <span class="mail">
+                <span class="mail__asunto">Preparate para vivir la emoción sobre pedales en Palermo</span>
+                <span class="mail__de">Olmo · para Julia</span>
+                <img class="mail__imagen" src="assets/img/escritos/olmo-expo.webp" alt="" width="1000" height="556" loading="lazy">
+                <span class="mail__cuerpo"><strong>¡Hola, Julia!</strong> ¿Estás buscando una forma de alejar a tus hijos de las pantallas y disfrutar juntos de la vida al aire libre?</span>
+                <span class="mail__boton">Registrarme</span>
+              </span>
+            </button>
+            <p class="escrito__pie"><strong>Newsletter</strong> · Bicicletas Olmo · en dupla</p>
+          </li>
+          <li class="escrito escrito--nota">
+            <button class="escrito__pieza" type="button" data-lectura="esquivel" aria-haspopup="dialog" aria-label="Leer la nota sobre Laura Esquivel y el odio en las redes">
+              <span class="nota">
+                <span class="nota__seccion">Redes sociales</span>
+                <span class="nota__titulo">El grito de Laura Esquivel contra el odio en las redes sociales</span>
+                <img class="nota__foto" src="assets/img/escritos/nota-foto.webp" alt="" width="1000" height="1035" loading="lazy">
+                <span class="nota__bajada">Recibió miles de comentarios de odio por un video y respondió con otro. Hablamos con una psicóloga y un abogado.</span>
+              </span>
+            </button>
+            <p class="escrito__pie"><strong>Nota</strong> · dos entrevistas y foto propia · en dupla</p>
+          </li>
+          <li class="escrito escrito--perfil">
+            <button class="escrito__pieza" type="button" data-lectura="cancha" aria-haspopup="dialog" aria-label="Leer el perfil Ella quiere ir a la cancha">
+              <span class="cita-grande">
+                <span class="cita-grande__texto">«Yo quiero ir a la cancha, yo quiero ir a la cancha, yo quiero ir a la cancha.»</span>
+                <span class="cita-grande__quien">Adriana Bravo, la primera mujer en la Comisión Directiva de Boca</span>
+              </span>
+            </button>
+            <p class="escrito__pie"><strong>Perfil</strong> con entrevista · en equipo</p>
+          </li>
+          <li class="escrito escrito--cronica">
+            <button class="escrito__pieza" type="button" data-lectura="armonia" aria-haspopup="dialog" aria-label="Leer la crónica Armonía">
+              <span class="cronica">
+                <span class="cronica__titulo">Armonía</span>
+                <span class="cronica__texto">Llego a la puerta del CCK y, en el playón antes de la entrada, me encuentro con los preparativos de lo que parece ser un show de tango.</span>
+              </span>
+            </button>
+            <p class="escrito__pie"><strong>Crónica</strong> · individual</p>
+          </li>
+        </ul>
+    </div>
+    <footer class="caso__mas">
+      <h4>más trabajos<span class="punto" aria-hidden="true"></span></h4>
+      <button class="boton boton--principal" type="button" data-caso-todos>Ver todos</button>
+    </footer>
+  </dialog>
 
   <div class="cursor" aria-hidden="true"><span>Ver</span></div>
 </body>

@@ -71,7 +71,7 @@ button {
   --fondo: var(--tostado);
   --texto: var(--crema);
   --texto-2: var(--suave);
-  --borde: rgb(255 249 236 / 0.45);
+  --borde: color-mix(in srgb, var(--beige) 45%, transparent);
   --acento-texto: var(--terracota-claro);
   background: var(--fondo);
   color: var(--texto);
@@ -81,7 +81,7 @@ button {
   --fondo: var(--beige);
   --texto: var(--tinta);
   --texto-2: var(--tinta-suave);
-  --borde: rgb(47 33 20 / 0.28);
+  --borde: color-mix(in srgb, var(--cafe) 28%, transparent);
   --acento-texto: var(--terracota-oscuro);
   background: var(--fondo);
   color: var(--texto);
@@ -210,7 +210,7 @@ p {
   gap: var(--esp-2);
   min-height: 44px;
   padding: 0.7em 1.6em;
-  border: 1px solid var(--borde, rgb(47 33 20 / 0.28));
+  border: 1px solid var(--borde, color-mix(in srgb, var(--cafe) 28%, transparent));
   border-radius: var(--radio-pildora);
   background: transparent;
   font-size: var(--texto-s);
@@ -385,7 +385,7 @@ p {
   width: 62vmax;
   height: 62vmax;
   border-radius: 50%;
-  background: radial-gradient(circle, rgb(209 190 175 / 0.85), transparent 68%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--arena) 85%, transparent), transparent 68%);
   top: -22vmax;
   right: -16vmax;
   animation: deriva 24s ease-in-out infinite alternate;
@@ -396,7 +396,7 @@ p {
   right: auto;
   bottom: -30vmax;
   left: -14vmax;
-  background: radial-gradient(circle, rgb(125 55 34 / 0.2), transparent 68%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--cafe) 12%, transparent), transparent 68%);
   animation-duration: 31s;
   animation-direction: alternate-reverse;
 }
@@ -762,7 +762,7 @@ p {
   display: block;
   overflow: hidden;
   border-radius: var(--radio);
-  box-shadow: 0 1rem 2rem -1.2rem rgb(68 35 24 / 0.35);
+  box-shadow: 0 1rem 2rem -1.2rem color-mix(in srgb, var(--cafe) 35%, transparent);
 }
 
 .proyecto__imagen img {
@@ -843,7 +843,7 @@ p {
   width: var(--ancho);
   height: auto;
   border-radius: 6px;
-  box-shadow: 0 0.6rem 1.6rem -0.8rem rgb(68 35 24 / 0.45);
+  box-shadow: 0 0.6rem 1.6rem -0.8rem color-mix(in srgb, var(--cafe) 45%, transparent);
   opacity: 0;
   will-change: transform, opacity;
 }
@@ -960,7 +960,7 @@ p {
 }
 
 .hero .boton:not(.boton--principal) {
-  background: rgb(239 229 211 / 0.45);
+  background: color-mix(in srgb, var(--beige) 45%, transparent);
 }
 
 .hero h1 .palabra {
@@ -1051,7 +1051,7 @@ p {
 /* En el recorrido lleva un círculo para leerse sobre cualquier sección */
 .mica--acompana .mica__figura {
   background: var(--beige);
-  box-shadow: 0 8px 24px rgb(68 35 24 / 0.25);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--cafe) 25%, transparent);
 }
 
 .mica__globo {
@@ -1497,7 +1497,7 @@ main {
 .escrito__pieza > span {
   display: block;
   border-radius: var(--radio);
-  box-shadow: 0 14px 34px rgb(68 35 24 / 0.16);
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--cafe) 16%, transparent);
   transform: rotate(var(--giro, 0deg));
   transition: transform var(--dur-media) var(--curva-fuerte), box-shadow var(--dur-media) var(--curva-fuerte);
 }
@@ -1513,7 +1513,7 @@ main {
 
 @media (hover: hover) and (pointer: fine) {
   .escrito__pieza:hover > span {
-    box-shadow: 0 24px 48px rgb(68 35 24 / 0.22);
+    box-shadow: 0 24px 48px color-mix(in srgb, var(--cafe) 22%, transparent);
     transform: rotate(0deg) translateY(-6px);
   }
 }
@@ -1548,7 +1548,7 @@ main {
 .mail__de {
   display: block;
   padding: var(--esp-1) var(--esp-4) var(--esp-3);
-  border-bottom: 1px solid rgb(68 35 24 / 0.12);
+  border-bottom: 1px solid color-mix(in srgb, var(--cafe) 12%, transparent);
   color: var(--tinta-suave);
   font-size: var(--texto-s);
 }
@@ -1637,7 +1637,7 @@ main {
 .cita-grande__quien {
   display: block;
   margin-top: var(--esp-4);
-  color: var(--tinta-suave);
+  color: var(--tinta); /* sobre arena, solo café da contraste para texto chico */
   font-size: var(--texto-s);
 }
 
@@ -2575,7 +2575,7 @@ main {
 }
 
 .caso__otros .tarjeta {
-  --borde: rgb(47 33 20 / 0.28);
+  --borde: color-mix(in srgb, var(--cafe) 28%, transparent);
 }
 
 @media (min-width: 701px) {
@@ -2673,7 +2673,7 @@ main {
 
 /* La palabra que invita brilla apenas, con luz de limón */
 #contacto-titulo {
-  text-shadow: 0 0 44px rgb(209 190 175 / 0.5);
+  text-shadow: 0 0 44px color-mix(in srgb, var(--arena) 50%, transparent);
 }
 
 .sobre-mi {
@@ -2861,7 +2861,7 @@ main {
   gap: var(--esp-5);
   padding: clamp(1.25rem, 4vw, 3rem);
   border: 0;
-  box-shadow: 0 24px 50px rgb(68 35 24 / 0.3);
+  box-shadow: 0 24px 50px color-mix(in srgb, var(--cafe) 30%, transparent);
   border-radius: var(--radio);
   background: var(--beige);
   transform-origin: 50% 100%;
@@ -3202,4 +3202,61 @@ main {
   .mica--acompana .mica__globo {
     display: none;
   }
+}
+
+/* ---------- Marca: títulos con contraste de pesos y secciones de color ---------- */
+
+/* Satoshi fina en los títulos grandes; la palabra que manda va gruesa (.fuerte) */
+h1,
+h2 {
+  font-weight: 300;
+  letter-spacing: -0.045em;
+}
+
+.fuerte,
+.hero h1 em {
+  font-weight: 700;
+  letter-spacing: -0.05em;
+}
+
+/* Puntito final: taupe sobre claro, arena sobre café */
+.punto {
+  background: var(--taupe);
+}
+
+.tema-oscuro .punto {
+  background: var(--arena);
+}
+
+/* Títulos grandes sobre café en manteca; sin resaltado detrás para no bajarles el contraste */
+.tema-oscuro h2 {
+  color: var(--manteca);
+}
+
+.tema-oscuro .titulo-marca {
+  background-image: none;
+}
+
+/* Fondos por sección: Qué hago en café, Lo que escribo en manteca suave */
+main > .hoja#que-hago {
+  --fondo: var(--cafe);
+}
+
+main > .hoja#escritos {
+  --fondo: var(--manteca-suave);
+}
+
+/* Pilares sobre café: estrellita arena y el activo en arena con letra café */
+.tema-oscuro .pilar__estrella {
+  color: var(--arena);
+}
+
+.tema-oscuro .pilar.activo {
+  background: var(--arena);
+  color: var(--cafe);
+}
+
+.tema-oscuro .pilar.activo .pilar__detalle,
+.tema-oscuro .pilar.activo .pilar__estrella {
+  color: var(--cafe);
 }

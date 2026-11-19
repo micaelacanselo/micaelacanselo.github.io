@@ -1,0 +1,1513 @@
+/* Casos, índice de trabajos, lecturas de Lo que escribo y cursor "Ver".
+   Salen del sistema anterior (styles.css) y los usa solo la portada minimalista (index.html). */
+
+/* ---------- Temas por sección ---------- */
+
+.tema-oscuro {
+  --fondo: var(--tostado);
+  --texto: var(--crema);
+  --texto-2: var(--suave);
+  --borde: color-mix(in srgb, var(--beige) 45%, transparent);
+  --acento-texto: var(--terracota-claro);
+  background: var(--fondo);
+  color: var(--texto);
+}
+
+.tema-claro {
+  --fondo: var(--beige);
+  --texto: var(--tinta);
+  --texto-2: var(--tinta-suave);
+  --borde: color-mix(in srgb, var(--cafe) 28%, transparent);
+  --acento-texto: var(--terracota-oscuro);
+  background: var(--fondo);
+  color: var(--texto);
+}
+
+.tema-claro :focus-visible {
+  outline-color: var(--tinta);
+}
+
+/* ---------- Utilidades ---------- */
+
+.contenedor {
+  width: 100%;
+  max-width: var(--ancho-max);
+  margin-inline: auto;
+  padding-inline: var(--margen);
+}
+
+.visualmente-oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.saltar-contenido {
+  position: absolute;
+  top: var(--esp-3);
+  left: var(--esp-3);
+  z-index: 100;
+  padding: var(--esp-2) var(--esp-3);
+  background: var(--crema);
+  color: var(--cafe);
+  border-radius: var(--radio-pildora);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  transform: translateY(-200%);
+  transition: transform var(--dur-corta) var(--curva);
+}
+
+.saltar-contenido:focus {
+  transform: none;
+}
+
+/* ---------- Tipografía ---------- */
+
+h1,
+h2,
+h3 {
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: var(--tracking-titulo);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--titulo-l);
+}
+
+h2 {
+  font-size: var(--titulo-m);
+}
+
+h3 {
+  font-size: var(--titulo-s);
+  letter-spacing: -0.03em;
+}
+
+p {
+  max-width: 62ch;
+  text-wrap: pretty;
+}
+
+.acento {
+  color: var(--acento-texto);
+}
+
+/* "mensaje claro" se subraya con resaltador cuando termina de armarse el título */
+.hero__resaltado {
+  color: var(--resaltado);
+  background: linear-gradient(var(--limon), var(--limon)) no-repeat 0 82% / 100% 42%;
+  box-decoration-break: clone;
+  transition: background-size 900ms var(--curva-fuerte) 300ms, color var(--dur-larga) ease;
+}
+
+.intro .hero__resaltado {
+  background-size: 0 42%;
+  color: transparent;
+}
+
+/* La intro está sola en pantalla: nada asoma debajo de la portada */
+.intro body {
+  background: var(--limon);
+}
+
+
+/* Puntito al final de los títulos: ladrillo sobre crema, naranja sobre chocolate */
+.punto {
+  display: inline-block;
+  width: 0.16em;
+  height: 0.16em;
+  margin-left: 0.05em;
+  border-radius: 50%;
+  background: var(--terracota);
+  vertical-align: top;
+}
+
+.tema-oscuro .punto {
+  background: var(--terracota-claro);
+}
+
+/* Los paneles viven dentro de otras secciones: manda su propio tema */
+.tema-claro .punto {
+  background: var(--terracota);
+}
+
+/* ---------- Botones ---------- */
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-2);
+  min-height: 44px;
+  padding: 0.7em 1.6em;
+  border: 1px solid var(--borde, color-mix(in srgb, var(--cafe) 28%, transparent));
+  border-radius: var(--radio-pildora);
+  background: transparent;
+  font-size: var(--texto-s);
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-corta) var(--curva),
+    border-color var(--dur-corta) var(--curva),
+    color var(--dur-corta) var(--curva);
+}
+
+.boton--principal {
+  background: var(--terracota);
+  border-color: var(--terracota);
+  color: var(--crema);
+}
+
+/* Sobre tostado y en la portada, la acción principal va en limón */
+.tema-oscuro .boton--principal {
+  background: var(--limon);
+  border-color: var(--limon);
+  color: var(--tinta);
+}
+
+.tema-claro .boton--principal {
+  background: var(--terracota);
+  border-color: var(--terracota);
+  color: var(--crema);
+}
+
+.hero .boton--principal {
+  background: var(--terracota);
+  border-color: var(--terracota);
+  color: var(--crema);
+}
+
+@media (hover: hover) {
+  .boton:hover {
+    border-color: currentColor;
+  }
+
+  .boton--principal:hover {
+    background: var(--terracota-hover);
+    border-color: var(--terracota-hover);
+  }
+
+  .tema-oscuro .boton--principal:hover {
+    background: var(--naranja-hover);
+    border-color: var(--naranja-hover);
+  }
+
+  .tema-claro .boton--principal:hover {
+    background: var(--terracota-hover);
+    border-color: var(--terracota-hover);
+  }
+
+  .hero .boton--principal:hover {
+    background: var(--terracota-hover);
+    border-color: var(--terracota-hover);
+  }
+}
+
+
+/* ---------- Lo que escribo: cada texto en su formato, como sobre una mesa ---------- */
+
+.escritos__cabecera {
+  display: grid;
+  gap: var(--esp-3);
+  max-width: 44rem;
+  margin-bottom: var(--esp-6);
+}
+
+.escritos__mesa {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(1.5rem, 1rem + 2vw, 3rem) clamp(1rem, 0.5rem + 1.5vw, 2rem);
+  align-items: start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.escrito--mail { grid-column: 1 / 6; grid-row: 1 / 3; --giro: -1.6deg; }
+.escrito--nota { grid-column: 6 / 10; grid-row: 1 / 3; --giro: 1.2deg; margin-top: var(--esp-5); }
+.escrito--perfil { grid-column: 10 / 13; --giro: -1deg; }
+.escrito--cronica { grid-column: 10 / 13; --giro: 1.8deg; }
+
+.escrito__pieza {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.escrito__pieza > span {
+  display: block;
+  border-radius: var(--radio);
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--cafe) 16%, transparent);
+  transform: rotate(var(--giro, 0deg));
+  transition: transform var(--dur-media) var(--curva-fuerte), box-shadow var(--dur-media) var(--curva-fuerte);
+}
+
+.escrito__pieza:focus-visible {
+  outline: none;
+}
+
+.escrito__pieza:focus-visible > span {
+  outline: 3px solid var(--tinta);
+  outline-offset: 4px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .escrito__pieza:hover > span {
+    box-shadow: 0 24px 48px color-mix(in srgb, var(--cafe) 22%, transparent);
+    transform: rotate(0deg) translateY(-6px);
+  }
+}
+
+.escrito__pie {
+  margin-top: var(--esp-3);
+  color: var(--tinta-suave);
+  font-size: var(--texto-s);
+}
+
+.escrito__pie strong {
+  color: var(--tinta);
+  font-weight: 500;
+}
+
+/* El mail: asunto, remitente, imagen y botón, como llega a la bandeja */
+.mail {
+  overflow: hidden;
+  padding-bottom: var(--esp-4);
+  background: var(--papel);
+}
+
+.mail__asunto {
+  display: block;
+  padding: var(--esp-4) var(--esp-4) 0;
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.mail__de {
+  display: block;
+  padding: var(--esp-1) var(--esp-4) var(--esp-3);
+  border-bottom: 1px solid color-mix(in srgb, var(--cafe) 12%, transparent);
+  color: var(--tinta-suave);
+  font-size: var(--texto-s);
+}
+
+.mail__imagen {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.mail__cuerpo {
+  display: block;
+  padding: var(--esp-4) var(--esp-4) 0;
+  line-height: 1.5;
+}
+
+.mail__cuerpo strong {
+  display: block;
+  margin-bottom: var(--esp-1);
+  font-weight: 500;
+}
+
+.mail__boton {
+  display: inline-block;
+  margin: var(--esp-4) var(--esp-4) 0;
+  padding: 0.7em 1.6em;
+  border-radius: var(--radio-pildora);
+  background: var(--tinta);
+  color: var(--papel);
+  font-size: var(--texto-s);
+  font-weight: 500;
+}
+
+/* La nota: como un recorte de diario */
+.nota {
+  padding: var(--esp-4);
+  background: var(--papel);
+}
+
+.nota__seccion {
+  display: block;
+  padding-bottom: var(--esp-2);
+  border-bottom: 2px solid var(--tinta);
+  font-size: var(--texto-s);
+  font-weight: 500;
+}
+
+.nota__titulo {
+  display: block;
+  margin-block: var(--esp-3);
+  font-size: clamp(1.375rem, 1.1rem + 1vw, 2rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.nota__foto {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: calc(var(--radio) * 0.4);
+}
+
+.nota__bajada {
+  display: block;
+  margin-top: var(--esp-3);
+  color: var(--tinta-suave);
+  line-height: 1.5;
+}
+
+/* El perfil: la frase que lo resume */
+.cita-grande {
+  padding: var(--esp-5) var(--esp-4);
+  background: var(--arena);
+}
+
+.cita-grande__texto {
+  display: block;
+  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.25rem);
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.cita-grande__quien {
+  display: block;
+  margin-top: var(--esp-4);
+  color: var(--tinta); /* sobre arena, solo café da contraste para texto chico */
+  font-size: var(--texto-s);
+}
+
+/* La crónica: su primera línea, sobre tinta */
+.cronica {
+  padding: var(--esp-5) var(--esp-4);
+  background: var(--tinta);
+  color: var(--crema);
+}
+
+.cronica__titulo {
+  display: block;
+  font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.75rem);
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.cronica__texto {
+  display: block;
+  margin-top: var(--esp-3);
+  line-height: 1.5;
+}
+
+/* Lectura: el texto entero, en una columna cómoda */
+.lectura__portada {
+  gap: var(--esp-2);
+  padding-bottom: 0;
+}
+
+.lectura__titulo {
+  max-width: 22ch;
+  font-size: clamp(2rem, 1.4rem + 2.6vw, 3.75rem);
+  letter-spacing: -0.05em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.capitulo.lectura__texto {
+  margin-top: var(--esp-5);
+  padding-bottom: var(--esp-6);
+}
+
+.lectura__texto h4 {
+  margin-top: var(--esp-6);
+  font-size: var(--titulo-s);
+}
+
+.lectura__texto h4:first-child {
+  margin-top: 0;
+}
+
+.lectura__imagen {
+  display: block;
+  width: 100%;
+  max-width: 40rem;
+  height: auto;
+  margin-top: var(--esp-4);
+  border-radius: var(--radio);
+}
+
+.lectura__figura {
+  margin: 0;
+}
+
+.lectura__figura figcaption {
+  margin-top: var(--esp-2);
+  color: var(--tinta-suave);
+  font-size: var(--texto-s);
+}
+
+/* Tablet: dos columnas; celular: una, con giros más chicos */
+@media (max-width: 59.99rem) {
+  .escritos__mesa {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .escrito--mail,
+  .escrito--nota,
+  .escrito--perfil,
+  .escrito--cronica {
+    grid-column: auto;
+    grid-row: auto;
+    margin-top: 0;
+  }
+}
+
+/* Celular: las piezas se pasan de costado, como hojas sobre la mesa */
+@media (max-width: 39.99rem) {
+  .escritos__mesa {
+    display: flex;
+    gap: var(--esp-3);
+    margin-inline: calc(var(--margen) * -1);
+    padding: var(--esp-2) var(--margen) var(--esp-3);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--margen);
+    scrollbar-width: none;
+  }
+
+  .escritos__mesa::-webkit-scrollbar {
+    display: none;
+  }
+
+  .escrito {
+    flex: 0 0 82%;
+    scroll-snap-align: start;
+  }
+
+  .escrito.escrito--perfil,
+  .escrito.escrito--cronica,
+  .escrito.escrito--mail,
+  .escrito.escrito--nota {
+    --giro: 0deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .escrito__pieza > span {
+    transition: none;
+  }
+}
+
+/* ---------- Índice de trabajos ---------- */
+
+.indice-abierto {
+  overflow: hidden;
+  padding-right: var(--ancho-barra, 0);
+}
+
+.indice,
+.caso {
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.indice {
+  background: var(--fondo);
+  color: var(--texto);
+}
+
+.indice[open],
+.caso[open] {
+  animation: subir-indice var(--dur-media) var(--curva);
+}
+
+@keyframes subir-indice {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+}
+
+.indice__interior {
+  width: min(100%, 62rem);
+  margin-inline: auto;
+  padding: var(--esp-4) var(--margen) var(--esp-6);
+}
+
+.indice__cabecera {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-3);
+  padding-block: var(--esp-3);
+  background: var(--fondo);
+}
+
+.indice__cabecera h3 {
+  font-size: var(--titulo-s);
+  font-weight: 400;
+  letter-spacing: var(--tracking-titulo);
+  line-height: 1.05;
+}
+
+/* Filtros */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-2);
+  margin-top: var(--esp-3);
+  padding: 0;
+  list-style: none;
+}
+
+.filtro {
+  min-height: 44px;
+  padding: 0.5em 1.1em;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-pildora);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--texto-s);
+  cursor: pointer;
+  transition: background-color var(--dur-corta), color var(--dur-corta), border-color var(--dur-corta);
+}
+
+.filtro[aria-pressed="true"] {
+  border-color: var(--tinta);
+  background: var(--terracota-claro);
+  color: var(--cafe);
+}
+
+.filtro:focus-visible,
+.tarjeta:focus-visible {
+  outline: 2px solid var(--tinta);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .filtro:hover {
+    border-color: currentColor;
+  }
+}
+
+.indice__grilla {
+  display: grid;
+  gap: var(--esp-5) var(--esp-4);
+  margin-top: var(--esp-5);
+  padding: 0;
+  list-style: none;
+}
+
+.indice__grilla [hidden] {
+  display: none;
+}
+
+/* Tarjeta de trabajo: captura grande, nombre con flecha y categoría */
+.tarjeta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--esp-1) var(--esp-3);
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.tarjeta__imagen {
+  grid-column: 1 / -1;
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  margin-bottom: var(--esp-2);
+  object-fit: cover;
+  border-radius: 14px;
+  transition: transform var(--dur-larga) var(--curva);
+}
+
+.tarjeta__titulo {
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.tarjeta__flecha {
+  grid-row: 2;
+  grid-column: 2;
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 8px;
+  background: var(--limon);
+  color: var(--tinta);
+  transition: transform var(--dur-media) var(--curva);
+}
+
+.tarjeta__flecha svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.tarjeta__categoria {
+  grid-column: 1 / -1;
+  color: var(--texto-2, var(--suave));
+  font-size: var(--texto-s);
+  line-height: 1.3;
+}
+
+.tarjeta__tipo--real {
+  color: var(--terracota-oscuro);
+}
+
+@media (hover: hover) {
+  .tarjeta:hover .tarjeta__imagen {
+    transform: translateY(-4px);
+  }
+
+  .tarjeta:hover .tarjeta__flecha {
+    transform: translate(2px, -2px);
+  }
+}
+
+/* ---------- Caso de proyecto: una columna centrada que se lee como una historia ---------- */
+
+.caso__ancho {
+  width: min(100% - 2 * var(--margen), 54rem);
+  margin-inline: auto;
+}
+
+.caso__barra {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-3);
+  padding: var(--esp-2) var(--margen);
+  background: var(--fondo);
+}
+
+.caso__nombre {
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.caso__portada {
+  display: grid;
+  justify-items: center;
+  padding: var(--esp-5) var(--margen);
+  text-align: center;
+}
+
+.caso__categoria {
+  color: var(--texto-2);
+  font-size: var(--texto-s);
+}
+
+.caso__titulo {
+  margin-top: var(--esp-2);
+  font-size: clamp(2.75rem, 1.8rem + 4.2vw, 5.5rem);
+  line-height: 0.95;
+  letter-spacing: var(--tracking-titulo);
+}
+
+.caso__bajada {
+  max-width: 34ch;
+  margin-top: var(--esp-3);
+  font-size: clamp(1.125rem, 1rem + 0.6vw, 1.5rem);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+.caso__datos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--esp-1) var(--esp-4);
+  margin-top: var(--esp-4);
+  padding: 0;
+  color: var(--texto-2);
+  font-size: var(--texto-s);
+  list-style: none;
+}
+
+/* Lámina: la pieza apoyada sobre un color de la marca */
+.lamina {
+  --espacio-lamina: clamp(0.75rem, 3.5vw, 3rem);
+  margin-block: 0;
+  padding: var(--espacio-lamina);
+  overflow: hidden;
+  border-radius: var(--radio);
+  background: var(--color-lamina);
+}
+
+.lamina > img,
+.lamina > video,
+.lamina > picture > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 18px 44px rgb(0 0 0 / 0.28);
+}
+
+/* Cada caso trae su fondo de marca */
+.caso--magnolia {
+  --fondo-lamina: var(--magnolia-noche) url("../assets/proyectos/magnolia-eventos/caso/fondo-lamina.webp") center / cover;
+}
+
+.caso--gae {
+  --fondo-lamina: var(--gae-indigo) url("../assets/proyectos/centro-operativo-gae/caso/fondo-lamina.webp") center / cover;
+}
+
+.caso--tono {
+  --fondo-lamina: var(--tono-tinta) url("../assets/proyectos/tono/caso/fondo-lamina.webp") center / cover;
+}
+
+.caso--instituto {
+  --fondo-lamina: var(--instituto-azul) url("../assets/proyectos/instituto-del-parque/caso/fondo-lamina.webp") center / cover;
+}
+
+.caso--spa {
+  --fondo-lamina: var(--spa-vino) url("../assets/proyectos/relax-spa/caso/fondo-lamina.webp") center / cover;
+}
+
+.caso--raiz {
+  --fondo-lamina: var(--raiz-musgo) url("../assets/proyectos/raiz-fotografia/caso/fondo-lamina.webp") center / cover;
+}
+
+.caso--burgbox {
+  --fondo-lamina: var(--burgbox-cafe) url("../assets/proyectos/burgbox/caso/fondo-lamina.webp") center / cover;
+}
+
+.caso--plantilla {
+  --fondo-lamina: var(--umbral-tinta) url("../assets/proyectos/plantilla-personalizada/caso/fondo-lamina.webp") center / cover;
+}
+
+.caso--itba {
+  --fondo-lamina: var(--itba-azul);
+}
+
+.caso--adopciones {
+  --fondo-lamina: var(--adopciones-verde);
+}
+
+.caso--havanna {
+  --fondo-lamina: var(--havanna-rojo);
+}
+
+.caso--campagnola {
+  --fondo-lamina: var(--campagnola-azul);
+}
+
+.lamina--fondo {
+  background: var(--fondo-lamina);
+}
+
+.caso__dato--real {
+  color: var(--terracota-oscuro);
+}
+
+.lamina--noche { --color-lamina: var(--magnolia-noche); }
+.lamina--lila { --color-lamina: var(--magnolia-lila); }
+.lamina--lavanda { --color-lamina: var(--magnolia-lavanda); }
+.lamina--greige { --color-lamina: var(--magnolia-greige); }
+.lamina--blanca { --color-lamina: var(--magnolia-blanco); }
+
+/* Código en el celular: más grande, se recorre de costado */
+@media (max-width: 40rem) {
+  .lamina > picture {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .lamina > picture > img {
+    width: 56rem;
+    max-width: none;
+  }
+
+  .lamina > picture + figcaption::after {
+    content: " · Deslizá para ver más";
+  }
+}
+
+/* Primera lámina: las capturas sobre una foto del rubro */
+.lamina--contexto {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(1.25rem, 6vw, 4.5rem);
+  background: var(--cafe);
+}
+
+.lamina.lamina--contexto > img {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Entra de dorso y se da vuelta: el dorso se apaga justo cuando queda de canto */
+.lamina.lamina--contexto.por-entrar {
+  clip-path: none;
+}
+
+.lamina.lamina--contexto.por-entrar > *,
+.lamina.lamina--contexto.entrada > * {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+.lamina.lamina--contexto.entrada {
+  transition: none;
+  animation: girar-lamina 1.1s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.lamina.lamina--contexto.entrada::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: var(--marron);
+  opacity: 0;
+  pointer-events: none;
+  animation: apagar-dorso 1.1s linear;
+}
+
+@keyframes girar-lamina {
+  from {
+    transform: perspective(1600px) rotateY(180deg);
+  }
+
+  to {
+    transform: perspective(1600px) rotateY(0deg);
+  }
+}
+
+@keyframes apagar-dorso {
+  0%,
+  48% {
+    opacity: 1;
+  }
+
+  48.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Piezas de marketing: el mail a un lado, post y anuncio al otro */
+.piezas {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+  align-items: start;
+}
+
+.piezas > :first-child {
+  grid-row: span 2;
+}
+
+.piezas figcaption {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 40rem) {
+  .piezas {
+    grid-template-columns: 1fr;
+  }
+
+  .piezas > :first-child {
+    grid-row: auto;
+  }
+}
+
+/* Piezas impresas del ITBA: dos a la par, una foto vertical o un flyer chico, sin estirarlos */
+.piezas--par {
+  grid-template-columns: 1fr 1fr;
+}
+
+.piezas--par > :first-child {
+  grid-row: auto;
+}
+
+.piezas--foto {
+  grid-template-columns: minmax(0, 26rem);
+  justify-content: center;
+}
+
+/* Tres piezas verticales a la par (historias, fotos), también en el celular */
+.piezas--tres,
+.piezas--tres.piezas {
+  grid-template-columns: repeat(3, minmax(0, 15rem));
+  justify-content: center;
+}
+
+.piezas--tres > :first-child {
+  grid-row: auto;
+}
+
+.lamina.piezas--flyer > img {
+  max-width: 38.5rem;
+  margin-inline: auto;
+}
+
+.lamina--blanca > img {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Único gesto del caso: la lámina se abre como una ventana y la pieza sube adentro; los teléfonos, de a uno */
+.lamina.por-entrar {
+  opacity: 0;
+  clip-path: inset(16% 14% round var(--radio));
+}
+
+.lamina.por-entrar > * {
+  opacity: 0;
+  transform: translateY(7rem) scale(0.9);
+}
+
+.lamina.entrada {
+  transition: opacity 500ms var(--curva), clip-path 1.2s var(--curva-fuerte);
+}
+
+.lamina.entrada > * {
+  transition: opacity var(--dur-larga) var(--curva), transform 1.4s var(--curva-fuerte);
+}
+
+.lamina.entrada > :nth-child(2) {
+  transition-delay: 140ms;
+}
+
+.lamina.entrada > :nth-child(3) {
+  transition-delay: 280ms;
+}
+
+.capitulo {
+  width: min(100% - 2 * var(--margen), 54rem);
+  margin: clamp(3.5rem, 2.5rem + 4vw, 5.5rem) auto var(--esp-4);
+}
+
+.capitulo h4 {
+  font-size: clamp(1.5rem, 1.2rem + 1.1vw, 2.25rem);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+/* En frases largas el puntito cierra la oración, sobre la línea */
+.capitulo h4 .punto {
+  position: static;
+  vertical-align: baseline;
+  transform: none;
+}
+
+.capitulo p {
+  max-width: 40rem;
+  margin-top: var(--esp-3);
+  font-size: var(--texto-m);
+  line-height: 1.5;
+}
+
+.capitulo h4 + p ~ p {
+  margin-top: var(--esp-3);
+}
+
+/* Capítulo que continúa el anterior después de una lámina o cifras, sin título propio */
+.capitulo.capitulo--sigue {
+  margin-top: var(--esp-5);
+}
+
+/* Lista dentro de un capítulo: un punto por red o por pieza */
+.caso__lista {
+  display: grid;
+  gap: var(--esp-2);
+  max-width: 40rem;
+  margin-top: var(--esp-3);
+  padding-left: 1.2em;
+  font-size: var(--texto-m);
+  line-height: 1.5;
+}
+
+.caso__lista strong {
+  font-weight: 500;
+}
+
+/* Copy de una pieza, citado tal cual */
+.caso__cita {
+  max-width: 36rem;
+  margin: var(--esp-4) 0 0;
+  padding-left: var(--esp-4);
+  color: var(--tinta-suave);
+  font-size: clamp(1.125rem, 1rem + 0.6vw, 1.375rem);
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+/* Maqueta: laptop y celular superpuesto */
+.maqueta {
+  position: relative;
+  padding-right: 15%;
+}
+
+.maqueta__laptop {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: clamp(4px, 0.8vw, 10px) solid var(--negro);
+  border-bottom-width: clamp(10px, 1.8vw, 22px);
+  border-radius: 12px;
+  box-shadow: 0 24px 50px rgb(0 0 0 / 0.5);
+}
+
+.maqueta__celular {
+  position: absolute;
+  right: 0;
+  bottom: -4%;
+  width: 22%;
+  aspect-ratio: 9 / 19;
+  overflow: hidden;
+  border: clamp(3px, 0.5vw, 6px) solid var(--negro);
+  border-radius: clamp(12px, 2.2vw, 28px);
+  box-shadow: 0 18px 36px rgb(0 0 0 / 0.55);
+}
+
+.maqueta img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+/* Marca: antes y después enfrentados */
+.marca {
+  display: grid;
+  gap: var(--esp-3);
+}
+
+.marca__panel {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: clamp(11rem, 22vw, 18rem);
+}
+
+.lamina.marca__panel > img {
+  width: min(62%, 15rem);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.lamina--lila.marca__panel > img {
+  width: min(55%, 11rem);
+  mix-blend-mode: multiply;
+}
+
+.marca__panel figcaption {
+  position: absolute;
+  left: var(--esp-4);
+  bottom: var(--esp-3);
+  font-size: var(--texto-s);
+  color: var(--tinta);
+}
+
+.lamina--noche figcaption {
+  color: var(--crema);
+}
+
+.pila {
+  display: grid;
+  gap: var(--esp-3);
+}
+
+/* Teléfonos en fila; en celular se recorren de costado */
+.telefonos {
+  display: flex;
+  justify-content: safe center;
+  gap: clamp(1rem, 4vw, 3.5rem);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+}
+
+.telefono {
+  position: relative;
+  flex: 0 0 min(52vw, 12.5rem);
+  aspect-ratio: 9 / 19;
+  overflow: hidden;
+  border: 4px solid var(--negro);
+  border-radius: 22px;
+  background: var(--negro);
+  scroll-snap-align: center;
+}
+
+.telefono img,
+.telefono video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+/* Anuncio de Google: los colores imitan el buscador, por eso van aparte de la marca */
+.anuncio {
+  max-width: 40rem;
+  margin-inline: auto;
+  padding: var(--esp-4);
+  border-radius: 12px;
+  background: var(--magnolia-blanco);
+  box-shadow: 0 18px 44px rgb(0 0 0 / 0.35);
+  color: var(--google-texto);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: var(--texto-s);
+  line-height: 1.4;
+}
+
+.anuncio__etiqueta {
+  margin-bottom: var(--esp-3);
+  font-weight: 700;
+}
+
+.anuncio__sitio {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-3);
+  font-size: 0.875rem;
+}
+
+.anuncio__sitio img {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.anuncio__sitio span {
+  color: var(--google-gris);
+  font-size: 0.75rem;
+}
+
+.anuncio__titulo {
+  margin-block: var(--esp-2) var(--esp-1);
+  color: var(--google-azul);
+  font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.25rem);
+}
+
+.lamina--fondo figcaption {
+  margin-top: var(--esp-3);
+  color: var(--crema);
+  font-size: var(--texto-s);
+  text-align: center;
+}
+
+/* Sonido: visible sobre cualquier video, sin pisar los íconos de la red */
+.sonido {
+  position: absolute;
+  top: 2.75rem;
+  right: 0.5rem;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 0.62);
+  color: var(--crema);
+  cursor: pointer;
+  transition: background-color var(--dur-corta);
+}
+
+.sonido svg {
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
+.sonido[aria-pressed="true"] {
+  background: var(--limon);
+  color: var(--tinta);
+}
+
+.sonido[aria-pressed="true"] .sonido__tachado,
+.sonido[aria-pressed="false"] .sonido__ondas {
+  display: none;
+}
+
+.sonido:focus-visible {
+  outline: 2px solid var(--crema);
+  outline-offset: 2px;
+}
+
+/* Cifras: el dato manda, sin tarjetas */
+.cifras {
+  display: grid;
+  gap: var(--esp-4);
+  margin-block: 0 var(--esp-5);
+  padding-block: var(--esp-4);
+  border-block: 1px solid var(--borde);
+}
+
+.cifras p {
+  color: var(--texto-2);
+  font-size: var(--texto-s);
+  line-height: 1.3;
+}
+
+.cifras strong {
+  display: block;
+  margin-bottom: var(--esp-1);
+  color: var(--texto);
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+/* Cierre: más trabajos */
+.caso__mas {
+  display: grid;
+  justify-items: center;
+  gap: var(--esp-4);
+  margin-top: clamp(3.5rem, 2.5rem + 4vw, 5.5rem);
+  padding-block: var(--esp-6);
+  background: var(--arena);
+  --texto-2: var(--tinta-suave);
+  text-align: center;
+}
+
+.caso__mas h4 {
+  font-size: clamp(2.25rem, 1.6rem + 2.8vw, 4rem);
+  font-weight: 400;
+  letter-spacing: var(--tracking-titulo);
+  line-height: 0.95;
+}
+
+.caso__otros {
+  display: grid;
+  gap: var(--esp-5) var(--esp-4);
+  margin-top: var(--esp-5);
+}
+
+.caso__otros .tarjeta {
+  --borde: color-mix(in srgb, var(--cafe) 28%, transparent);
+}
+
+@media (min-width: 701px) {
+  .indice__grilla,
+  .caso__otros {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .marca {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .marca__aplicaciones {
+    grid-column: 1 / -1;
+  }
+
+  .cifras {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.cifras.cifras--dos {
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 700px) {
+  .cifras {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .telefonos {
+    justify-content: flex-start;
+    padding-inline: var(--esp-3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indice[open],
+  .caso[open] {
+    animation: none;
+  }
+
+  .filtro,
+  .tarjeta__imagen,
+  .tarjeta__flecha {
+    transition: none;
+  }
+
+  .lamina.por-entrar,
+  .lamina.por-entrar > * {
+    opacity: 1;
+    clip-path: none;
+    transform: none;
+  }
+}
+
+
+/* ---------- Cursor propio: bolita que acompaña al mouse y dice "Ver" sobre los proyectos ---------- */
+
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--crema);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-corta);
+}
+
+.cursor::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 7px solid var(--beige);
+  border-radius: 50%;
+  background: var(--terracota);
+  scale: 0.24;
+  transition: scale var(--dur-corta) var(--curva-fuerte), border-width var(--dur-corta) ease;
+}
+
+.cursor span {
+  position: relative;
+  opacity: 0;
+  transition: opacity var(--dur-corta) ease;
+}
+
+.cursor.ver::before {
+  border-width: 0;
+  scale: 1;
+}
+
+.cursor.ver span {
+  opacity: 1;
+}
+
+/* Se activa desde JS solo con mouse y sin movimiento reducido */
+.con-cursor .cursor {
+  opacity: 1;
+}
+
+.con-cursor [data-cursor="ver"] {
+  cursor: none;
+}
+
+
+/* ---------- Marca: títulos con contraste de pesos y secciones de color ---------- */
+
+/* Satoshi fina en los títulos grandes; la palabra que manda va gruesa (.fuerte) */
+h1,
+h2 {
+  font-weight: 300;
+  letter-spacing: -0.045em;
+}
+
+.fuerte,
+.hero h1 em {
+  font-weight: 700;
+  letter-spacing: -0.05em;
+}
+
+/* Puntito final: taupe sobre claro, arena sobre café */
+.punto {
+  background: var(--taupe);
+}
+
+.tema-oscuro .punto {
+  background: var(--arena);
+}
+
+/* Títulos grandes sobre café en manteca; sin resaltado detrás para no bajarles el contraste */
+.tema-oscuro h2 {
+  color: var(--manteca);
+}
+
+.tema-oscuro .titulo-marca {
+  background-image: none;
+}
+
+/* Fondos por sección: Qué hago en café, Lo que escribo en manteca suave */
+main > .hoja#que-hago {
+  --fondo: var(--cafe);
+}
+
+main > .hoja#escritos {
+  --fondo: var(--manteca-suave);
+}
+
+/* Pilares sobre café: estrellita arena y el activo en arena con letra café */
+.tema-oscuro .pilar__estrella {
+  color: var(--arena);
+}
+
+.tema-oscuro .pilar.activo {
+  background: var(--arena);
+  color: var(--cafe);
+}
+
+.tema-oscuro .pilar.activo .pilar__detalle,
+.tema-oscuro .pilar.activo .pilar__estrella {
+  color: var(--cafe);
+}
+
+
+/* ---------- Movimiento reducido ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

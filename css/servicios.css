@@ -1,14 +1,14 @@
-/* Página de servicios: usa la base del portfolio con la paleta de la cuenta de Instagram (paleta.md).
-   Los tokens del sitio se reasignan acá para que botones, temas y formulario tomen los colores nuevos. */
+/* Página de servicios: usa la base del portfolio con la paleta del manual de marca (la misma que tokens.css).
+   Los tokens del sitio se reasignan acá para que botones, temas y formulario tomen estos nombres. */
 
 :root {
-  --espresso: #3b2a20; /* textos y títulos */
-  --cacao: #6b4a36; /* subtítulos y detalles */
-  --caramelo: #a97a57; /* detalles: puntos, líneas, números grandes (no texto chico: 3,2:1 sobre crema) */
-  --arena-ig: #d8c3a5; /* fondos secundarios y bordes */
-  --crema-ig: #f3ece2; /* fondo principal */
-  --oliva: #6e7350; /* acento, de vez en cuando */
-  --crema-clara: #f8f3ec; /* derivado: superficie de las tarjetas */
+  --espresso: #40261d; /* textos y títulos */
+  --cacao: #6e5a45; /* subtítulos y detalles */
+  --caramelo: var(--taupe); /* detalles: puntos, líneas, números grandes (no texto chico) */
+  --arena-ig: #d9bfa0; /* fondos secundarios y bordes */
+  --crema-ig: #efe6da; /* fondo principal */
+  --oliva: #6e5a45; /* acento, de vez en cuando */
+  --crema-clara: var(--manteca-suave); /* derivado: superficie de las tarjetas */
 
   --beige: var(--crema-ig);
   --crema: var(--crema-ig);
@@ -47,11 +47,11 @@
 
 .pagina-servicios .tema-oscuro {
   --texto-2: var(--arena-ig);
-  --borde: rgb(243 236 226 / 0.35);
+  --borde: color-mix(in srgb, var(--beige) 35%, transparent);
 }
 
 .pagina-servicios .tema-claro {
-  --borde: rgb(59 42 32 / 0.22);
+  --borde: color-mix(in srgb, var(--cafe) 22%, transparent);
 }
 
 /* ---------- Encabezado: crema sólido, cambia a espresso sobre las secciones oscuras ---------- */
@@ -63,7 +63,7 @@
 }
 
 .pagina-servicios .encabezado--con-borde {
-  box-shadow: 0 1px 0 rgb(59 42 32 / 0.12);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--cafe) 12%, transparent);
 }
 
 .pagina-servicios .encabezado--sobre-oscuro {
@@ -165,7 +165,7 @@
   position: absolute;
   width: 78%;
   border-radius: var(--radio);
-  box-shadow: 0 18px 40px rgb(59 42 32 / 0.18), 0 2px 6px rgb(59 42 32 / 0.08);
+  box-shadow: 0 18px 40px color-mix(in srgb, var(--cafe) 18%, transparent), 0 2px 6px color-mix(in srgb, var(--cafe) 8%, transparent);
   transform-origin: 50% 100%;
 }
 
@@ -232,7 +232,7 @@
 @media (hover: hover) and (pointer: fine) {
   .servicio:hover {
     translate: 0 -3px;
-    box-shadow: 0 18px 36px rgb(59 42 32 / 0.1);
+    box-shadow: 0 18px 36px color-mix(in srgb, var(--cafe) 10%, transparent);
   }
 }
 
@@ -348,7 +348,7 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: radial-gradient(38rem circle at var(--luz-x) var(--luz-y), rgb(169 122 87 / 0.32), transparent 60%);
+  background: radial-gradient(38rem circle at var(--luz-x) var(--luz-y), color-mix(in srgb, var(--taupe) 32%, transparent), transparent 60%);
   pointer-events: none;
 }
 
@@ -405,7 +405,7 @@
   }
 
   .servicio--destacado:hover {
-    box-shadow: 0 24px 50px rgb(59 42 32 / 0.25);
+    box-shadow: 0 24px 50px color-mix(in srgb, var(--cafe) 25%, transparent);
   }
 }
 
@@ -534,7 +534,7 @@
   background: var(--arena-ig);
   color: var(--espresso);
   --texto-2: var(--espresso);
-  --borde: rgb(59 42 32 / 0.25);
+  --borde: color-mix(in srgb, var(--cafe) 25%, transparent);
 }
 
 .mantenimiento__texto {
@@ -678,7 +678,7 @@
   --fondo: var(--arena-ig);
   --texto: var(--espresso);
   --texto-2: var(--espresso);
-  --borde: rgb(59 42 32 / 0.25);
+  --borde: color-mix(in srgb, var(--cafe) 25%, transparent);
   background: var(--fondo);
   color: var(--texto);
   border-radius: var(--curva-hoja, 2.5rem);

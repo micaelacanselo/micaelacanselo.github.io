@@ -1,0 +1,832 @@
+/* Prueba minimalista: un solo fondo que corre, los trabajos mandan.
+   Colores y tipografía salen de ../css/tokens.css (paleta del manual y Satoshi). */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--beige);
+  color: var(--cafe);
+  font-family: var(--fuente);
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: var(--arena);
+  color: var(--cafe);
+}
+
+:focus-visible {
+  outline: 2px solid var(--cafe);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.visualmente-oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.saltar {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 60;
+  padding: 0.6rem 1rem;
+  background: var(--cafe);
+  color: var(--beige);
+  border-radius: 999px;
+  transform: translateY(-200%);
+}
+
+.saltar:focus {
+  transform: none;
+}
+
+/* Medidas que se repiten */
+:root {
+  --m: clamp(1.25rem, 0.6rem + 2.6vw, 3.5rem);
+  --linea: color-mix(in srgb, var(--cafe) 22%, transparent);
+  --suave-texto: #6e5a45;
+  --curva-m: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* ---------- Barras fijas: nombre arriba, navegación abajo ---------- */
+
+.barra {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem var(--m) 1.6rem;
+  background: linear-gradient(color-mix(in srgb, var(--beige) 94%, transparent) 55%, transparent);
+  pointer-events: none;
+}
+
+.barra > * {
+  pointer-events: auto;
+}
+
+.barra__nombre {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.barra__nombre img {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+}
+
+.barra__dato {
+  color: var(--suave-texto);
+  font-size: 0.875rem;
+}
+
+.navegacion {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem var(--m) 1rem;
+  background: linear-gradient(transparent, color-mix(in srgb, var(--beige) 92%, transparent) 40%);
+}
+
+.navegacion__marca {
+  font-weight: 500;
+  font-size: 0.9375rem;
+  text-decoration: none;
+}
+
+.navegacion ul {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 2vw, 1.75rem);
+  padding: 0;
+  list-style: none;
+}
+
+.navegacion a:not(.pildora) {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+  text-underline-offset: 0.3em;
+}
+
+.navegacion a:not(.pildora):hover {
+  text-decoration: underline;
+}
+
+.pildora {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  min-height: 44px;
+  padding: 0.65em 1.4em;
+  border: 1px solid var(--cafe);
+  border-radius: 999px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 200ms var(--curva-m), color 200ms var(--curva-m);
+}
+
+.pildora--llena {
+  background: var(--cafe);
+  color: var(--beige);
+}
+
+@media (hover: hover) {
+  .pildora:hover {
+    background: var(--cafe);
+    color: var(--beige);
+  }
+
+  .pildora--llena:hover {
+    background: #2b1913;
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .barra__dato,
+  .navegacion__marca,
+  .navegacion__secundario {
+    display: none;
+  }
+
+  .navegacion {
+    justify-content: center;
+  }
+}
+
+/* ---------- Portada: collage de trabajos que se abre y se dispersa con el scroll ---------- */
+
+.portada {
+  position: relative;
+  height: 100svh;
+  min-height: 34rem;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.portada__fotos {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.collage__foto {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--ancho);
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 0.6rem 1.6rem -0.8rem color-mix(in srgb, var(--cafe) 45%, transparent);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Durante la intro solo se ven las fotos: la frase y los botones entran cuando el collage terminó de abrirse.
+   La clase viene en el HTML para que no se vea ni un instante al cargar; si el JS no corre, aparece sola a los 6 s */
+.en-intro .portada__texto {
+  opacity: 0;
+  translate: 0 1rem;
+  animation: portada-de-respaldo 0s linear 6s forwards;
+}
+
+@keyframes portada-de-respaldo {
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .en-intro .portada__texto {
+    opacity: 1 !important;
+    translate: none;
+  }
+}
+
+.portada__texto {
+  position: relative;
+  z-index: 2;
+  transition: opacity 900ms var(--curva-m), translate 900ms var(--curva-m);
+  display: grid;
+  justify-items: center;
+  gap: 1.25rem;
+  max-width: 70rem;
+  padding-inline: var(--m);
+  text-align: center;
+}
+
+.portada h1 {
+  font-size: clamp(2.6rem, 1.2rem + 5.6vw, 6.4rem);
+  font-weight: 300;
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+  text-wrap: balance;
+}
+
+.fuerte {
+  font-weight: 700;
+  letter-spacing: -0.055em;
+}
+
+.portada__sub {
+  color: var(--suave-texto);
+  font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.125rem);
+}
+
+.portada__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.portada__deslizar {
+  position: absolute;
+  bottom: 5.5rem;
+  left: 50%;
+  translate: -50% 0;
+  color: var(--suave-texto);
+  font-size: 0.8125rem;
+}
+
+/* ---------- Títulos de sección ---------- */
+
+.seccion {
+  padding: clamp(5rem, 3rem + 8vw, 10rem) var(--m);
+}
+
+.titulo {
+  font-size: clamp(2.75rem, 1.4rem + 6vw, 7.5rem);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+}
+
+.contador {
+  color: var(--suave-texto);
+  font-size: 0.875rem;
+}
+
+/* ---------- Qué hago: el texto cambia a la izquierda y la foto inclinada a la derecha ---------- */
+
+.que-hago {
+  position: relative;
+  height: calc(var(--pasos) * 85svh + 100svh);
+}
+
+.que-hago__escena {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-content: center;
+  gap: 2rem;
+  padding: 5rem var(--m) 6rem;
+}
+
+@media (min-width: 60rem) {
+  .que-hago__escena {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    align-items: center;
+    gap: var(--m);
+  }
+}
+
+.que-hago__intro {
+  max-width: 34ch;
+  margin-bottom: 1.5rem;
+  color: var(--suave-texto);
+}
+
+.paso {
+  display: grid;
+  gap: 1rem;
+}
+
+.que-hago__textos {
+  display: grid;
+}
+
+.que-hago__textos > .paso {
+  grid-area: 1 / 1;
+  opacity: 0;
+  translate: 0 1.25rem;
+  transition: opacity 600ms var(--curva-m), translate 600ms var(--curva-m);
+}
+
+.que-hago__textos > .paso.activo {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.paso h3 {
+  font-size: clamp(2.4rem, 1.2rem + 4.6vw, 5.75rem);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+}
+
+.paso p {
+  max-width: 30ch;
+  font-size: clamp(1.05rem, 1rem + 0.35vw, 1.3rem);
+}
+
+.que-hago__fotos {
+  position: relative;
+  display: grid;
+  justify-items: center;
+}
+
+.polaroid {
+  margin: 0;
+  padding: 0.75rem 0.75rem 2.4rem;
+  background: #fbf9f5;
+  box-shadow: 0 1.5rem 3rem -1.6rem color-mix(in srgb, var(--cafe) 55%, transparent);
+  rotate: var(--giro, 3deg);
+}
+
+.polaroid figcaption {
+  margin-top: 0.7rem;
+  color: var(--suave-texto);
+  font-size: 0.8125rem;
+}
+
+.que-hago__fotos .polaroid {
+  grid-area: 1 / 1;
+  width: min(100%, 34rem);
+  opacity: 0;
+  scale: 0.96;
+  transition: opacity 700ms var(--curva-m), scale 700ms var(--curva-m), rotate 700ms var(--curva-m);
+}
+
+.que-hago__fotos .polaroid.activo {
+  opacity: 1;
+  scale: 1;
+}
+
+.que-hago__fotos img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.que-hago__puntos {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.que-hago__puntos li {
+  width: 1.75rem;
+  height: 2px;
+  background: var(--linea);
+  transition: background-color 400ms ease;
+}
+
+.que-hago__puntos li.activo {
+  background: var(--cafe);
+}
+
+@media (max-width: 59.99rem) {
+  .que-hago__escena {
+    align-content: start;
+    padding-top: 5.5rem;
+  }
+
+  .que-hago__fotos .polaroid {
+    width: min(92%, 26rem);
+  }
+}
+
+/* ---------- Trabajos: grilla despareja, cada uno con su pie ---------- */
+
+.trabajos__cabecera {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: clamp(3rem, 2rem + 4vw, 6rem);
+}
+
+/* Dos hileras que se deslizan en sentidos opuestos mientras se baja */
+.trabajos {
+  padding-inline: 0;
+  overflow: hidden;
+}
+
+.trabajos__cabecera {
+  padding-inline: var(--m);
+}
+
+.hileras {
+  display: grid;
+  gap: clamp(2.5rem, 1.5rem + 3vw, 4.5rem);
+}
+
+.hilera {
+  display: flex;
+  gap: clamp(1.25rem, 0.8rem + 1.6vw, 2.5rem);
+  width: max-content;
+  padding: 0 var(--m);
+  list-style: none;
+  will-change: transform;
+}
+
+.trabajo {
+  width: clamp(16rem, 11rem + 18vw, 30rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hileras {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+
+  .trabajo {
+    scroll-snap-align: start;
+  }
+}
+
+.trabajo a {
+  display: block;
+  text-decoration: none;
+}
+
+.trabajo__imagen {
+  overflow: hidden;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--arena) 40%, transparent);
+}
+
+.trabajo__imagen img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  transition: scale 700ms var(--curva-m);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .trabajo a:hover .trabajo__imagen img {
+    scale: 1.035;
+  }
+}
+
+.trabajo__pie {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.15rem 1rem;
+  margin-top: 0.85rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--linea);
+}
+
+.trabajo__titulo {
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.trabajo__tipo,
+.trabajo__categoria {
+  color: var(--suave-texto);
+  font-size: 0.8125rem;
+}
+
+.trabajo__tipo {
+  text-align: right;
+}
+
+.trabajo__categoria {
+  grid-column: 1 / -1;
+}
+
+/* ---------- Sobre mí ---------- */
+
+.sobre-mi {
+  display: grid;
+  gap: clamp(3rem, 2rem + 4vw, 6rem);
+  align-items: center;
+}
+
+@media (min-width: 60rem) {
+  .sobre-mi {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  }
+}
+
+.sobre-mi .polaroid {
+  justify-self: center;
+  width: min(78%, 24rem);
+  --giro: -3deg;
+}
+
+.sobre-mi__texto {
+  display: grid;
+  gap: 1.1rem;
+  max-width: 40rem;
+}
+
+.sobre-mi__texto .titulo {
+  margin-bottom: 0.75rem;
+}
+
+.sobre-mi__entrada {
+  font-size: clamp(1.2rem, 1rem + 0.8vw, 1.6rem);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+.sobre-mi__texto p:not(.sobre-mi__entrada) {
+  color: var(--suave-texto);
+}
+
+.lista {
+  display: grid;
+  margin-top: 1rem;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--linea);
+}
+
+.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--linea);
+  font-size: 0.9375rem;
+}
+
+.lista span:last-child {
+  color: var(--suave-texto);
+  text-align: right;
+}
+
+.lista a {
+  text-decoration: none;
+}
+
+.lista a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
+/* ---------- Herramientas: una sola frase ---------- */
+
+.herramientas p {
+  max-width: 22ch;
+  margin-top: 1.5rem;
+  font-size: clamp(1.6rem, 1rem + 2.6vw, 3.4rem);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+/* ---------- Contacto ---------- */
+
+.contacto {
+  display: grid;
+  gap: clamp(3rem, 2rem + 4vw, 6rem);
+  padding-bottom: clamp(7rem, 5rem + 6vw, 11rem);
+}
+
+@media (min-width: 60rem) {
+  .contacto {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+.contacto .titulo {
+  font-size: clamp(3.5rem, 1.6rem + 9vw, 11rem);
+}
+
+.contacto__texto p {
+  max-width: 36ch;
+  margin-block: 1.5rem 1.75rem;
+  color: var(--suave-texto);
+}
+
+.contacto__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.formulario {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem 1.25rem;
+}
+
+.campo {
+  display: grid;
+  gap: 0.35rem;
+  border: 0;
+  padding: 0;
+}
+
+.campo--ancho {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 34rem) {
+  .campo {
+    grid-column: 1 / -1;
+  }
+}
+
+.campo label,
+.campo legend {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.campo input,
+.campo textarea {
+  width: 100%;
+  padding: 0.6rem 0;
+  border: 0;
+  border-bottom: 1px solid var(--linea);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  resize: vertical;
+}
+
+.campo input::placeholder,
+.campo textarea::placeholder {
+  color: var(--suave-texto);
+}
+
+.campo input:focus-visible,
+.campo textarea:focus-visible {
+  outline: none;
+  border-bottom-color: var(--cafe);
+}
+
+.opciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.opciones legend {
+  margin-bottom: 0.6rem;
+}
+
+.opcion input {
+  position: absolute;
+  opacity: 0;
+}
+
+.opcion span {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  padding: 0.5em 1.1em;
+  border: 1px solid var(--linea);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.opcion input:checked + span {
+  background: var(--cafe);
+  border-color: var(--cafe);
+  color: var(--beige);
+}
+
+.opcion input:focus-visible + span {
+  outline: 2px solid var(--cafe);
+  outline-offset: 2px;
+}
+
+.formulario__trampa {
+  position: absolute;
+  left: -100vw;
+}
+
+.formulario button {
+  grid-column: 1 / -1;
+  justify-self: start;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 500;
+}
+
+.formulario__estado {
+  grid-column: 1 / -1;
+  font-size: 0.875rem;
+}
+
+.formulario__estado--error {
+  color: #8a2f1e;
+}
+
+.pie {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.5rem var(--m) 6rem;
+  border-top: 1px solid var(--linea);
+  color: var(--suave-texto);
+  font-size: 0.875rem;
+}
+
+/* ---------- Aparecer al entrar: una sola entrada, suave ---------- */
+
+.aparece {
+  opacity: 0;
+  translate: 0 1.5rem;
+  transition: opacity 800ms var(--curva-m), translate 800ms var(--curva-m);
+}
+
+.aparece.visible {
+  opacity: 1;
+  translate: 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aparece,
+  .que-hago__textos > .paso,
+  .que-hago__fotos .polaroid {
+    transition: none;
+  }
+
+  .aparece {
+    opacity: 1;
+    translate: none;
+  }
+}
+
+.trabajos__acciones {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pildora {
+  white-space: nowrap;
+}
+
+@media (max-width: 47.99rem) {
+  .portada__deslizar,
+  .trabajos__acciones .contador {
+    display: none;
+  }
+}
