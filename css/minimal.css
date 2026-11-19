@@ -154,14 +154,36 @@ a {
 }
 
 .navegacion a:not(.pildora) {
+  position: relative;
   font-size: 0.9375rem;
   font-weight: 500;
   text-decoration: none;
-  text-underline-offset: 0.3em;
 }
 
-.navegacion a:not(.pildora):hover {
-  text-decoration: underline;
+/* Subrayado que crece desde la izquierda al pasar el mouse y se va por la derecha al salir */
+.navegacion a:not(.pildora)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.25em;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 250ms var(--curva-m);
+}
+
+.navegacion a:not(.pildora):focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .navegacion a:not(.pildora):hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
 }
 
 .pildora {
@@ -181,6 +203,30 @@ a {
 .pildora--llena {
   background: var(--cafe);
   color: var(--beige);
+}
+
+/* Flechas dibujadas: apuntan según lo que hace el botón y se corren un poco al pasar el mouse */
+.pildora--derecha::after,
+.pildora--abajo::after,
+.pildora--afuera::after {
+  content: "";
+  width: 0.95em;
+  height: 0.95em;
+  flex: none;
+  background: currentColor;
+  -webkit-mask: var(--flecha) center / contain no-repeat;
+  mask: var(--flecha) center / contain no-repeat;
+  transition: transform 200ms var(--curva-m);
+}
+
+.pildora--derecha { --flecha: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 8h11M9.5 4l4 4-4 4'/%3E%3C/svg%3E"); }
+.pildora--abajo { --flecha: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 2.5v11M4 9.5l4 4 4-4'/%3E%3C/svg%3E"); }
+.pildora--afuera { --flecha: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12 12 4M6 4h6v6'/%3E%3C/svg%3E"); }
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .pildora--derecha:hover::after { transform: translateX(3px); }
+  .pildora--abajo:hover::after { transform: translateY(3px); }
+  .pildora--afuera:hover::after { transform: translate(2px, -2px); }
 }
 
 @media (hover: hover) {
@@ -227,41 +273,302 @@ a {
   }
 }
 
-/* ---------- Portada: collage de trabajos que se abre y se dispersa con el scroll ---------- */
+/* ---------- Portada: línea de carga, título a los lados y una hilera de obras corriendo abajo ---------- */
 
 .portada {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(2rem, 1rem + 3vw, 4rem);
   height: 100svh;
-  min-height: 34rem;
-  display: grid;
-  place-items: center;
+  min-height: 38rem;
+  padding: clamp(6rem, 4rem + 6vh, 9rem) 0 clamp(5.5rem, 4.5rem + 2vh, 6.5rem);
   overflow: hidden;
 }
 
-.portada__fotos {
+/* Línea de carga: fina, en el centro, con el número chico debajo a la derecha */
+.carga {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 3;
+  display: grid;
+  place-items: center;
   pointer-events: none;
 }
 
-.collage__foto {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: var(--ancho);
-  height: auto;
-  border-radius: 4px;
-  box-shadow: 0 0.6rem 1.6rem -0.8rem color-mix(in srgb, var(--cafe) 45%, transparent);
-  opacity: 0;
-  will-change: transform, opacity;
+.carga__caja {
+  display: grid;
+  gap: 0.6rem;
+  width: min(22rem, 64vw);
 }
 
-/* Durante la intro solo se ven las fotos: la frase y los botones entran cuando el collage terminó de abrirse.
-   La clase viene en el HTML para que no se vea ni un instante al cargar; si el JS no corre, aparece sola a los 6 s */
-.en-intro .portada__texto {
+.carga__linea {
+  position: relative;
+  height: 1px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--cafe) 16%, transparent);
+}
+
+.carga__linea::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--cafe);
+  transform: scaleX(var(--avance, 0));
+  transform-origin: left;
+}
+
+.carga__numero {
+  justify-self: end;
+  color: var(--suave-texto);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  transition: opacity 400ms var(--curva-m);
+}
+
+/* Al terminar, la línea se retira hacia la derecha y el número se apaga */
+.carga--fin .carga__linea {
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 600ms var(--curva);
+}
+
+.carga--fin .carga__numero {
   opacity: 0;
-  translate: 0 1rem;
+}
+
+/* "Hola" en el lugar de la línea: sube y aparece, queda un momento y se va hacia arriba */
+.carga__hola {
+  position: absolute;
+  padding-inline: var(--m);
+  text-align: center;
+  font-size: clamp(2.6rem, 1.5rem + 5vw, 7rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  opacity: 0;
+  translate: 0 0.35em;
+  transition: opacity 700ms var(--curva-m), translate 900ms var(--curva);
+}
+
+.carga--hola .carga__hola {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.carga--chau .carga__hola {
+  opacity: 0;
+  translate: 0 -0.25em;
+  transition-duration: 450ms;
+}
+
+/* Cabeza: la frase partida a los dos lados y, en el medio, la bajada y los botones */
+.portada__cabeza {
+  display: grid;
+  /* Arriba la frase de lado a lado (el derecho, con más texto, tiene más ancho); debajo, al centro, la bajada y los botones */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr);
+  row-gap: clamp(2rem, 1rem + 4vh, 4.5rem);
+  align-items: start;
+  column-gap: clamp(1.5rem, 1rem + 2vw, 3.5rem);
+  padding-inline: var(--m);
+}
+
+.portada h1 {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+  grid-row: 1;
+  font-size: clamp(2rem, 1rem + 3.4vw, 4.6rem);
+  font-weight: 300;
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+}
+
+.portada__lado {
+  grid-column: 1;
+  text-wrap: balance;
+}
+
+.portada__lado--der {
+  grid-column: 2;
+  justify-self: end;
+  text-align: right;
+  text-wrap: balance;
+}
+
+.portada__centro {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  display: grid;
+  justify-items: center;
+  gap: 1.1rem;
+  text-align: center;
+}
+
+.fuerte {
+  font-weight: 700;
+  letter-spacing: -0.055em;
+}
+
+.portada__sub {
+  color: var(--suave-texto);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.portada__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.portada__acciones .pildora {
+  min-height: 40px;
+  padding: 0.55em 1.15em;
+  font-size: 0.875rem;
+}
+
+/* Tipeo: las letras esperan ocultas y se muestran una por una; el cursor titila al lado */
+.portada h1 .letra {
+  opacity: 0;
+}
+
+.portada h1 .letra.si {
+  opacity: 1;
+}
+
+.tipeo {
+  display: inline-block;
+  width: 0.06em;
+  height: 0.8em;
+  margin-left: 0.04em;
+  vertical-align: -0.04em;
+  background: var(--cafe);
+  animation: titilar 900ms steps(1) infinite;
+}
+
+.tipeo--fin {
+  opacity: 0;
+  animation: none;
+  transition: opacity 500ms var(--curva-m);
+}
+
+@keyframes titilar {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Vitrina: obras de distinto alto que corren solas, con el nombre chico debajo */
+.vitrina {
+  overflow: hidden;
+}
+
+.vitrina__pista {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 0.5rem + 0.8vw, 1.25rem);
+  width: max-content;
+  list-style: none;
+  will-change: transform;
+}
+
+.obra {
+  /* Según el alto de la pantalla, para que la vitrina llene la parte de abajo de la portada */
+  --alto: clamp(8rem, 27svh, 17rem);
+  flex: none;
+}
+
+.obra--alta {
+  --alto: clamp(10rem, 37svh, 23rem);
+}
+
+.obra--baja {
+  --alto: clamp(6.5rem, 20svh, 13rem);
+}
+
+.obra a {
+  display: grid;
+  gap: 0.4rem;
+  text-decoration: none;
+}
+
+.obra__imagen {
+  display: block;
+  overflow: hidden;
+  border-radius: 3px;
+}
+
+.obra__imagen img {
+  display: block;
+  width: auto;
+  height: var(--alto);
+  object-fit: cover;
+  transition: scale 700ms var(--curva-m);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .obra a:hover .obra__imagen img {
+    scale: 1.04;
+  }
+}
+
+.obra__pie {
+  color: var(--suave-texto);
+  font-size: 0.75rem;
+  letter-spacing: 0.01em;
+}
+
+/* Celular: la frase arriba en dos renglones, la bajada y los botones debajo, y la vitrina abajo */
+@media (max-width: 47.99rem) {
+  .portada {
+    padding-top: 6rem;
+  }
+
+  .portada__cabeza {
+    grid-template-columns: 1fr;
+    row-gap: 1.5rem;
+  }
+
+  .portada h1 {
+    display: block;
+    grid-column: 1;
+    font-size: clamp(2.4rem, 1rem + 8vw, 3.4rem);
+  }
+
+  .portada__lado {
+    display: block;
+  }
+
+  .portada__lado--der {
+    max-width: none;
+    text-align: left;
+  }
+
+  .portada__centro {
+    grid-column: 1;
+    grid-row: 2;
+    justify-items: start;
+    padding-top: 0;
+    text-align: left;
+  }
+
+  .portada__acciones {
+    justify-content: start;
+  }
+}
+
+/* Durante la carga no se ve nada más: el título espera en su máscara y el resto aparece después.
+   La clase viene en el HTML para que no se vea ni un instante; si el JS no corre, aparece todo a los 6 s */
+.en-intro .portada__centro,
+.en-intro .vitrina,
+.portada:not(.tipeada) .portada__centro,
+.portada:not(.tipeada) .vitrina {
+  opacity: 0;
+  translate: 0 1.25rem;
   animation: portada-de-respaldo 0s linear 6s forwards;
 }
 
@@ -272,68 +579,41 @@ a {
   }
 }
 
+.portada__centro,
+.vitrina {
+  transition: opacity 1000ms var(--curva-m), translate 1000ms var(--curva-m);
+}
+
+/* Después del título: primero el centro y después la vitrina, que sube desde abajo */
+.portada__centro {
+  transition-delay: 100ms;
+}
+
+.vitrina {
+  transition-delay: 350ms;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .en-intro .portada__texto {
+  .en-intro .portada__centro,
+  .en-intro .vitrina {
     opacity: 1 !important;
     translate: none;
   }
-}
 
-.portada__texto {
-  position: relative;
-  z-index: 2;
-  transition: opacity 900ms var(--curva-m), translate 900ms var(--curva-m);
-  display: grid;
-  justify-items: center;
-  gap: 1.25rem;
-  max-width: 70rem;
-  padding-inline: var(--m);
-  text-align: center;
-}
-
-.portada h1 {
-  font-size: clamp(2.6rem, 1.2rem + 5.6vw, 6.4rem);
-  font-weight: 300;
-  line-height: 0.98;
-  letter-spacing: -0.05em;
-  text-wrap: balance;
-}
-
-.fuerte {
-  font-weight: 700;
-  letter-spacing: -0.055em;
-}
-
-.portada__sub {
-  color: var(--suave-texto);
-  font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.125rem);
-}
-
-.portada__acciones {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.6rem;
-  margin-top: 0.5rem;
-}
-
-.portada__deslizar {
-  position: absolute;
-  bottom: 5.5rem;
-  left: 50%;
-  translate: -50% 0;
-  color: var(--suave-texto);
-  font-size: 0.8125rem;
+  .vitrina {
+    overflow-x: auto;
+  }
 }
 
 /* ---------- Títulos de sección ---------- */
 
 .seccion {
-  padding: clamp(5rem, 3rem + 8vw, 10rem) var(--m);
+  /* Más juntas, como onseis: el contenido manda, no el espacio vacío */
+  padding: clamp(3rem, 2rem + 3vw, 5.5rem) var(--m);
 }
 
 .titulo {
-  font-size: clamp(2.75rem, 1.4rem + 6vw, 7.5rem);
+  font-size: clamp(2.5rem, 1.4rem + 4.6vw, 6rem);
   font-weight: 300;
   line-height: 0.95;
   letter-spacing: -0.05em;
@@ -348,7 +628,7 @@ a {
 
 .que-hago {
   position: relative;
-  height: calc(var(--pasos) * 85svh + 100svh);
+  height: calc(var(--pasos) * 55svh + 100svh);
 }
 
 .que-hago__escena {
@@ -478,57 +758,31 @@ a {
   }
 }
 
-/* ---------- Trabajos: grilla despareja, cada uno con su pie ---------- */
+/* ---------- Trabajos: grilla despareja de tres columnas, con mucho aire, como un archivo ---------- */
 
 .trabajos__cabecera {
   display: flex;
   align-items: end;
   justify-content: space-between;
   gap: 1rem;
-  margin-bottom: clamp(1.5rem, 1rem + 2vw, 3rem);
+  margin-bottom: clamp(2.5rem, 1.5rem + 3vw, 5rem);
 }
 
-/* Dos hileras que se deslizan en sentidos opuestos mientras se baja */
-/* Arriba, menos aire: viene justo después de la escena fija de Qué hago, que ya deja espacio */
-.trabajos {
-  padding-inline: 0;
-  padding-top: clamp(2rem, 1rem + 3vw, 4.5rem);
-  overflow: hidden;
-}
-
-.trabajos__cabecera {
-  padding-inline: var(--m);
-}
-
-.hileras {
+.obras {
   display: grid;
-  gap: clamp(1.5rem, 1rem + 2vw, 3rem);
-}
-
-.hilera {
-  display: flex;
-  gap: clamp(1.25rem, 0.8rem + 1.6vw, 2.5rem);
-  width: max-content;
-  padding: 0 var(--m);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  gap: clamp(3rem, 2rem + 3vw, 6rem) clamp(1.5rem, 1rem + 3vw, 5rem);
   list-style: none;
-  will-change: transform;
 }
 
-/* Más chicas, para que las dos hileras entren juntas en la pantalla */
-.trabajo {
-  /* También según el alto: en pantallas bajas se achican para que entren las dos hileras */
-  width: max(8.5rem, min(clamp(11.5rem, 6.5rem + 10vw, 18rem), calc((100svh - 24rem) / 1.5)));
+/* La columna del medio va más abajo, así la grilla no queda en filas parejas */
+.obras > .trabajo:nth-child(3n + 2) {
+  margin-top: clamp(4rem, 2rem + 6vw, 9rem);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .hileras {
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-  }
-
-  .trabajo {
-    scroll-snap-align: start;
-  }
+.obras > .trabajo:nth-child(3n) {
+  margin-top: clamp(1.5rem, 1rem + 2vw, 3.5rem);
 }
 
 .trabajo a {
@@ -543,10 +797,19 @@ a {
 }
 
 .trabajo__imagen img {
+  display: block;
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
   transition: scale 700ms var(--curva-m);
+}
+
+.trabajo--alta .trabajo__imagen img {
+  aspect-ratio: 4 / 5;
+}
+
+.trabajo--cuadrada .trabajo__imagen img {
+  aspect-ratio: 1;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -555,14 +818,14 @@ a {
   }
 }
 
+/* Pie: nombre y, en una sola línea chica, tipo y categoría; abajo una línea fina */
 .trabajo__pie {
-  /* Nombre arriba y una sola línea chica con tipo y categoría (si no entra, termina en …) */
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  margin-top: 0.7rem;
-  padding-top: 0.6rem;
-  border-top: 1px solid var(--linea);
+  margin-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--linea);
 }
 
 .trabajo__titulo {
@@ -583,11 +846,288 @@ a {
   content: " · ";
 }
 
+/* Al aparecer, cada portada se descubre de abajo hacia arriba como una cortina y la foto se asienta;
+   el pie llega un momento después */
+@media (prefers-reduced-motion: no-preference) {
+  /* La tarjeta no se funde: la cortina hace la entrada */
+  .obras > .trabajo.aparece {
+    opacity: 1;
+  }
+
+  .obras > .trabajo .trabajo__imagen {
+    clip-path: inset(100% 0 0 0);
+    transition: clip-path 1100ms var(--curva);
+    transition-delay: inherit;
+  }
+
+  .obras > .trabajo .trabajo__imagen img {
+    scale: 1.18;
+    transition: scale 1400ms var(--curva);
+    transition-delay: inherit;
+  }
+
+  .obras > .trabajo .trabajo__pie {
+    opacity: 0;
+    translate: 0 0.6rem;
+    transition: opacity 700ms var(--curva-m), translate 700ms var(--curva-m);
+    transition-delay: calc(var(--retraso, 0ms) + 450ms);
+  }
+
+  .obras > .trabajo.visible .trabajo__imagen {
+    clip-path: inset(0);
+  }
+
+  .obras > .trabajo.visible .trabajo__imagen img {
+    scale: 1;
+  }
+
+  .obras > .trabajo.visible .trabajo__pie {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .obras > .trabajo.visible a:hover .trabajo__imagen img {
+      scale: 1.035;
+      transition-duration: 700ms;
+      transition-delay: 0ms;
+    }
+  }
+}
+
+/* Las tarjetas entran una detrás de otra dentro de cada fila */
+.obras > .trabajo:nth-child(3n + 2) { --retraso: 150ms; transition-delay: 150ms; }
+.obras > .trabajo:nth-child(3n) { --retraso: 300ms; transition-delay: 300ms; }
+
+@media (max-width: 59.99rem) {
+  .obras {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .obras > .trabajo:nth-child(n) {
+    margin-top: 0;
+    transition-delay: 0ms;
+  }
+
+  .obras > .trabajo:nth-child(2n) {
+    translate: 0 clamp(3rem, 2rem + 5vw, 6rem);
+  }
+
+  .obras > .trabajo.aparece:nth-child(2n):not(.visible) {
+    translate: 0 calc(clamp(3rem, 2rem + 5vw, 6rem) + 1.5rem);
+  }
+}
+
+/* Celular: una columna, cada obra con su ancho, alternando a la izquierda y a la derecha */
+@media (max-width: 37.49rem) {
+  .obras {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .obras > .trabajo:nth-child(2n),
+  .obras > .trabajo.aparece:nth-child(2n):not(.visible) {
+    translate: none;
+  }
+
+  .obras > .trabajo:nth-child(odd) {
+    width: 82%;
+  }
+
+  .obras > .trabajo:nth-child(even) {
+    width: 72%;
+    justify-self: end;
+  }
+}
+
+/* Carpeta de archivo: el fondo con su pestaña, dos hojas que asoman y el frente con el texto.
+   Al pasar el mouse el frente se inclina hacia adelante y las hojas suben, como al abrirla */
+.archivo {
+  position: relative;
+  display: block;
+  width: min(34rem, 100%);
+  aspect-ratio: 1.5;
+  margin: clamp(6rem, 4rem + 6vw, 11rem) auto 0;
+  color: var(--cafe);
+  text-decoration: none;
+  perspective: 900px;
+}
+
+.archivo__fondo,
+.archivo__hoja,
+.archivo__frente {
+  position: absolute;
+}
+
+.archivo__fondo {
+  inset: 1.75rem 0 0;
+  border-radius: 2px 8px 6px 6px;
+  background: var(--taupe);
+}
+
+/* Pestaña de la carpeta, arriba a la izquierda, con el borde derecho en diagonal */
+.archivo__fondo::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  width: 42%;
+  height: 1.8rem;
+  border-radius: 8px 0 0 0;
+  background: inherit;
+  clip-path: polygon(0 0, 82% 0, 100% 100%, 0 100%);
+}
+
+.archivo__hoja {
+  border-radius: 3px;
+  box-shadow: 0 2px 6px -3px rgb(43 25 19 / 0.35);
+  transition: translate 500ms var(--curva-m), rotate 500ms var(--curva-m);
+}
+
+.archivo__hoja--1 {
+  top: 2.75rem;
+  right: 1.25rem;
+  left: 1.5rem;
+  height: 62%;
+  background: var(--papel);
+  rotate: -1.5deg;
+}
+
+.archivo__hoja--2 {
+  top: 3.6rem;
+  right: 2.5rem;
+  left: 2.25rem;
+  height: 58%;
+  background: var(--manteca-suave);
+  rotate: 2deg;
+}
+
+.archivo__frente {
+  inset: auto 0 0;
+  height: 70%;
+  display: grid;
+  align-content: center;
+  gap: 0.6rem;
+  padding: clamp(1.5rem, 1rem + 2vw, 2.75rem);
+  border-radius: 5px;
+  background: var(--arena);
+  box-shadow: 0 -6px 16px -12px rgb(43 25 19 / 0.5), 0 18px 30px -22px rgb(43 25 19 / 0.6);
+  transform-origin: 50% 100%;
+  transition: transform 500ms var(--curva-m);
+}
+
+.archivo__titulo {
+  font-size: clamp(1.6rem, 1.1rem + 2vw, 2.6rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.archivo__texto {
+  font-size: 0.9375rem;
+}
+
+.archivo__ver {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+  font-size: 0.9375rem;
+}
+
+.archivo__ver::before {
+  content: "";
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background: var(--cafe);
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .archivo:hover .archivo__frente {
+    transform: rotateX(-16deg);
+  }
+
+  .archivo:hover .archivo__hoja--1 {
+    translate: 0 -1rem;
+    rotate: -3deg;
+  }
+
+  .archivo:hover .archivo__hoja--2 {
+    translate: 0 -1.6rem;
+    rotate: 3.5deg;
+  }
+}
+
+.archivo:focus-visible {
+  outline: 2px solid var(--cafe);
+  outline-offset: 1rem;
+}
+
+/* ---------- Corrección: una frase genérica se tacha y se reescribe con voz propia ---------- */
+
+.correccion {
+  display: grid;
+  justify-items: start;
+  gap: 0.6rem;
+  width: min(28rem, 100% - 2 * var(--m));
+  margin-inline: var(--m) auto;
+  padding-top: clamp(2.5rem, 1.5rem + 3vw, 4.5rem);
+}
+
+/* Van contra los márgenes, alternando: uno a la izquierda, otro a la derecha */
+.correccion--der {
+  justify-items: end;
+  margin-inline: auto var(--m);
+  text-align: right;
+}
+
+.correccion__antes {
+  color: var(--suave-texto);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.correccion__antes span {
+  position: relative;
+  transition: opacity 500ms var(--curva-m);
+}
+
+/* La tachadura se dibuja de izquierda a derecha */
+.correccion__antes span::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -0.2em;
+  right: -0.2em;
+  height: 1.5px;
+  background: var(--cafe);
+  transform: scaleX(var(--tachado, 1));
+  transform-origin: left;
+  transition: transform 550ms var(--curva);
+}
+
+.correccion__despues {
+  min-height: 1.15em;
+  font-size: clamp(1.15rem, 0.9rem + 1vw, 1.7rem);
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.correccion--sale > * {
+  opacity: 0;
+  transition: opacity 450ms var(--curva-m);
+}
+
 /* ---------- Sobre mí ---------- */
 
 .sobre-mi {
   display: grid;
-  gap: clamp(3rem, 2rem + 4vw, 6rem);
+  gap: clamp(2rem, 1.5rem + 2.5vw, 4rem);
   align-items: center;
 }
 
@@ -670,8 +1210,8 @@ a {
 
 .contacto {
   display: grid;
-  gap: clamp(3rem, 2rem + 4vw, 6rem);
-  padding-bottom: clamp(7rem, 5rem + 6vw, 11rem);
+  gap: clamp(2rem, 1.5rem + 2.5vw, 4rem);
+  padding-bottom: clamp(6rem, 5rem + 2vw, 7rem);
 }
 
 @media (min-width: 60rem) {
@@ -682,7 +1222,7 @@ a {
 }
 
 .contacto .titulo {
-  font-size: clamp(3.5rem, 1.6rem + 9vw, 11rem);
+  font-size: clamp(3.25rem, 1.6rem + 7vw, 8.5rem);
 }
 
 .contacto__texto p {

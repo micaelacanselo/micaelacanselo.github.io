@@ -1,219 +1,108 @@
-// Portada minimalista: intro de fotos, Qué hago fijo con foto que cambia, entradas suaves y formulario.
+// Portada minimalista: línea de carga, vitrina de obras que corre sola, Qué hago fijo, entradas suaves y formulario.
 const reducido = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 document.querySelectorAll("[data-anio]").forEach((el) => {
   el.textContent = new Date().getFullYear();
 });
 
-// ---------- Portada: la misma intro de fotos del sitio (js/hero.js) ----------
-// Las fotos caen una tras otra en una pila en el centro y se abren en un collage alrededor de la frase;
-// después se apagan y aparecen solo cerca del mouse (o del dedo). Al bajar se juntan hacia el centro.
-// Cualquier interacción saltea la intro. Con movimiento reducido el collage queda quieto y a la vista.
+// ---------- Portada: línea de carga y después la frase, que se escribe letra por letra ----------
+// Una línea fina se completa de 0% a 100% mientras cargan las fuentes y la página (mínimo 1,8 s, máximo 4 s).
+// Al llegar a 100 la línea se retira, saluda un "Hola" y la frase se tipea con un cursor que titila; después entran
+// la bajada, los botones y la vitrina. Con un #enlace, si ya se bajó o con movimiento reducido, todo aparece directo.
 const portada = document.querySelector("[data-portada]");
-const capa = document.querySelector("[data-collage]");
-const textoPortada = document.querySelector(".portada__texto");
+const carga = document.querySelector("[data-carga]");
+const frase = portada?.querySelector("h1");
 
-const FOTOS = [
-  ["magnolia", 360, 270], ["havanna-foto", 360, 450], ["tono-celular", 360, 480], ["itba", 360, 270],
-  ["campagnola-foto", 360, 480], ["gae", 360, 270], ["itba-gondola", 360, 480], ["tono", 360, 270],
-  ["adopciones-historia", 360, 480], ["burgbox", 360, 270], ["spa-celular", 360, 480], ["raiz", 360, 270],
-  ["relax-spa", 360, 270], ["itba-entrega", 360, 480], ["havanna", 360, 270],
-  ["raiz-celular", 360, 480], ["campagnola", 360, 270], ["instituto", 360, 270], ["adopciones", 360, 270],
-  ["plantilla", 360, 270], ["escribo", 360, 270],
-];
-
-if (portada && capa && textoPortada) {
-  const CURVA = "cubic-bezier(.2,.7,.2,1)";
-  const PASO_PILA = 75; // cada cuánto cae una foto en la pila
-  const EN_PILA = 14; // cuántas pasan por la pila antes de abrirse
-  const APERTURA = 1200; // lo que tarda el collage en abrirse
-  const LEJOS = -99999;
-  const puntero = { x: 0, y: 0, vx: 0, vy: 0, px: LEJOS, py: LEJOS };
-  const saltos = ["wheel", "touchmove", "keydown", "pointerdown", "scroll"];
-  let terminada = false;
-  let viviendo = false;
-  let enPantalla = true;
-  let soltarDedo = 0;
-  let W = 0;
-  let H = 0;
-  new IntersectionObserver(([e]) => (enPantalla = e.isIntersecting)).observe(capa);
-
-  // Pseudoaleatorio con semilla: el collage sale igual en cada visita
-  let semilla = 7;
-  const azar = () => ((semilla = (semilla * 16807) % 2147483647) - 1) / 2147483646;
-
-  const fotos = FOTOS.map(([nombre, ancho, alto]) => {
-    const img = document.createElement("img");
-    img.className = "collage__foto";
-    img.src = `assets/img/collage/${nombre}.webp`;
-    img.alt = "";
-    img.width = ancho;
-    img.height = alto;
-    img.decoding = "async";
-    capa.append(img);
-    return { img, ratio: alto / ancho, x: 0, y: 0, w: 0, prof: 0, visible: false, luz: 0 };
-  });
-
-  // Zona libre: la frase, la bajada y los botones; arriba la barra del nombre, abajo la navegación
-  function ubicar() {
-    const r = capa.getBoundingClientRect();
-    W = r.width;
-    H = r.height;
-    semilla = 7;
-    const m = W < 700 ? 14 : 30;
-    const textos = [...textoPortada.children].map((el) => el.getBoundingClientRect());
-    const zona = {
-      x1: Math.min(...textos.map((t) => t.left)) - r.left - m,
-      x2: Math.max(...textos.map((t) => t.right)) - r.left + m,
-      y1: Math.min(...textos.map((t) => t.top)) - r.top - m,
-      y2: Math.max(...textos.map((t) => t.bottom)) - r.top + m,
-    };
-    const techo = (document.querySelector(".barra")?.getBoundingClientRect().bottom || 64) - r.top;
-    const piso = H - (document.querySelector(".navegacion")?.offsetHeight || 72) - 8;
-    const chico = W < 700;
-    const base = chico ? Math.max(52, W * 0.15) : Math.min(Math.max(W * 0.068, 78), 132);
-    const hueco = chico ? 8 : 16;
-    const puestas = [];
-    for (const f of fotos) {
-      f.w = base * (0.8 + azar() * 0.45);
-      const h = f.w * f.ratio;
-      f.visible = false;
-      for (let i = 0; i < 400; i++) {
-        const x = 8 + azar() * (W - f.w - 16);
-        const y = techo + azar() * (piso - h - techo);
-        const choca = (z) => x < z.x2 + hueco && x + f.w > z.x1 - hueco && y < z.y2 + hueco && y + h > z.y1 - hueco;
-        if (choca(zona) || puestas.some(choca)) continue;
-        puestas.push({ x1: x, x2: x + f.w, y1: y, y2: y + h });
-        Object.assign(f, { x, y, visible: true, prof: 0.4 + azar() * 0.9 });
-        break;
-      }
-      f.img.style.setProperty("--ancho", `${f.w.toFixed(1)}px`);
+// Cada letra en su propio span (la frase completa queda como nombre del título para lectores de pantalla)
+function prepararTipeo() {
+  frase.setAttribute("aria-label", frase.textContent.replace(/\s+/g, " ").trim());
+  const letras = [];
+  const recorrer = (nodo) => {
+    for (const hijo of [...nodo.childNodes]) {
+      if (hijo.nodeType === Node.TEXT_NODE) {
+        const trozo = document.createDocumentFragment();
+        for (const c of hijo.textContent) {
+          const s = document.createElement("span");
+          s.className = "letra";
+          s.setAttribute("aria-hidden", "true");
+          s.textContent = c;
+          trozo.append(s);
+          letras.push(s);
+        }
+        hijo.replaceWith(trozo);
+      } else recorrer(hijo);
     }
-  }
+  };
+  recorrer(frase);
+  return letras;
+}
 
-  const transformar = (x, y, s = 1) => `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) scale(${s.toFixed(3)})`;
-
-  // Estado final: cada foto se enciende cuando el puntero pasa cerca (rápido) y se apaga lento;
-  // al bajar, todas se juntan hacia el centro y se apagan, y la frase también
-  function pintarFinal() {
-    const p = Math.min(Math.max(scrollY / (innerHeight * 0.6), 0), 1);
-    const k = 1 - (1 - p) ** 3;
-    puntero.vx += (puntero.x - puntero.vx) * 0.06;
-    puntero.vy += (puntero.y - puntero.vy) * 0.06;
-    const base = capa.getBoundingClientRect();
-    const radio = Math.max(W, H) * (W < 700 ? 0.32 : 0.2);
-    for (const f of fotos) {
-      if (!f.visible) continue;
-      const h = f.w * f.ratio;
-      const cx = W / 2 - f.w / 2;
-      const cy = H / 2 - h / 2;
-      const dx = reducido ? 0 : -puntero.vx * 14 * f.prof;
-      const dy = reducido ? 0 : -puntero.vy * 10 * f.prof;
-      const x = f.x + (cx - f.x) * k * 0.92 + dx;
-      const y = f.y + (cy - f.y) * k * 0.92 + dy;
-      if (reducido) f.luz = 1;
-      else {
-        const d = Math.hypot(puntero.px - (base.left + x + f.w / 2), puntero.py - (base.top + y + h / 2));
-        const t = Math.max(0, 1 - d / radio);
-        const cerca = t * t * (3 - 2 * t);
-        f.luz += (cerca - f.luz) * (cerca > f.luz ? 0.16 : 0.025);
-      }
-      f.img.style.transform = transformar(x, y, (1 - k * 0.55) * (0.9 + f.luz * 0.1));
-      f.img.style.opacity = (f.luz * (1 - k * k)).toFixed(3);
-    }
-    if (!reducido) textoPortada.style.opacity = (1 - k).toFixed(3);
-  }
-
-  function vivir() {
-    if (enPantalla) pintarFinal();
-    requestAnimationFrame(vivir);
-  }
-
-  // desdeIntro: las fotos arrancan encendidas y se van apagando despacio
-  function mostrarFinal(desdeIntro = false) {
-    for (const f of fotos) {
-      f.img.style.transition = "none";
-      f.luz = desdeIntro && f.visible ? 1 : 0;
-    }
-    pintarFinal();
-    if (!reducido && !viviendo) {
-      viviendo = true;
-      requestAnimationFrame(vivir);
-    }
-  }
-
-  function terminar() {
-    if (terminada) return;
-    terminada = true;
-    saltos.forEach((e) => removeEventListener(e, terminar));
-    portada.classList.remove("en-intro");
-    mostrarFinal(true);
-  }
-
-  function intro() {
-    portada.classList.add("en-intro");
-    const cx = W / 2;
-    const cy = H / 2;
-    for (const f of fotos) {
-      const s = Math.min(W * 0.36, 190) / f.w;
-      const jx = (azar() - 0.5) * 50;
-      const jy = (azar() - 0.5) * 40;
-      f.img.style.transition = "none";
-      f.img.style.transform = transformar(cx - f.w / 2 + jx, cy - (f.w * f.ratio) / 2 + jy, s);
-    }
-    fotos.slice(0, EN_PILA).forEach((f, i) => setTimeout(() => !terminada && (f.img.style.opacity = 1), 120 + i * PASO_PILA));
-    setTimeout(() => {
-      if (terminada) return;
-      for (const f of fotos) {
-        const demora = Math.round(azar() * 220);
-        f.img.style.transition = `transform ${APERTURA}ms ${CURVA} ${demora}ms, opacity 500ms ease ${demora}ms`;
-        f.img.style.opacity = f.visible ? 1 : 0;
-        f.img.style.transform = transformar(f.x, f.y, 1);
-      }
-      // La frase entra cuando el collage ya dejó el centro libre
-      setTimeout(terminar, APERTURA + 260);
-    }, 120 + EN_PILA * PASO_PILA + 250);
-  }
-
-  if (!reducido) {
-    const seguir = (ev) => {
-      clearTimeout(soltarDedo);
-      puntero.x = ev.clientX / innerWidth - 0.5;
-      puntero.y = ev.clientY / innerHeight - 0.5;
-      puntero.px = ev.clientX;
-      puntero.py = ev.clientY;
-    };
-    addEventListener("pointermove", seguir, { passive: true });
-    addEventListener("pointerdown", seguir, { passive: true });
-    // Con el dedo, las fotos quedan un momento y se apagan; con el mouse, al salir de la ventana
-    addEventListener("pointerup", (ev) => {
-      if (ev.pointerType !== "mouse") soltarDedo = setTimeout(() => (puntero.px = puntero.py = LEJOS), 900);
-    }, { passive: true });
-    document.documentElement.addEventListener("pointerleave", () => (puntero.px = puntero.py = LEJOS));
-  }
-
-  // La intro corre al cargar arriba de todo; con un #enlace o movimiento reducido, directo al final
-  if ("scrollRestoration" in history && !location.hash) history.scrollRestoration = "manual";
-  document.fonts.ready.then(() => {
-    ubicar();
-    if (!reducido && !location.hash && scrollY < 10) {
-      saltos.forEach((e) => addEventListener(e, terminar, { passive: true }));
-      intro();
+function tipear(letras) {
+  const barra = document.createElement("span");
+  barra.className = "tipeo";
+  barra.setAttribute("aria-hidden", "true");
+  letras[0].before(barra);
+  let i = 0;
+  const siguiente = () => {
+    const l = letras[i];
+    l.classList.add("si");
+    l.after(barra);
+    i++;
+    if (i < letras.length) {
+      // Pausa un poco más en los espacios y al pasar de un lado al otro, como quien escribe
+      const pausa = l.textContent === " " ? 90 : 38 + Math.random() * 34;
+      setTimeout(siguiente, pausa);
     } else {
-      terminada = true;
-      portada.classList.remove("en-intro");
-      mostrarFinal();
+      portada.classList.add("tipeada");
+      setTimeout(() => barra.classList.add("tipeo--fin"), 1600);
     }
-  });
+  };
+  setTimeout(siguiente, 150);
+}
 
-  // Si cambia el ancho se vuelve a repartir; en celular la barra del navegador solo cambia el alto
-  let anchoPrevio = innerWidth;
-  addEventListener("resize", () => {
-    if (innerWidth === anchoPrevio) return;
-    anchoPrevio = innerWidth;
-    ubicar();
-    if (terminada) mostrarFinal();
-  });
+if (portada) {
+  const letras = !reducido && frase ? prepararTipeo() : [];
+  const mostrarPortada = (conTipeo) => {
+    portada.classList.remove("en-intro");
+    if (conTipeo && letras.length) tipear(letras);
+    else {
+      letras.forEach((l) => l.classList.add("si"));
+      portada.classList.add("tipeada");
+    }
+  };
+  if ("scrollRestoration" in history && !location.hash) history.scrollRestoration = "manual";
+
+  if (!carga || reducido || location.hash || scrollY > 10) {
+    carga?.remove();
+    mostrarPortada(false);
+  } else {
+    const numero = carga.querySelector("[data-carga-numero]");
+    const MINIMO = 1800;
+    const MAXIMO = 4000;
+    const inicio = performance.now();
+    let lista = false;
+    const pagina = document.readyState === "complete" ? Promise.resolve() : new Promise((r) => addEventListener("load", r, { once: true }));
+    Promise.all([document.fonts.ready, pagina]).then(() => (lista = true));
+
+    // Pareja, con un leve frenado al final: se lee como una carga y no como un salto
+    const suave = (t) => -(Math.cos(Math.PI * t) - 1) / 2;
+    const cuadro = (ahora) => {
+      const pasado = ahora - inicio;
+      // Mientras la página no terminó de cargar, la línea se queda antes del final
+      const tope = lista || pasado > MAXIMO ? 1 : 0.9;
+      const avance = Math.min(suave(Math.min(pasado / MINIMO, 1)), tope);
+      carga.style.setProperty("--avance", avance.toFixed(4));
+      numero.textContent = `${Math.round(avance * 100)}%`;
+      if (avance < 1) return requestAnimationFrame(cuadro);
+      // La línea se va, aparece un "Hola" en su lugar, se despide y recién ahí se escribe la frase
+      carga.classList.add("carga--fin");
+      setTimeout(() => carga.classList.add("carga--hola"), 420);
+      setTimeout(() => carga.classList.add("carga--chau"), 1700);
+      setTimeout(() => mostrarPortada(true), 2150);
+      setTimeout(() => carga.remove(), 2700);
+    };
+    requestAnimationFrame(cuadro);
+  }
 }
 
 // ---------- Qué hago: el paso activo depende de cuánto se bajó dentro de la sección ----------
@@ -234,11 +123,11 @@ function moverQueHago() {
   [pasos, polaroids, puntos].forEach((grupo) => grupo.forEach((el, i) => el.classList.toggle("activo", i === n)));
 }
 
-// ---------- Trabajos: dos hileras que corren solas, sin fin, y se aceleran al scrollear ----------
-// La primera va hacia la izquierda y la segunda hacia la derecha. Cada hilera se duplica (copias ocultas para
+// ---------- Vitrina de la portada: una hilera de obras que corre sola, sin fin, y se acelera al scrollear ----------
+// Va hacia la izquierda. Se duplica (copias ocultas para
 // lectores de pantalla y teclado) para que nunca se vea el final. Con el mouse encima van más despacio;
-// con movimiento reducido quedan quietas y se recorren deslizando a mano.
-const seccionTrabajos = document.querySelector("#trabajos");
+// con movimiento reducido queda quieta y se recorre deslizando a mano.
+const seccionTrabajos = document.querySelector("[data-hileras]");
 const hileras = [...document.querySelectorAll("[data-hilera]")].map((pista, i) => ({ pista, dir: i === 0 ? -1 : 1, x: 0, ancho: 0, lento: false }));
 const BASE = 48; // px por segundo cuando nadie scrollea
 const EMPUJE = 0.5; // parte de la velocidad del scroll que se suma (en px por segundo)
@@ -294,7 +183,8 @@ if (seccionTrabajos && !reducido) {
     // Con tope: un salto grande (un enlace a Trabajos) no las dispara
     const objetivo = dt > 0 ? Math.min((Math.abs(delta) / dt) * EMPUJE, 900) : 0;
     velocidadScroll += (objetivo - velocidadScroll) * Math.min(1, dt * 6);
-    if (trabajosVisibles) {
+    // Con un caso abierto se quedan quietas: así la tarjeta sigue en su lugar al cerrar
+    if (trabajosVisibles && !document.documentElement.classList.contains("indice-abierto")) {
       for (const h of hileras) {
         if (h.lento === "quieta") continue;
         const v = (BASE + velocidadScroll) * (h.lento ? 0.25 : 1);
@@ -353,7 +243,8 @@ function partirEnPalabras(titulo) {
   }
 }
 
-const titulos = document.querySelectorAll(".portada h1, .titulo, .paso h3");
+// La frase de la portada se tipea (arriba); acá solo los títulos de sección y los pasos
+const titulos = document.querySelectorAll(".titulo, .paso h3");
 titulos.forEach(partirEnPalabras);
 
 // Los títulos de sección se animan cada vez que asoman: al salir de la pantalla se rearman para la próxima.
@@ -367,6 +258,65 @@ if (!reducido && "IntersectionObserver" in window) {
 } else {
   titulosSeccion.forEach((t) => t.classList.add("entra"));
 }
+
+// ---------- Correcciones: una frase generica se tacha y debajo se escribe la versión con voz propia ----------
+// Cada bloque tiene sus pares de frases (en data-frases, separados por "|" y "→"); van rotando mientras se ven.
+// Con movimiento reducido queda el primer par quieto, ya tachado y escrito.
+document.querySelectorAll("[data-correccion]").forEach((bloque) => {
+  const antes = bloque.querySelector("[data-antes]");
+  const despues = bloque.querySelector("[data-despues]");
+  const pares = (bloque.dataset.frases || "")
+    .split("|")
+    .map((p) => p.split("→").map((t) => t.trim()))
+    .filter((p) => p.length === 2);
+  if (!pares.length || reducido) return;
+
+  const esperar = (ms) => new Promise((r) => setTimeout(r, ms));
+  let enPantalla = false;
+  let corriendo = false;
+  let i = 0;
+
+  const escribir = async (texto) => {
+    despues.textContent = "";
+    const barra = document.createElement("span");
+    barra.className = "tipeo";
+    barra.setAttribute("aria-hidden", "true");
+    despues.append(barra);
+    for (const c of texto) {
+      barra.before(c);
+      await esperar(c === " " ? 80 : 32 + Math.random() * 30);
+    }
+    await esperar(1400);
+    barra.remove();
+  };
+
+  const ronda = async () => {
+    corriendo = true;
+    while (enPantalla) {
+      const [generica, propia] = pares[i % pares.length];
+      bloque.classList.remove("correccion--sale");
+      antes.textContent = generica;
+      despues.textContent = "";
+      bloque.style.setProperty("--tachado", 0);
+      await esperar(1100);
+      bloque.style.setProperty("--tachado", 1);
+      await esperar(650);
+      await escribir(propia);
+      await esperar(2200);
+      // Con un solo par, se queda escrito; con varios, se apaga y entra el siguiente
+      if (pares.length === 1) break;
+      bloque.classList.add("correccion--sale");
+      await esperar(500);
+      i++;
+    }
+    corriendo = false;
+  };
+
+  new IntersectionObserver(([e]) => {
+    enPantalla = e.isIntersecting;
+    if (enPantalla && !corriendo) ronda();
+  }, { rootMargin: "0px 0px -15% 0px" }).observe(bloque);
+});
 
 // ---------- Entradas suaves ----------
 const aparecen = document.querySelectorAll(".aparece");

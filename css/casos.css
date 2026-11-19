@@ -544,6 +544,34 @@ p {
   animation: subir-indice var(--dur-media) var(--curva);
 }
 
+/* Desde una tarjeta: la portada ya cubrió la pantalla, el caso solo aparece encima */
+.caso.caso--desde-tarjeta[open] {
+  animation: aparecer-caso 300ms var(--curva);
+}
+
+@keyframes aparecer-caso {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Copia de la portada que crece o vuelve a su tarjeta */
+.expansion {
+  position: fixed;
+  z-index: 2000;
+  overflow: hidden;
+  border-radius: 3px;
+  transform-origin: center;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.expansion img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 @keyframes subir-indice {
   from {
     opacity: 0;

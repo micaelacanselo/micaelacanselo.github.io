@@ -71,18 +71,186 @@
 
   <main id="contenido">
     <section class="portada en-intro" id="inicio" aria-labelledby="portada-titulo" data-portada>
-      <div class="portada__escena">
-        <div class="portada__fotos" data-collage aria-hidden="true"></div>
-        <div class="portada__texto">
-          <h1 id="portada-titulo">Transformo ideas en <span class="fuerte">experiencias digitales con identidad.</span></h1>
+      <div class="carga" data-carga aria-hidden="true">
+        <div class="carga__caja"><span class="carga__linea"></span><span class="carga__numero" data-carga-numero>0%</span></div>
+        <p class="carga__hola">Hola, soy <span class="fuerte">Mica</span></p>
+      </div>
+      <div class="portada__cabeza">
+        <h1 id="portada-titulo"><span class="portada__lado">Transformo ideas</span> <span class="portada__lado portada__lado--der">en <span class="fuerte">experiencias digitales con identidad.</span></span></h1>
+        <div class="portada__centro">
           <p class="portada__sub">Comunicación digital · Marketing · Diseño y desarrollo web</p>
           <div class="portada__acciones">
-            <a class="pildora pildora--llena" href="#trabajos">Ver trabajos</a>
-            <a class="pildora" href="assets/cv/cv-micaela-canselo.pdf" download>Descargar CV</a>
+            <a class="pildora pildora--llena pildora--abajo" href="#trabajos">Ver trabajos</a>
+            <a class="pildora pildora--abajo" href="assets/cv/cv-micaela-canselo.pdf" download>Descargar CV</a>
           </div>
         </div>
-        <p class="portada__deslizar" aria-hidden="true">Deslizá</p>
       </div>
+      <div class="vitrina" aria-hidden="true" data-hileras>
+        <ul class="vitrina__pista" data-hilera>
+            <li class="obra obra--media">
+              <a data-cursor="ver" href="#trabajo-magnolia" tabindex="-1">
+                <span class="obra__imagen"><img src="assets/proyectos/magnolia-eventos/caso/marca-aplicaciones.webp" alt="" width="1240" height="560" decoding="async"></span>
+                <span class="obra__pie">Magnolia Eventos</span>
+              </a>
+            </li>
+            <li class="obra obra--alta">
+              <a data-cursor="ver" href="#trabajo-itba" tabindex="-1">
+                <span class="obra__imagen"><img src="assets/proyectos/comunicacion-itba/gondola-sin-tacc.webp" alt="" width="900" height="1600" decoding="async"></span>
+                <span class="obra__pie">Comunicación en el ITBA</span>
+              </a>
+            </li>
+            <li class="obra obra--baja">
+              <a data-cursor="ver" href="#trabajo-gae" tabindex="-1">
+                <span class="obra__imagen"><img src="assets/proyectos/centro-operativo-gae/desktop.webp" alt="" width="1440" height="900" decoding="async"></span>
+                <span class="obra__pie">Centro Operativo GAE</span>
+              </a>
+            </li>
+            <li class="obra obra--media">
+              <a data-cursor="ver" href="#trabajo-tono" tabindex="-1">
+                <span class="obra__imagen"><img src="assets/proyectos/tono/caso/fondo-contexto.webp" alt="" width="1100" height="707" decoding="async"></span>
+                <span class="obra__pie">Tono</span>
+              </a>
+            </li>
+            <li class="obra obra--alta">
+              <a data-cursor="ver" href="#trabajo-adopciones" tabindex="-1">
+                <span class="obra__imagen"><img src="assets/proyectos/adopciones-quilmes/historia-2.webp" alt="" width="563" height="1009" decoding="async"></span>
+                <span class="obra__pie">Adopciones Quilmes</span>
+              </a>
+            </li>
+            <li class="obra obra--baja">
+              <a data-cursor="ver" href="#trabajo-havanna" tabindex="-1">
+                <span class="obra__imagen"><img src="assets/proyectos/havanna/foto-envoltorio.webp" alt="" width="1200" height="1500" decoding="async"></span>
+                <span class="obra__pie">Havanna</span>
+              </a>
+            </li>
+            <li class="obra obra--media">
+              <a data-cursor="ver" href="#trabajo-campagnola" tabindex="-1">
+                <span class="obra__imagen"><img src="assets/proyectos/la-campagnola/etiqueta-detalle.webp" alt="" width="1000" height="1200" decoding="async"></span>
+                <span class="obra__pie">La Campagnola</span>
+              </a>
+            </li>
+            <li class="obra obra--media">
+              <a data-cursor="ver" href="#trabajo-escritos" tabindex="-1">
+                <span class="obra__imagen"><img src="assets/proyectos/tarjetas/lo-que-escribo.webp" alt="" width="1200" height="900" decoding="async"></span>
+                <span class="obra__pie">Lo que escribo</span>
+              </a>
+            </li>
+            <li class="obra obra--alta">
+              <a data-cursor="ver" href="#trabajo-burgbox" tabindex="-1">
+                <span class="obra__imagen"><img src="assets/proyectos/burgbox/caso/menu.webp" alt="" width="1440" height="805" decoding="async"></span>
+                <span class="obra__pie">BurgBox</span>
+              </a>
+            </li>
+            <li class="obra obra--baja">
+              <a data-cursor="ver" href="#trabajo-raiz" tabindex="-1">
+                <span class="obra__imagen"><img src="assets/proyectos/raiz-fotografia/caso/portada.webp" alt="" width="1280" height="800" decoding="async"></span>
+                <span class="obra__pie">Raíz Fotografía</span>
+              </a>
+            </li>
+            <li class="obra obra--media">
+              <a data-cursor="ver" href="#trabajo-spa" tabindex="-1">
+                <span class="obra__imagen"><img src="assets/proyectos/relax-spa/caso/piel.webp" alt="" width="1440" height="1292" decoding="async"></span>
+                <span class="obra__pie">Relax Spa</span>
+              </a>
+            </li>
+            <li class="obra obra--alta">
+              <a data-cursor="ver" href="#trabajo-instituto" tabindex="-1">
+                <span class="obra__imagen"><img src="assets/proyectos/instituto-del-parque/caso/pagina-galeria-de-imagenes.webp" alt="" width="861" height="690" decoding="async"></span>
+                <span class="obra__pie">Instituto del Parque</span>
+              </a>
+            </li>
+            <li class="obra obra--baja">
+              <a data-cursor="ver" href="#trabajo-plantilla" tabindex="-1">
+                <span class="obra__imagen"><img src="assets/proyectos/plantilla-personalizada/caso/variante-portada.webp" alt="" width="1440" height="900" decoding="async"></span>
+                <span class="obra__pie">Plantilla personalizada</span>
+              </a>
+            </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="seccion trabajos" id="trabajos" data-trabajos aria-labelledby="trabajos-titulo">
+      <div class="trabajos__cabecera aparece">
+        <h2 class="titulo" id="trabajos-titulo"><span class="fuerte">Trabajos</span></h2>
+        <p class="contador">Una selección · 13 en total</p>
+      </div>
+      <ul class="obras">
+        <li class="trabajo trabajo--ancha aparece">
+          <a data-cursor="ver" href="#trabajo-spa">
+            <div class="trabajo__imagen"><img src="assets/proyectos/portadas/spa-ancha.webp" alt="" width="1400" height="854" loading="lazy" decoding="async"></div>
+            <div class="trabajo__pie">
+              <span class="trabajo__titulo">Relax Spa</span>
+              <span class="trabajo__tipo">Proyecto conceptual</span>
+              <span class="trabajo__categoria">Diseño web · Identidad · WordPress</span>
+            </div>
+          </a>
+        </li>
+        <li class="trabajo trabajo--alta aparece">
+          <a data-cursor="ver" href="#trabajo-plantilla">
+            <div class="trabajo__imagen"><img src="assets/proyectos/portadas/plantilla-ancha.webp" alt="" width="1400" height="854" loading="lazy" decoding="async"></div>
+            <div class="trabajo__pie">
+              <span class="trabajo__titulo">Plantilla personalizada</span>
+              <span class="trabajo__tipo">Proyecto conceptual</span>
+              <span class="trabajo__categoria">Diseño web · Código · WordPress</span>
+            </div>
+          </a>
+        </li>
+        <li class="trabajo trabajo--alta aparece">
+          <a data-cursor="ver" href="#trabajo-raiz">
+            <div class="trabajo__imagen"><img src="assets/proyectos/portadas/raiz-ancha.webp" alt="" width="1400" height="854" loading="lazy" decoding="async"></div>
+            <div class="trabajo__pie">
+              <span class="trabajo__titulo">Raíz Fotografía</span>
+              <span class="trabajo__tipo">Proyecto conceptual</span>
+              <span class="trabajo__categoria">Landing · Diseño web · WordPress</span>
+            </div>
+          </a>
+        </li>
+        <li class="trabajo trabajo--ancha aparece">
+          <a data-cursor="ver" href="#trabajo-tono">
+            <div class="trabajo__imagen"><img src="assets/proyectos/portadas/tono-ancha.webp" alt="" width="1400" height="854" loading="lazy" decoding="async"></div>
+            <div class="trabajo__pie">
+              <span class="trabajo__titulo">Tono</span>
+              <span class="trabajo__tipo">Proyecto conceptual</span>
+              <span class="trabajo__categoria">E-commerce · Identidad · WordPress</span>
+            </div>
+          </a>
+        </li>
+        <li class="trabajo trabajo--cuadrada aparece">
+          <a data-cursor="ver" href="#trabajo-campagnola">
+            <div class="trabajo__imagen"><img src="assets/proyectos/la-campagnola/foto-frasco.webp" alt="" width="1200" height="1600" loading="lazy" decoding="async"></div>
+            <div class="trabajo__pie">
+              <span class="trabajo__titulo">La Campagnola</span>
+              <span class="trabajo__tipo">Proyecto académico</span>
+              <span class="trabajo__categoria">Packaging · Fotografía de producto · Contenido</span>
+            </div>
+          </a>
+        </li>
+        <li class="trabajo trabajo--ancha aparece">
+          <a data-cursor="ver" href="#trabajo-escritos">
+            <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas/lo-que-escribo.webp" alt="" width="1200" height="900" loading="lazy" decoding="async"></div>
+            <div class="trabajo__pie">
+              <span class="trabajo__titulo">Lo que escribo</span>
+              <span class="trabajo__tipo">Proyecto académico</span>
+              <span class="trabajo__categoria">Redacción · Periodismo · Newsletter</span>
+            </div>
+          </a>
+        </li>
+      </ul>
+      <a class="archivo aparece" href="#todo">
+        <span class="archivo__fondo" aria-hidden="true"></span>
+        <span class="archivo__hoja archivo__hoja--1" aria-hidden="true"></span>
+        <span class="archivo__hoja archivo__hoja--2" aria-hidden="true"></span>
+        <span class="archivo__frente">
+          <span class="archivo__titulo">Todos los <span class="fuerte">trabajos</span></span>
+          <span class="archivo__texto">Los 13 proyectos en una lista, con filtros por tipo.</span>
+          <span class="archivo__ver">Ver todos</span>
+        </span>
+      </a>
+    </section>
+
+    <section class="correccion correccion--izq" aria-label="Cómo escribo" data-correccion data-frases="Diseño web moderno y profesional. → Sitios que se sienten tuyos desde la portada. | Contenido de calidad para tus redes. → Posteos que alguien quiere leer hasta el final.">
+      <p class="correccion__antes"><span data-antes>Diseño web moderno y profesional.</span></p>
+      <p class="correccion__despues" data-despues>Sitios que se sienten tuyos desde la portada.</p>
     </section>
 
     <section class="que-hago" aria-labelledby="que-hago-titulo" style="--pasos: 4" data-que-hago>
@@ -112,147 +280,9 @@
       </div>
     </section>
 
-    <section class="seccion trabajos" id="trabajos" data-trabajos aria-labelledby="trabajos-titulo">
-      <div class="trabajos__cabecera aparece">
-        <h2 class="titulo" id="trabajos-titulo"><span class="fuerte">Trabajos</span></h2>
-        <div class="trabajos__acciones"><p class="contador">13 proyectos</p><a class="pildora" href="#todo">Ver todos</a></div>
-      </div>
-      <div class="hileras" data-hileras>
-        <ul class="hilera" data-hilera="0">
-          <li class="trabajo">
-            <a data-cursor="ver" href="#trabajo-magnolia">
-              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/magnolia-eventos.webp" alt="" width="1200" height="900" loading="lazy"></div>
-              <div class="trabajo__pie">
-                <span class="trabajo__titulo">Magnolia Eventos</span>
-                <span class="trabajo__tipo">Proyecto académico</span>
-                <span class="trabajo__categoria">Plan de marketing · Web · App</span>
-              </div>
-            </a>
-          </li>
-          <li class="trabajo">
-            <a data-cursor="ver" href="#trabajo-itba">
-              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/comunicacion-itba.webp" alt="" width="1200" height="900" loading="lazy"></div>
-              <div class="trabajo__pie">
-                <span class="trabajo__titulo">Comunicación en el ITBA</span>
-                <span class="trabajo__tipo">Proyecto real</span>
-                <span class="trabajo__categoria">Comunicación interna · Cartelería · ITBA</span>
-              </div>
-            </a>
-          </li>
-          <li class="trabajo">
-            <a data-cursor="ver" href="#trabajo-gae">
-              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/centro-operativo-gae.webp" alt="" width="1200" height="900" loading="lazy"></div>
-              <div class="trabajo__pie">
-                <span class="trabajo__titulo">Centro Operativo GAE</span>
-                <span class="trabajo__tipo">Proyecto real · en uso</span>
-                <span class="trabajo__categoria">UX · Plataforma web · ITBA</span>
-              </div>
-            </a>
-          </li>
-          <li class="trabajo">
-            <a data-cursor="ver" href="#trabajo-tono">
-              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/tono.webp" alt="" width="1200" height="900" loading="lazy"></div>
-              <div class="trabajo__pie">
-                <span class="trabajo__titulo">Tono</span>
-                <span class="trabajo__tipo">Proyecto conceptual</span>
-                <span class="trabajo__categoria">E-commerce · Identidad · WordPress</span>
-              </div>
-            </a>
-          </li>
-          <li class="trabajo">
-            <a data-cursor="ver" href="#trabajo-adopciones">
-              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/adopciones-quilmes.webp" alt="" width="1200" height="900" loading="lazy"></div>
-              <div class="trabajo__pie">
-                <span class="trabajo__titulo">Adopciones Quilmes</span>
-                <span class="trabajo__tipo">Proyecto académico</span>
-                <span class="trabajo__categoria">Community management · Contenido · Crisis</span>
-              </div>
-            </a>
-          </li>
-          <li class="trabajo">
-            <a data-cursor="ver" href="#trabajo-havanna">
-              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/havanna.webp" alt="" width="1200" height="900" loading="lazy"></div>
-              <div class="trabajo__pie">
-                <span class="trabajo__titulo">Havanna</span>
-                <span class="trabajo__tipo">Proyecto académico</span>
-                <span class="trabajo__categoria">Estrategia de redes · Contenido</span>
-              </div>
-            </a>
-          </li>
-          <li class="trabajo">
-            <a data-cursor="ver" href="#trabajo-campagnola">
-              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/la-campagnola.webp" alt="" width="1200" height="900" loading="lazy"></div>
-              <div class="trabajo__pie">
-                <span class="trabajo__titulo">La Campagnola</span>
-                <span class="trabajo__tipo">Proyecto académico</span>
-                <span class="trabajo__categoria">Packaging · Fotografía de producto · Contenido</span>
-              </div>
-            </a>
-          </li>
-        </ul>
-        <ul class="hilera" data-hilera="1">
-          <li class="trabajo">
-            <a data-cursor="ver" href="#trabajo-escritos">
-              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/lo-que-escribo.webp" alt="" width="1200" height="900" loading="lazy"></div>
-              <div class="trabajo__pie">
-                <span class="trabajo__titulo">Lo que escribo</span>
-                <span class="trabajo__tipo">Proyecto académico</span>
-                <span class="trabajo__categoria">Redacción · Periodismo · Newsletter</span>
-              </div>
-            </a>
-          </li>
-          <li class="trabajo">
-            <a data-cursor="ver" href="#trabajo-burgbox">
-              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/burgbox.webp" alt="" width="1200" height="900" loading="lazy"></div>
-              <div class="trabajo__pie">
-                <span class="trabajo__titulo">BurgBox</span>
-                <span class="trabajo__tipo">Proyecto conceptual</span>
-                <span class="trabajo__categoria">Diseño web · WordPress</span>
-              </div>
-            </a>
-          </li>
-          <li class="trabajo">
-            <a data-cursor="ver" href="#trabajo-raiz">
-              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/raiz-fotografia.webp" alt="" width="1200" height="900" loading="lazy"></div>
-              <div class="trabajo__pie">
-                <span class="trabajo__titulo">Raíz Fotografía</span>
-                <span class="trabajo__tipo">Proyecto conceptual</span>
-                <span class="trabajo__categoria">Landing · Diseño web · WordPress</span>
-              </div>
-            </a>
-          </li>
-          <li class="trabajo">
-            <a data-cursor="ver" href="#trabajo-spa">
-              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/relax-spa.webp" alt="" width="1200" height="900" loading="lazy"></div>
-              <div class="trabajo__pie">
-                <span class="trabajo__titulo">Relax Spa</span>
-                <span class="trabajo__tipo">Proyecto conceptual</span>
-                <span class="trabajo__categoria">Diseño web · Identidad · WordPress</span>
-              </div>
-            </a>
-          </li>
-          <li class="trabajo">
-            <a data-cursor="ver" href="#trabajo-instituto">
-              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/instituto-del-parque.webp" alt="" width="1200" height="900" loading="lazy"></div>
-              <div class="trabajo__pie">
-                <span class="trabajo__titulo">Instituto del Parque</span>
-                <span class="trabajo__tipo">Proyecto conceptual</span>
-                <span class="trabajo__categoria">Diseño web · Comunicación</span>
-              </div>
-            </a>
-          </li>
-          <li class="trabajo">
-            <a data-cursor="ver" href="#trabajo-plantilla">
-              <div class="trabajo__imagen"><img src="assets/proyectos/tarjetas-paleta/plantilla-personalizada.webp" alt="" width="1200" height="900" loading="lazy"></div>
-              <div class="trabajo__pie">
-                <span class="trabajo__titulo">Plantilla personalizada</span>
-                <span class="trabajo__tipo">Proyecto conceptual</span>
-                <span class="trabajo__categoria">Diseño web · Código · WordPress</span>
-              </div>
-            </a>
-          </li>
-        </ul>
-      </div>
+    <section class="correccion correccion--der" aria-label="Cómo escribo" data-correccion data-frases="Soluciones creativas para tu negocio. → Ideas que se entienden a la primera. | Llevamos tu marca al siguiente nivel. → Tu marca, dicha como la dirías vos.">
+      <p class="correccion__antes"><span data-antes>Soluciones creativas para tu negocio.</span></p>
+      <p class="correccion__despues" data-despues>Ideas que se entienden a la primera.</p>
     </section>
 
     <section class="seccion sobre-mi" id="sobre-mi" aria-labelledby="sobre-mi-titulo">
@@ -262,9 +292,10 @@
       </figure>
       <div class="sobre-mi__texto aparece">
         <h2 class="titulo" id="sobre-mi-titulo">Sobre <span class="fuerte">mí</span></h2>
-        <p class="sobre-mi__entrada">Soy técnica en Comunicación y Marketing Digital, y diseño y desarrollo sitios web.</p>
-        <p>Me formo en este mundo desde 2022. En la carrera trabajé redes, contenido y estrategia, y descubrí lo que más me apasiona: darle forma a todo eso en la web. Por eso lo sigo puliendo por mi cuenta, todo el tiempo.</p>
-        <p>En mi trabajo actual, en el GAE (Grupo de Ayuda a Espacios) del ITBA, el equipo manejaba todo en planillas de Excel sueltas. Diseñé y desarrollé, con asistencia de IA, una plataforma que hoy usan unas diez personas todos los días en tres sedes.</p>
+        <p class="sobre-mi__entrada">Soy Micaela, técnica en Comunicación y Marketing Digital, y diseño y desarrollo sitios web.</p>
+        <p>Empecé por la comunicación: desde 2022, en la carrera trabajé redes, contenido y estrategia. En el diseño web encontré dónde juntar lo que más disfruto: lo visual, el orden, los detalles y armar algo desde cero.</p>
+        <p>En mi trabajo actual, en el GAE (Grupo de Ayuda a Espacios) del ITBA, el equipo manejaba todo en planillas de Excel sueltas. Diseñé y desarrollé una plataforma que hoy usan unas diez personas todos los días en tres sedes.</p>
+        <p>Trabajo con WordPress, herramientas de diseño y desarrollo asistido por IA, y me sigo formando todo el tiempo para ofrecer un mejor servicio. Para mí, una web no solo tiene que verse bien: tiene que sentirse propia, ser fácil de recorrer y dejar algo que se recuerde.</p>
         <ul class="lista">
           <li><span>Técnica Superior en Comunicación y Marketing Digital</span><span>ISEC, 2025</span></li>
           <li><span>Ciclo de Licenciatura en Comunicación</span><span>UADE, desde 2027</span></li>
@@ -281,14 +312,19 @@
       <p class="aparece">Figma, Canva, WordPress, Elementor, WooCommerce, HTML, CSS, Claude, Office, Doppler y Google Drive.</p>
     </section>
 
+    <section class="correccion correccion--izq" aria-label="Cómo escribo" data-correccion data-frases="Contactanos para más información. → Contame tu idea y la pensamos juntos.">
+      <p class="correccion__antes"><span data-antes>Contactanos para más información.</span></p>
+      <p class="correccion__despues" data-despues>Contame tu idea y la pensamos juntos.</p>
+    </section>
+
     <section class="seccion contacto" id="contacto" aria-labelledby="contacto-titulo">
       <div class="contacto__texto aparece">
         <h2 class="titulo" id="contacto-titulo"><span class="fuerte">Hablemos</span></h2>
         <p>Si tenés una idea que todavía no encontró su forma, me gustaría escucharla. Busco sumarme a un equipo de comunicación, marketing digital o diseño web, y también tomo proyectos freelance.</p>
         <div class="contacto__links">
-          <a class="pildora" href="https://wa.me/5491124672964?text=Hola%20Mica%2C%20vi%20tu%20portfolio" target="_blank" rel="noopener">WhatsApp</a>
-          <a class="pildora" href="https://www.linkedin.com/in/micaela-solange-canselo/" target="_blank" rel="noopener">LinkedIn</a>
-          <a class="pildora" href="assets/cv/cv-micaela-canselo.pdf" download>Descargar CV</a>
+          <a class="pildora pildora--afuera" href="https://wa.me/5491124672964?text=Hola%20Mica%2C%20vi%20tu%20portfolio" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="pildora pildora--afuera" href="https://www.linkedin.com/in/micaela-solange-canselo/" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="pildora pildora--abajo" href="assets/cv/cv-micaela-canselo.pdf" download>Descargar CV</a>
         </div>
       </div>
       <!-- Formulario: lo envía Web3Forms. access_key es pública (no expone el mail) -->
@@ -313,7 +349,7 @@
           <textarea id="contacto-mensaje" name="mensaje" rows="4" placeholder="Contame un poco más" required></textarea>
         </div>
         <input class="formulario__trampa" name="botcheck" type="checkbox" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <button class="pildora pildora--llena" type="submit">Enviar</button>
+        <button class="pildora pildora--llena pildora--derecha" type="submit">Enviar</button>
         <p class="formulario__estado" data-formulario-estado role="status"></p>
       </form>
     </section>
@@ -748,7 +784,7 @@
           <ul class="caso__datos">
             <li class="caso__dato--real">Proyecto real, en uso</li>
             <li>Iniciativa propia</li>
-            <li>Mi parte: relevamiento, diseño UX/UI y desarrollo con asistencia de IA (Claude)</li>
+            <li>Mi parte: relevamiento, diseño UX/UI y desarrollo</li>
           </ul>
         </header>
 
@@ -771,7 +807,7 @@
 
         <section class="capitulo">
           <h4>Una herramienta para usar sin capacitación<span class="punto" aria-hidden="true"></span></h4>
-          <p>Fue una iniciativa propia. Relevé cómo trabajaba el equipo y diseñé una plataforma pensada para abrirse todos los días y entenderse sin explicación. La desarrollé con asistencia de IA, con datos en tiempo real entre las tres sedes.</p>
+          <p>Fue una iniciativa propia. Relevé cómo trabajaba el equipo y diseñé una plataforma pensada para abrirse todos los días y entenderse sin explicación. La desarrollé con datos en tiempo real entre las tres sedes.</p>
         </section>
 
         <section class="capitulo">

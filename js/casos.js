@@ -7,7 +7,7 @@ const secTrabajos = document.querySelector("[data-trabajos]");
 const carpetas = [...document.querySelectorAll("[data-carpetas] > .carpeta")].map((el) => ({ el }));
 const datoCarpeta = (c, clase) => c.el.querySelector(`.carpeta__${clase}`);
 
-// Lleva a la tarjeta del trabajo en las hileras
+// Lleva a la tarjeta del trabajo en la grilla de Trabajos
 function llevarAProyecto(i) {
   const hash = carpetas[i].el.querySelector("a").hash;
   const enlace = document.querySelector(`.trabajo a[href="${hash}"]`);
@@ -316,12 +316,87 @@ document.querySelectorAll("[data-lectura-dialogo]").forEach((lectura) => {
   });
 });
 
+// ---------- Transición tarjeta → caso: la portada crece hasta cubrir la pantalla y el caso aparece encima ----------
+// Al cerrar hace el camino inverso y vuelve a su lugar en la hilera. Solo transform y opacidad.
+const CURVA = "cubic-bezier(0.32, 0.72, 0, 1)";
+const ABRIR = 650;
+const CERRAR = 550;
+
+function cubrir(r) {
+  // Escala pareja para que la portada tape toda la pantalla, centrada
+  const s = Math.max(innerWidth / r.width, innerHeight / r.height) * 1.02;
+  const dx = innerWidth / 2 - (r.left + r.width / 2);
+  const dy = innerHeight / 2 - (r.top + r.height / 2);
+  return `translate(${dx}px, ${dy}px) scale(${s})`;
+}
+
+function copiaDe(img) {
+  const r = img.getBoundingClientRect();
+  const copia = document.createElement("div");
+  copia.className = "expansion";
+  copia.setAttribute("aria-hidden", "true");
+  Object.assign(copia.style, { left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px`, height: `${r.height}px` });
+  const foto = document.createElement("img");
+  foto.src = img.currentSrc || img.src;
+  foto.alt = "";
+  copia.append(foto);
+  document.body.append(copia);
+  return { copia, r };
+}
+
+function abrirDesdeTarjeta(enlace) {
+  const img = enlace.querySelector("img");
+  const caso = casoDe(enlace.hash);
+  if (reducido || !img || !caso || !("animate" in Element.prototype)) return abrirCaso(enlace.hash);
+  caso._tarjeta = enlace;
+  const { copia, r } = copiaDe(img);
+  img.style.visibility = "hidden";
+  copia.animate([{ transform: "none" }, { transform: cubrir(r) }], { duration: ABRIR, easing: CURVA, fill: "forwards" })
+    .finished.then(() => {
+      caso.classList.add("caso--desde-tarjeta");
+      abrirCaso(enlace.hash);
+      img.style.visibility = "";
+      // El caso aparece encima; recién ahí se saca la copia
+      setTimeout(() => copia.remove(), 320);
+    });
+}
+
+function volverATarjeta(caso) {
+  const enlace = caso._tarjeta;
+  caso._tarjeta = null;
+  caso.classList.remove("caso--desde-tarjeta");
+  const img = enlace?.querySelector("img");
+  if (reducido || !img) return;
+  // Espera a que la página recupere su lugar antes de medir la tarjeta
+  requestAnimationFrame(() => {
+    const r = img.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > innerHeight || r.right < 0 || r.left > innerWidth) return;
+    const { copia } = copiaDe(img);
+    img.style.visibility = "hidden";
+    copia.animate(
+      [{ transform: cubrir(r), opacity: 0 }, { opacity: 1, offset: 0.2 }, { transform: "none", opacity: 1 }],
+      { duration: CERRAR, easing: CURVA }
+    ).finished.then(() => {
+      img.style.visibility = "";
+      copia.remove();
+    });
+  });
+}
+
+document.querySelectorAll("[data-caso]").forEach((caso) => {
+  caso.addEventListener("close", () => {
+    if (caso._tarjeta && !pasandoDeCaso) volverATarjeta(caso);
+    else caso.classList.remove("caso--desde-tarjeta");
+  });
+});
+
 // Las tarjetas de Trabajos abren su caso sin salir de la página
-document.querySelectorAll('.trabajo a[href^="#trabajo-"]').forEach((enlace) => {
+document.querySelectorAll('.trabajo a[href^="#trabajo-"], .obra a[href^="#trabajo-"]').forEach((enlace) => {
   enlace.addEventListener("click", (e) => {
     if (!casoDe(enlace.hash)) return;
     e.preventDefault();
-    abrirCaso(enlace.hash);
+    if (document.querySelector(".expansion")) return;
+    abrirDesdeTarjeta(enlace);
   });
 });
 
