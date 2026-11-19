@@ -1338,7 +1338,8 @@ p {
   margin-top: clamp(3.5rem, 2.5rem + 4vw, 5.5rem);
   padding-block: var(--esp-6);
   background: var(--arena);
-  --texto-2: var(--tinta-suave);
+  /* Sobre arena, el texto secundario va en café para llegar al contraste mínimo */
+  --texto-2: var(--cafe);
   text-align: center;
 }
 
