@@ -145,3 +145,78 @@ formulario?.addEventListener("submit", async (e) => {
 // ---------- Año del pie ----------
 const anio = document.querySelector("[data-anio]");
 if (anio) anio.textContent = new Date().getFullYear();
+
+// Videos: se cargan y reproducen solo cuando se ven; con "reducir movimiento" queda la imagen fija
+const videos = [...document.querySelectorAll("video[data-video]")];
+
+function cargar(video) {
+  if (!video.getAttribute("src") && video.dataset.src) video.src = video.dataset.src;
+}
+
+if (!reducido && "IntersectionObserver" in window) {
+  const obsVideo = new IntersectionObserver((entradas) => {
+    for (const e of entradas) {
+      const v = e.target;
+      if (e.isIntersecting) {
+        cargar(v);
+        v.play().catch(() => {});
+      } else {
+        v.pause();
+      }
+    }
+  }, { rootMargin: "120px 0px", threshold: 0.15 });
+  videos.forEach((v) => obsVideo.observe(v));
+}
+
+// Visor de trabajos: cada pestaña cambia los videos y el texto
+const visor = document.querySelector("[data-visor]");
+
+if (visor) {
+  const pestanas = [...visor.querySelectorAll('[role="tab"]')];
+  const compu = visor.querySelector("[data-visor-compu]");
+  const celu = visor.querySelector("[data-visor-celu]");
+  const campo = (n) => visor.querySelector(`[data-visor-${n}]`);
+
+  const cambiarVideo = (video, base) => {
+    video.poster = `${base}.webp`;
+    video.dataset.src = `${base}.mp4`;
+    if (video.getAttribute("src")) {
+      video.src = video.dataset.src;
+      if (!reducido) video.play().catch(() => {});
+    }
+  };
+
+  const elegir = (p, enfocar) => {
+    pestanas.forEach((x) => {
+      const activa = x === p;
+      x.setAttribute("aria-selected", String(activa));
+      x.tabIndex = activa ? 0 : -1;
+    });
+    cambiarVideo(compu, p.dataset.compu);
+    cambiarVideo(celu, p.dataset.celu);
+    campo("titulo").textContent = p.dataset.titulo;
+    campo("categoria").textContent = p.dataset.categoria;
+    campo("frase").textContent = p.dataset.frase;
+    campo("enlace").href = p.dataset.enlace;
+    const enlace = campo("enlace");
+    enlace.textContent = p.dataset.texto || "Ver cómo lo pensé";
+    if ("externo" in p.dataset) {
+      enlace.target = "_blank";
+      enlace.rel = "noopener";
+    } else {
+      enlace.removeAttribute("target");
+      enlace.removeAttribute("rel");
+    }
+    if (enfocar) p.focus();
+  };
+
+  pestanas.forEach((p, i) => {
+    p.addEventListener("click", () => elegir(p));
+    p.addEventListener("keydown", (e) => {
+      const paso = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+      if (!paso) return;
+      e.preventDefault();
+      elegir(pestanas[(i + paso + pestanas.length) % pestanas.length], true);
+    });
+  });
+}

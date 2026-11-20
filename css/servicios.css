@@ -966,3 +966,257 @@
     translate: none;
   }
 }
+
+/* ---------- Identidad solmi studio (manual de marca) ---------- */
+@font-face {
+  font-family: "Boska";
+  src: url("../assets/fonts/boska-300.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pinyon Script";
+  src: url("../assets/fonts/pinyon-script-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Títulos en Boska; la palabra destacada, en la cursiva de la marca y del mismo color */
+.pagina-servicios h1,
+.pagina-servicios h2 {
+  font-family: "Boska", Georgia, serif;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+}
+
+.pagina-servicios h1 .fuerte,
+.pagina-servicios h2 .fuerte {
+  font-family: "Pinyon Script", cursive;
+  font-weight: 400;
+  font-size: 1.12em;
+  letter-spacing: 0;
+  padding-right: 0.06em;
+}
+
+/* Logo solmi en el encabezado: café sobre claro, hueso sobre oscuro */
+.encabezado__logo--solmi {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.solmi-logo {
+  height: 2.6rem;
+  width: auto;
+}
+
+.solmi-logo--oscuro,
+.encabezado--sobre-oscuro .solmi-logo--claro {
+  display: none;
+}
+
+.encabezado--sobre-oscuro .solmi-logo--oscuro {
+  display: block;
+}
+
+@media (max-width: 47.99rem) {
+  .solmi-logo {
+    height: 2.1rem;
+  }
+}
+
+/* Pie con la firma escrita a mano */
+.pie__solmi {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.pie__solmi img {
+  height: 2.2rem;
+  width: auto;
+}
+
+/* ---------- Ejemplos en video, compu y celular, visor de trabajos ---------- */
+
+/* Precio de identidad de marca: se consulta */
+.servicio__precio--consultar {
+  font-size: clamp(1.5rem, 1.3rem + 0.8vw, 2rem);
+  letter-spacing: -0.03em;
+}
+
+/* Ejemplo dentro de cada tarjeta */
+.servicio__ejemplo {
+  margin: var(--esp-3) 0 var(--esp-4);
+}
+
+.servicio__pantalla {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--arena-ig);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--espresso) 12%, transparent);
+}
+
+.servicio__pantalla :is(video, img) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.servicio__ejemplo figcaption {
+  margin-top: 0.6em;
+  font-size: 0.8125rem;
+  color: var(--texto-2);
+}
+
+.servicio__ejemplo figcaption a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* Compu y celular, con el video adentro */
+.equipos {
+  position: relative;
+  padding: 0 9% 9% 0;
+}
+
+.equipo-compu {
+  padding: 2.2%;
+  border-radius: 14px;
+  background: #2b1913;
+  box-shadow: 0 24px 60px -24px color-mix(in srgb, #2b1913 55%, transparent);
+}
+
+.equipo-compu video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 6px;
+  background: var(--arena-ig);
+}
+
+.equipo-celu {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 25%;
+  padding: 1.6%;
+  border-radius: 22px;
+  background: #2b1913;
+  box-shadow: 0 18px 40px -16px color-mix(in srgb, #2b1913 60%, transparent);
+}
+
+.equipo-celu video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 585 / 1266;
+  object-fit: cover;
+  border-radius: 16px;
+  background: var(--arena-ig);
+}
+
+.portada__equipos {
+  width: 100%;
+  max-width: 44rem;
+  justify-self: end;
+}
+
+/* Visor de trabajos */
+.visor {
+  display: grid;
+  gap: var(--esp-5);
+}
+
+.visor__pestanas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.visor__pestana {
+  padding: 0.55em 1.15em;
+  border: 1px solid color-mix(in srgb, var(--espresso) 30%, transparent);
+  border-radius: var(--radio-pildora);
+  background: transparent;
+  color: var(--espresso);
+  font: inherit;
+  font-size: var(--texto-s);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.visor__pestana:hover {
+  border-color: var(--espresso);
+}
+
+.visor__pestana[aria-selected="true"] {
+  background: var(--espresso);
+  border-color: var(--espresso);
+  color: var(--crema-ig);
+}
+
+.visor__escena {
+  display: grid;
+  gap: var(--esp-5);
+  align-items: center;
+}
+
+.visor__info {
+  display: grid;
+  gap: 0.5rem;
+  max-width: 26rem;
+}
+
+.visor__titulo {
+  font-family: "Boska", Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(2rem, 1.6rem + 1.6vw, 3rem);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.visor__frase {
+  color: var(--texto-2);
+}
+
+.visor__info .boton {
+  justify-self: start;
+  margin-top: var(--esp-3);
+}
+
+@media (min-width: 64rem) {
+  .visor__escena {
+    grid-template-columns: 1.7fr 1fr;
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .visor__pestanas {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.4rem;
+    scrollbar-width: none;
+  }
+
+  .visor__pestana {
+    flex: none;
+  }
+
+  .equipo-celu {
+    width: 28%;
+    border-radius: 14px;
+  }
+
+  .equipo-celu video {
+    border-radius: 10px;
+  }
+}
