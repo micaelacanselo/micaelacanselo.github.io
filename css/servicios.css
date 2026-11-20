@@ -1220,3 +1220,11 @@
     border-radius: 10px;
   }
 }
+
+/* Nota de precio (por ejemplo, WooCommerce en la tienda online) */
+.servicio__nota {
+  grid-column: 1 / -1;
+  margin-top: -0.25rem;
+  font-size: var(--texto-s);
+  color: var(--texto-2);
+}
